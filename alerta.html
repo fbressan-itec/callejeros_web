@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alerta Callejeros — Mapa y Reportes en Río Cuarto</title>
+  
+  <meta name="description" content="Visualizá en tiempo real mascotas perdidas, encontradas o en emergencia en Río Cuarto ordenadas por publicación reciente.">
+  <meta name="theme-color" content="#ef4444">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#ea580c',
+              'orange-light': '#ff7849',
+              'orange-dark': '#c2410c',
+              green: '#10b981',
+              red: '#ef4444',
+            },
+            slate: {
+              750: '#293548',
+              850: '#151e2e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'soft-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-red-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- NAVBAR SUPERIOR COMPARTIDO                                                -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200 shadow-sm">
+    <div class="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl p-1" aria-label="Ir al inicio">
+        <img src="public/images/logo_callejeros.jpg" alt="Logo Callejeros" class="h-11 sm:h-12 w-auto object-contain rounded-lg shadow-sm">
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Botón Rápido Superior para Reportar -->
+        <a href="reportar-alerta.html" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:scale-95 shadow-md shadow-red-600/20 transition-all">
+          <span>+ Publicar Alerta</span>
+        </a>
+
+        <!-- Notificaciones -->
+        <button type="button" id="btn-notifications" class="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Centro de Notificaciones">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="notif-badge-count" class="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-[11px] font-extrabold flex items-center justify-center px-1 rounded-full ring-2 ring-white dark:ring-slate-900 shadow-sm animate-pulse">3</span>
+        </button>
+
+        <!-- Toggle Modo Oscuro -->
+        <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
+          <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-6 h-6 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <!-- Menú Hamburguesa -->
+        <button type="button" id="menu-btn" class="p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Menú">
+          <svg id="menu-icon-bars" class="w-7 h-7 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="menu-icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Slider Notificaciones -->
+    <div id="notifications-slider-panel" class="hidden border-t border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg shadow-xl transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">Últimas 5 Notificaciones</h3>
+        </div>
+        <div id="notif-slider-container" class="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER HAMBURGUESA -->
+  <div id="menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" aria-hidden="true"></div>
+  <nav id="mobile-menu" class="fixed top-16 right-0 w-full sm:max-w-md h-[calc(100vh-4rem)] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto flex flex-col justify-between p-6 shadow-2xl">
+    <div class="space-y-6">
+      <div id="user-status-container" class="pb-4 border-b border-slate-100 dark:border-slate-800"></div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Adoptá un Callejero</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="adopciones.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Adoptar</a>
+          <a href="reportar-alerta.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Publicar</a>
+          <a href="alerta.html" class="px-3.5 py-1.5 rounded-full bg-red-600 text-white text-sm font-semibold">Reportar</a>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Información</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="quienes-somos.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Quiénes Somos</a>
+          <a href="adopcion-responsable.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Adopción Responsable</a>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Quiero Colaborar</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="donaciones.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Donaciones</a>
+          <a href="tienda.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Tienda</a>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 flex justify-between">
+      <span>Estado: <strong id="auth-state-label" class="text-orange-500">No Registrado</strong></span>
+      <button type="button" id="btn-toggle-auth-state" class="underline">Modo Test</button>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- CONTENIDO: ALERTA CALLEJEROS                                              -->
+  <!-- ========================================================================= -->
+  <main class="flex-grow max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 w-full space-y-8">
+    
+    <!-- Encabezado con Botón Visible de Acceso Rápido -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-red-600">Red de Alerta Comunitaria</span>
+        </div>
+        <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white mt-1">
+          Alerta Callejeros Río Cuarto
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-xl">
+          Visualizá en el mapa los reportes en curso y consultá abajo las alertas ordenadas de más recientes a más antiguas.
+        </p>
+      </div>
+
+      <!-- BOTÓN VISIBLE Y DE ACCESO RÁPIDO A VISTA APARTE -->
+      <a href="reportar-alerta.html" class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-display font-bold text-sm text-white bg-red-600 hover:bg-red-700 active:scale-95 shadow-xl shadow-red-600/30 transition-all text-center">
+        <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span>+ Publicar Alerta de Mascota</span>
+      </a>
+    </div>
+
+    <!-- Contenedor del Mapa Interactivo (Río Cuarto) -->
+    <section class="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl bg-slate-100 dark:bg-slate-850 relative">
+      <div class="h-72 sm:h-96 w-full relative flex items-center justify-center bg-slate-200 dark:bg-slate-800">
+        <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
+        <div class="relative z-10 text-center p-6 max-w-md">
+          <div class="w-14 h-14 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center text-2xl mx-auto mb-2 shadow-md">
+            📍
+          </div>
+          <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Mapa en Tiempo Real — Río Cuarto</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">
+            Centro, Banda Norte, Alberdi, Castelli, Costanera y Universidad.
+          </p>
+          <div class="flex flex-wrap justify-center gap-2 mt-3 text-[11px]">
+            <span class="px-2.5 py-1 rounded-full bg-red-600 text-white font-bold">🔴 Perdidos</span>
+            <span class="px-2.5 py-1 rounded-full bg-amber-500 text-white font-bold">🟡 Avistados</span>
+            <span class="px-2.5 py-1 rounded-full bg-rose-700 text-white font-bold">🚨 Emergencias</span>
+          </div>
+        </div>
+
+        <!-- Marcadores interactivos -->
+        <a href="#alert-alt-1" class="absolute top-1/4 left-1/3 p-2 rounded-full bg-red-600 text-white shadow-xl animate-bounce hover:scale-125 transition-transform" title="Perro perdido en Plaza Roca">
+          🐾
+        </a>
+        <a href="#alert-alt-2" class="absolute top-1/2 right-1/4 p-2 rounded-full bg-amber-500 text-white shadow-xl hover:scale-125 transition-transform" title="Gatito en Banda Norte">
+          🐱
+        </a>
+      </div>
+    </section>
+
+    <!-- Banner Rápido Bajo el Mapa -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-500/10 via-orange-500/10 to-amber-500/10 border border-red-200 dark:border-red-900/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🚨</span>
+        <div>
+          <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">¿Encontraste o perdiste una mascota recién?</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-300">Publicá la foto y ubicación en 1 minuto en el formulario dedicado.</p>
+        </div>
+      </div>
+      <a href="reportar-alerta.html" class="px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-red-600 hover:bg-red-700 active:scale-95 shadow-md whitespace-nowrap transition-all">
+        Completar Formulario con Foto
+      </a>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- LISTADO DE ALERTAS ORDENADAS POR TIEMPO (MÁS RECIENTES PRIMERO)      -->
+    <!-- =================================================================== -->
+    <section class="space-y-6 pt-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+        <div>
+          <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white">
+            Alertas Activas en Río Cuarto
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Ordenadas automáticamente de más recientes a más antiguas
+          </p>
+        </div>
+
+        <!-- Filtros de Situación -->
+        <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800 text-xs font-semibold">
+          <button type="button" class="filter-alert-tab px-3 py-1.5 rounded-lg bg-red-600 text-white shadow-sm transition-all" data-situation="all">
+            Todas
+          </button>
+          <button type="button" class="filter-alert-tab px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" data-situation="emergencia">
+            🚨 Emergencia
+          </button>
+          <button type="button" class="filter-alert-tab px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" data-situation="perdido">
+            🔴 Perdidos
+          </button>
+          <button type="button" class="filter-alert-tab px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" data-situation="encontrado">
+            🟡 Encontrados
+          </button>
+        </div>
+      </div>
+
+      <!-- Grilla de Tarjetas de Alertas -->
+      <div id="alerts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-6">
+        <!-- Renderizado dinámicamente ordenado por timestamp descendente -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FAB ALERTA RÁPIDA -->
+  <a href="reportar-alerta.html" id="fab-alerta" class="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xl backdrop-blur-md border border-orange-500/40 transition-all duration-300 opacity-25 hover:opacity-100" aria-label="Publicar Alerta con Foto">
+    <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+    <span class="hidden sm:inline">+ Publicar Alerta</span>
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors duration-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 py-8 text-center text-xs text-slate-600 dark:text-slate-300">
+      <p>© 2026 Callejeros Río Cuarto. Red comunitaria de protección animal.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const alertsGrid = document.getElementById('alerts-grid');
+      let currentFilterSituation = 'all';
+
+      // Cargar alertas persistidas o iniciales
+      let alerts = JSON.parse(localStorage.getItem('callejeros_alerts') || 'null');
+      if (!alerts) {
+        alerts = [...initialAlerts];
+        localStorage.setItem('callejeros_alerts', JSON.stringify(alerts));
+      }
+
+      function renderAlerts() {
+        if (!alertsGrid) return;
+
+        // Ordenar estrictamente de más reciente a más antigua (timestamp descendente)
+        const sorted = [...alerts].sort((a, b) => b.timestamp - a.timestamp);
+
+        const filtered = sorted.filter(item => {
+          if (currentFilterSituation === 'all') return true;
+          return item.situation === currentFilterSituation;
+        });
+
+        if (filtered.length === 0) {
+          alertsGrid.innerHTML = `
+            <div class="col-span-full py-12 text-center text-slate-500">
+              <span class="text-3xl block mb-2">🐾</span>
+              <p class="font-bold text-sm text-slate-800 dark:text-slate-200">No hay alertas en esta categoría actualmente.</p>
+            </div>
+          `;
+          return;
+        }
+
+        alertsGrid.innerHTML = filtered.map(a => {
+          let badgeClass = 'bg-red-600';
+          let badgeText = 'Perdido';
+          if (a.situation === 'encontrado') {
+            badgeClass = 'bg-amber-500';
+            badgeText = 'Encontrado';
+          } else if (a.situation === 'emergencia' || a.urgent) {
+            badgeClass = 'bg-rose-700 animate-pulse';
+            badgeText = '🚨 Caso Urgente';
+          }
+
+          return `
+            <article id="alert-${a.id}" class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-soft dark:shadow-soft-dark hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+              
+              <!-- Foto de la Mascota y Badges de Tiempo -->
+              <div class="relative w-full h-48 sm:h-52 bg-slate-900 overflow-hidden">
+                <img src="${a.image}" alt="${a.title}" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${badgeClass}">
+                  ${badgeText}
+                </span>
+                <span class="absolute top-3 right-3 px-2 py-0.5 rounded-md text-[11px] font-bold text-white bg-slate-950/75 backdrop-blur-sm shadow-md">
+                  ⏱️ ${a.timeAgo || 'Reciente'}
+                </span>
+              </div>
+
+              <!-- Información de la Alerta -->
+              <div class="p-5 flex flex-col justify-between flex-grow space-y-3">
+                <div>
+                  <h3 class="font-display font-bold text-base text-slate-900 dark:text-white line-clamp-2">
+                    ${a.title}
+                  </h3>
+                  <div class="flex items-center gap-1.5 text-xs font-semibold text-red-600 dark:text-red-400 mt-1">
+                    <span>📍</span>
+                    <span class="line-clamp-1">${a.location}</span>
+                  </div>
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+                    ${a.description}
+                  </p>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 dark:border-slate-700/80 flex items-center justify-between gap-2">
+                  <a href="tel:${a.contact}" class="flex-1 py-2 px-3 text-center rounded-xl font-bold text-xs text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 shadow-sm transition-all flex items-center justify-center gap-1">
+                    <span>📞 Llamar</span>
+                  </a>
+                  <button type="button" onclick="navigator.clipboard?.writeText('${a.contact}'); alert('Teléfono copiado: ${a.contact}');" class="py-2 px-3 rounded-xl font-bold text-xs text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 transition-colors" title="Copiar Teléfono">
+                    Copiar
+                  </button>
+                </div>
+              </div>
+
+            </article>
+          `;
+        }).join('');
+      }
+
+      // Tabs de situación
+      document.querySelectorAll('.filter-alert-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentFilterSituation = btn.getAttribute('data-situation');
+          document.querySelectorAll('.filter-alert-tab').forEach(b => {
+            b.classList.remove('bg-red-600', 'text-white', 'shadow-sm');
+            b.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+          });
+          btn.classList.add('bg-red-600', 'text-white', 'shadow-sm');
+          btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300');
+          renderAlerts();
+        });
+      });
+
+      renderAlerts();
+    });
+  </script>
+</body>
+</html>

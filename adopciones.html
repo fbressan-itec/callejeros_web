@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adoptá un Callejero — Callejeros Río Cuarto</title>
+  
+  <meta name="description" content="Encontrá perros y gatos rescatados listos para adopción responsable en Río Cuarto. Filtrá por especie, edad y sociabilidad.">
+  <meta name="theme-color" content="#ea580c">
+
+  <!-- Fuentes Tipográficas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#ea580c',
+              'orange-light': '#ff7849',
+              'orange-dark': '#c2410c',
+              green: '#10b981',
+              red: '#ef4444',
+            },
+            slate: {
+              750: '#293548',
+              850: '#151e2e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'soft-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- NAVBAR SUPERIOR COMPARTIDO                                                -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 rounded-xl p-1" aria-label="Ir al inicio - Callejeros Río Cuarto">
+        <img src="public/images/logo_callejeros.jpg" alt="Logo Callejeros Río IV" class="h-11 sm:h-12 w-auto object-contain rounded-lg shadow-sm group-hover:scale-105 group-active:scale-95 transition-transform duration-200">
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Notificaciones -->
+        <button type="button" id="btn-notifications" class="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Centro de Notificaciones">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="notif-badge-count" class="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-[11px] font-extrabold flex items-center justify-center px-1 rounded-full ring-2 ring-white dark:ring-slate-900 shadow-sm animate-pulse">3</span>
+        </button>
+
+        <!-- Modo Oscuro -->
+        <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
+          <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-6 h-6 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <!-- Botón Menú Hamburguesa -->
+        <button type="button" id="menu-btn" class="p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú de navegación">
+          <svg id="menu-icon-bars" class="w-7 h-7 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="menu-icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Slider Notificaciones -->
+    <div id="notifications-slider-panel" class="hidden border-t border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg shadow-xl transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse"></span>
+            <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">Últimas 5 Notificaciones</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="notif-slider-prev" class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200" aria-label="Notificación anterior"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+            <button type="button" id="notif-slider-next" class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200" aria-label="Siguiente notificación"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+        <div id="notif-slider-container" class="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"></div>
+        <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-xs">
+          <button type="button" id="btn-mark-all-read" class="text-slate-500 hover:text-orange-500 dark:text-slate-400 dark:hover:text-orange-400 font-medium">Marcar todas como leídas</button>
+          <a href="notificaciones.html" class="font-bold text-orange-600 dark:text-orange-400 hover:underline flex items-center gap-1">
+            <span>Ver todas las notificaciones</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER HAMBURGUESA -->
+  <div id="menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" aria-hidden="true"></div>
+  <nav id="mobile-menu" class="fixed top-16 right-0 w-full sm:max-w-md h-[calc(100vh-4rem)] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto flex flex-col justify-between p-6 shadow-2xl" aria-label="Menú principal de navegación">
+    <div class="space-y-6">
+      <div id="user-status-container" class="pb-4 border-b border-slate-100 dark:border-slate-800"></div>
+      
+      <!-- Adoptá -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          <h3>Adoptá un Callejero</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="adopciones.html" class="px-3.5 py-1.5 rounded-full bg-orange-500 text-white text-sm font-semibold shadow-sm">Adoptar</a>
+          <a href="alerta.html#publicar" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Publicar</a>
+          <a href="alerta.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Reportar</a>
+        </div>
+      </div>
+
+      <!-- Noticias -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <h3>Noticias</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="noticias.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Eventos Benéficos y Noticias</a>
+        </div>
+      </div>
+
+      <!-- Información -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <h3>Información</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="quienes-somos.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Quiénes Somos</a>
+          <a href="adopcion-responsable.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Adopción Responsable</a>
+        </div>
+      </div>
+
+      <!-- Quiero Colaborar -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          <h3>Quiero Colaborar</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="donaciones.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-rose-600 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Donaciones</a>
+          <a href="donaciones.html#apadrinar" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-rose-600 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Colaboraciones y Apadrinamientos</a>
+          <a href="tienda.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-rose-600 hover:text-white dark:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">Tienda</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle de Sesión Test -->
+    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300">
+      <span>Estado: <strong id="auth-state-label" class="text-orange-600 dark:text-orange-400">No Registrado</strong></span>
+      <button type="button" id="btn-toggle-auth-state" class="underline hover:text-slate-900 dark:hover:text-white transition-colors">Alternar Modo Test</button>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- CONTENIDO: CATÁLOGO DE ADOPCIÓN (Fiel a ruta_adopciones_mobile.png)        -->
+  <!-- ========================================================================= -->
+  <main class="flex-grow max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 w-full">
+    
+    <!-- Encabezado de Sección -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600 dark:text-orange-400">Adopciones en Río Cuarto</span>
+        </div>
+        <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white mt-1">
+          Adoptá un Callejero
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-2xl">
+          Conocé a los rescatados que buscan un hogar para siempre. Todos se entregan vacunados, desparasitados y con compromiso de castración.
+        </p>
+      </div>
+
+      <!-- Barra de Filtros Rápidos & Botón Modal Filtros -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800 gap-1 text-xs font-semibold">
+          <button type="button" class="filter-specie-btn px-3 py-1.5 rounded-lg bg-orange-500 text-white shadow-md transition-all" data-filter="all">Todos</button>
+          <button type="button" class="filter-specie-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" data-filter="perro">🐶 Perros</button>
+          <button type="button" class="filter-specie-btn px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" data-filter="gato">🐱 Gatos</button>
+        </div>
+
+        <!-- Botón Filtros (boceto_filtro-mascotas_mobile) -->
+        <button type="button" id="btn-open-filters" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750 active:scale-95 shadow-sm transition-all" aria-label="Abrir filtros avanzados">
+          <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+          <span>Filtros</span>
+        </button>
+
+        <!-- Botón Publicar Mascota (con badge seleccionable Casos Urgentes) -->
+        <button type="button" id="btn-open-publish-pet" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 active:scale-95 shadow-sm transition-all" aria-label="Publicar mascota para adopción">
+          <span class="text-sm font-extrabold">+</span>
+          <span class="hidden sm:inline">Publicar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Grilla de Tarjetas Reactivas -->
+    <div id="pets-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-6 xl:gap-8 pt-8">
+      <!-- Se puebla dinámicamente vía js/adopciones.js -->
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DE FILTROS AVANZADOS (Fiel a boceto_filtro-mascotas_mobile.png)     -->
+  <!-- ========================================================================= -->
+  <div id="modal-filtros" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="font-display font-extrabold text-xl text-slate-900 dark:text-white">Filtros de búsqueda</h3>
+        <button type="button" id="btn-close-filters" class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white" aria-label="Cerrar modal">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Buscador por Nombre (Buscar... en Figma) -->
+      <div>
+        <div class="relative">
+          <span class="absolute left-3.5 top-3 text-slate-400">🔍</span>
+          <input type="text" id="filter-search-input" placeholder="Buscar ..." class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+        </div>
+      </div>
+
+      <!-- SECCIÓN EDAD EN NÚMEROS (Fiel a boceto_filtro-mascotas_mobile) -->
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
+        <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Edad</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </div>
+        
+        <div class="divide-y divide-slate-100 dark:divide-slate-800 p-2 space-y-1">
+          <!-- De 0 a 3 Años -->
+          <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">De 0 a 3 Años</span>
+            <div class="relative inline-flex items-center">
+              <input type="checkbox" name="filter-age-num" value="0-3" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
+            </div>
+          </label>
+
+          <!-- De 3 a 7 Años -->
+          <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">De 3 a 7 Años</span>
+            <div class="relative inline-flex items-center">
+              <input type="checkbox" name="filter-age-num" value="3-7" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
+            </div>
+          </label>
+
+          <!-- Más de 7 Años -->
+          <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">Más de 7 Años</span>
+            <div class="relative inline-flex items-center">
+              <input type="checkbox" name="filter-age-num" value="7+" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Sociabilidad -->
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
+        <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sociabilidad</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </div>
+        <div class="grid grid-cols-3 gap-2 p-2.5">
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-orange-500 text-xs font-medium">
+            <input type="radio" name="filter-sociable" value="all" checked class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-orange-600 dark:peer-checked:text-orange-400">Todos</span>
+          </label>
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-emerald-500 text-xs font-medium">
+            <input type="radio" name="filter-sociable" value="sociable" class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-emerald-600 dark:peer-checked:text-emerald-400">Sociable</span>
+          </label>
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-red-500 text-xs font-medium">
+            <input type="radio" name="filter-sociable" value="salvaje" class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-red-600 dark:peer-checked:text-red-400">Salvaje</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Castración: Dividida en Castrados y No Castrados -->
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-855">
+        <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Castración</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </div>
+        <div class="grid grid-cols-3 gap-2 p-2.5">
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-orange-500 text-xs font-medium">
+            <input type="radio" name="filter-castrado" value="all" checked class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-orange-600 dark:peer-checked:text-orange-400">Todos</span>
+          </label>
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-emerald-500 text-xs font-medium">
+            <input type="radio" name="filter-castrado" value="castrado" class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-emerald-600 dark:peer-checked:text-emerald-400">Castrados</span>
+          </label>
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-amber-500 text-xs font-medium">
+            <input type="radio" name="filter-castrado" value="no_castrado" class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-amber-600 dark:peer-checked:text-amber-400">No Castrados</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Casos Urgentes (Filtro Switch) -->
+      <div class="flex items-center justify-between p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/60">
+        <div class="flex items-center gap-2">
+          <span class="text-rose-600 text-base">🚨</span>
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-rose-700 dark:text-rose-300">Solo Casos Urgentes</span>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="filter-only-urgent" class="sr-only peer">
+          <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+        </label>
+      </div>
+
+      <!-- Sexo (Fiel a Figma) -->
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
+        <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sexo</span>
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </div>
+        <div class="grid grid-cols-3 gap-2 p-2.5">
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-orange-500 text-xs font-medium">
+            <input type="radio" name="filter-sex" value="all" checked class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-orange-600 dark:peer-checked:text-orange-400">Todos</span>
+          </label>
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-blue-500 text-xs font-medium">
+            <input type="radio" name="filter-sex" value="macho" class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-blue-600 dark:peer-checked:text-blue-400">Macho</span>
+          </label>
+          <label class="flex items-center justify-center p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-pink-500 text-xs font-medium">
+            <input type="radio" name="filter-sex" value="hembra" class="sr-only peer">
+            <span class="peer-checked:font-bold peer-checked:text-pink-600 dark:peer-checked:text-pink-400">Hembra</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Favoritos (Toggle Switch Fiel a Figma) -->
+      <div class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+        <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Favoritos</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="filter-only-favs" class="sr-only peer">
+          <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
+        </label>
+      </div>
+
+      <!-- Botones de Acción (Fiel a Figma: Botón negro/marca VER RESULTADOS + Limpiar Filtros) -->
+      <div class="pt-2 space-y-3 text-center">
+        <button type="button" id="btn-apply-filters" class="w-full py-3.5 rounded-full font-display font-bold text-sm text-white bg-slate-950 hover:bg-slate-800 dark:bg-orange-500 dark:hover:bg-orange-600 active:scale-95 shadow-lg transition-all tracking-wider uppercase">
+          VER RESULTADOS
+        </button>
+        <button type="button" id="btn-reset-filters" class="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline underline-offset-4 transition-colors">
+          Limpiar Filtros
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DETALLE DE MASCOTA (Fiel a Figma: Detalle e Info Desplegable)        -->
+  <!-- ========================================================================= -->
+  <div id="modal-detalle-mascota" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-xl max-h-[92vh] overflow-y-auto border border-slate-200 dark:border-slate-800 shadow-2xl animate-in fade-in zoom-in-95 duration-200 relative flex flex-col">
+      
+      <!-- Barra Superior: Atrás <, Nombre y Favorito (Fiel a Figma) -->
+      <div class="sticky top-0 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 sm:px-6 py-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <button type="button" id="btn-close-detalle" class="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-orange-500 transition-colors p-1" aria-label="Volver al catálogo">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+          <span>Volver</span>
+        </button>
+
+        <h2 id="detalle-pet-name" class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-xs text-center">
+          Nombre de Mascota
+        </h2>
+
+        <button type="button" id="btn-detalle-fav" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-red-500 flex items-center justify-center shadow-sm active:scale-125 transition-transform" aria-label="Guardar en favoritos">
+          <svg id="detalle-fav-icon" class="w-5 h-5 fill-none text-slate-700 dark:text-slate-300 transition-colors" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Imagen Principal de la Mascota -->
+      <div class="relative w-full h-64 sm:h-80 bg-slate-950 overflow-hidden flex-shrink-0">
+        <img id="detalle-pet-img" src="" alt="Mascota" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+        <div id="detalle-overlay-badge-container" class="absolute bottom-3 left-4 flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Contenido Detallado -->
+      <div class="p-5 sm:p-6 space-y-5">
+        
+        <!-- Descripción e Historia -->
+        <div class="p-4 rounded-2xl bg-orange-50/60 dark:bg-slate-800/80 border border-orange-100 dark:border-slate-700/60 space-y-1.5">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">Historia & Comportamiento</span>
+          <p id="detalle-pet-desc" class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed"></p>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- SISTEMA DE BADGES (Fiel a Figma "Sistema de Badges")                -->
+        <!-- =================================================================== -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400">Sistema de Badges</span>
+            <span class="text-[11px] text-slate-600 dark:text-slate-300">Ficha oficial R4</span>
+          </div>
+          
+          <div id="detalle-badges-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <!-- Badges renderizados dinámicamente: Sociable, Castrado, Urgente, Sexo, Edad, Especie -->
+          </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- INFO DESPLEGABLE / FICHA MÉDICA (Fiel a Figma)                      -->
+        <!-- =================================================================== -->
+        <div class="space-y-2.5">
+          <!-- Acordeón 1: Estado de Salud -->
+          <details class="group rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850" open>
+            <summary class="flex items-center justify-between px-4 py-3 cursor-pointer bg-slate-100/70 dark:bg-slate-800 select-none font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">
+              <span class="flex items-center gap-2">
+                <span>🩺</span>
+                <span>Estado De Salud</span>
+              </span>
+              <svg class="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div id="detalle-salud-content" class="p-4 space-y-2 text-xs text-slate-700 dark:text-slate-300 divide-y divide-slate-200/60 dark:divide-slate-700/60">
+              <!-- Se puebla dinámicamente con Vacunas, Parásitos, Pulgas, etc. -->
+            </div>
+          </details>
+
+          <!-- Acordeón 2: Notas y Cuidados -->
+          <details class="group rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850" open>
+            <summary class="flex items-center justify-between px-4 py-3 cursor-pointer bg-slate-100/70 dark:bg-slate-800 select-none font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">
+              <span class="flex items-center gap-2">
+                <span>📝</span>
+                <span>Notas Especiales y Adaptación</span>
+              </span>
+              <svg class="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="p-4 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+              <p id="detalle-notas-content"></p>
+            </div>
+          </details>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- BOTONES DE ACCIÓN (Fiel a Figma: "¡Adoptame!" + "Donaciones")       -->
+        <!-- =================================================================== -->
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row gap-3">
+          <button type="button" id="btn-detalle-adoptar" class="flex-1 py-3.5 px-5 rounded-2xl font-display font-extrabold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-lg shadow-orange-500/25 transition-all text-center tracking-wide">
+            ¡Adoptame!
+          </button>
+          <button type="button" id="btn-detalle-apadrinar" class="flex-1 py-3.5 px-5 rounded-2xl font-display font-bold text-xs text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all text-center">
+            Donaciones y Apadrinamiento
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DE INICIO DE SESIÓN REQUERIDO (Validación de Sesión)                -->
+  <!-- ========================================================================= -->
+  <div id="modal-auth-required" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-6 sm:p-7 text-center border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+      
+      <div class="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center text-3xl mx-auto shadow-inner">
+        🔒
+      </div>
+
+      <div class="space-y-2">
+        <h3 class="font-display font-extrabold text-xl text-slate-900 dark:text-white">
+          Iniciá sesión para continuar
+        </h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          Para postularte a la adopción responsable de <strong id="auth-required-pet-name" class="text-orange-600 dark:text-orange-400">la mascota</strong>, es obligatorio ingresar con tu cuenta. Así podremos ponernos en contacto para coordinar la entrevista y el seguimiento.
+        </p>
+      </div>
+
+      <div class="space-y-2.5 pt-1">
+        <a href="login.html?redirect=adopciones.html" class="block w-full py-3 rounded-xl font-display font-bold text-xs text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-md transition-all uppercase tracking-wider">
+          Iniciar Sesión
+        </a>
+        <a href="registro.html?redirect=adopciones.html" class="block w-full py-3 rounded-xl font-display font-bold text-xs text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all uppercase tracking-wider">
+          Crear Cuenta / Registrarme
+        </a>
+        <button type="button" id="btn-close-auth-required" class="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white underline underline-offset-4 pt-1 transition-colors">
+          Seguir mirando mascotas
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL PUBLICAR MASCOTA EN ADOPCIÓN (Con Badge Seleccionable Casos Urgentes)-->
+  <!-- ========================================================================= -->
+  <div id="modal-publicar-mascota" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6 animate-in fade-in zoom-in-95 duration-200">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600 dark:text-orange-400">Comunidad Callejeros R4</span>
+          <h3 class="font-display font-extrabold text-xl text-slate-900 dark:text-white mt-0.5">Publicar Mascota para Adopción</h3>
+        </div>
+        <button type="button" id="btn-close-publish-pet" class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white" aria-label="Cerrar modal">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-publicar-mascota" class="space-y-4">
+        
+        <!-- Nombre y Especie -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="pub-name" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Nombre *</label>
+            <input type="text" id="pub-name" required placeholder="Ej: Manchitas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-orange-500">
+          </div>
+          <div>
+            <label for="pub-specie" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Especie *</label>
+            <select id="pub-specie" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-sm focus:ring-2 focus:ring-orange-500">
+              <option value="perro">🐶 Perro</option>
+              <option value="gato">🐱 Gato</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sexo y Edad -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="pub-sex" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Sexo *</label>
+            <select id="pub-sex" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-sm focus:ring-2 focus:ring-orange-500">
+              <option value="macho">Macho ♂</option>
+              <option value="hembra">Hembra ♀</option>
+            </select>
+          </div>
+          <div>
+            <label for="pub-age" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Edad aproximada *</label>
+            <input type="text" id="pub-age" required placeholder="Ej: 1 Año o 5 Meses" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-orange-500">
+          </div>
+        </div>
+
+        <!-- Estado de Castración y Sociabilidad -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1.5">Castración *</label>
+            <div class="flex gap-2">
+              <label class="flex-1 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
+                <input type="radio" name="pub-castrado" value="true" checked class="text-orange-500">
+                <span>Castrado</span>
+              </label>
+              <label class="flex-1 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
+                <input type="radio" name="pub-castrado" value="false" class="text-orange-500">
+                <span>No Castrado</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1.5">Sociabilidad *</label>
+            <div class="flex gap-2">
+              <label class="flex-1 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
+                <input type="radio" name="pub-sociable" value="true" checked class="text-orange-500">
+                <span>Sociable</span>
+              </label>
+              <label class="flex-1 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
+                <input type="radio" name="pub-sociable" value="false" class="text-orange-500">
+                <span>Salvaje / Tímido</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- BADGE SELECCIONABLE: CASOS URGENTES -->
+        <div class="p-3.5 rounded-2xl border-2 border-dashed border-rose-300 dark:border-rose-900 bg-rose-50/70 dark:bg-rose-950/20">
+          <label class="flex items-center justify-between cursor-pointer">
+            <div class="space-y-0.5">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded text-xs font-extrabold bg-rose-600 text-white shadow-sm flex items-center gap-1">
+                  🚨 Caso Urgente
+                </span>
+                <span class="text-xs font-bold text-slate-900 dark:text-white">Marcar como Caso Urgente</span>
+              </div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">El hogar de tránsito vence pronto o requiere atención prioritaria</p>
+            </div>
+            <input type="checkbox" id="pub-pet-urgent" class="w-5 h-5 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
+          </label>
+        </div>
+
+        <!-- Foto de la Mascota -->
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1.5">Foto de la Mascota *</label>
+          <div class="relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-4 text-center bg-slate-50 dark:bg-slate-800 hover:border-orange-500 transition-colors">
+            <input type="file" id="pub-photo-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+            <div id="pub-dropzone-empty" class="space-y-1">
+              <span class="text-2xl block">📸</span>
+              <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Subir foto de la mascota</p>
+              <p class="text-[11px] text-slate-400">JPG, PNG o WEBP</p>
+            </div>
+            <div id="pub-dropzone-preview" class="hidden space-y-2">
+              <img id="pub-preview-img" src="" alt="Previsualización" class="h-28 mx-auto rounded-xl object-cover shadow-sm">
+              <p class="text-xs text-emerald-600 font-bold">✓ Foto lista para publicar</p>
+            </div>
+          </div>
+          <input type="hidden" id="pub-photo-data">
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label for="pub-desc" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Historia y Comportamiento *</label>
+          <textarea id="pub-desc" rows="3" required placeholder="Contá su historia, cómo fue rescatado y su relación con otros animales o niños..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-2 focus:ring-orange-500"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-2xl font-display font-bold text-sm text-white bg-orange-600 hover:bg-orange-700 active:scale-95 shadow-md transition-all">
+          Publicar Mascota en Adopción
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL CUESTIONARIO DE ADOPCIÓN                                            -->
+  <!-- ========================================================================= -->
+  <div id="modal-adopcion" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-lg max-h-[92vh] overflow-y-auto p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6 animate-in fade-in zoom-in-95 duration-200">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-orange-500">Cuestionario Pre-Adopción</span>
+          <h3 id="modal-adopcion-pet-title" class="font-display font-bold text-xl text-slate-900 dark:text-white mt-0.5">Adoptar Mascota</h3>
+        </div>
+        <button type="button" id="btn-close-adopcion" class="p-1 rounded-full text-slate-400 hover:text-slate-700 dark:hover:text-white" aria-label="Cerrar modal">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-adopcion-responsable" class="space-y-4">
+        <!-- Bloque 1: Contacto -->
+        <div class="space-y-3">
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">1. Datos Personales</h4>
+          <div>
+            <label for="adopt-name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Nombre Completo *</label>
+            <input type="text" id="adopt-name" required placeholder="Tu nombre y apellido" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="adopt-phone" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">WhatsApp / Teléfono *</label>
+              <input type="tel" id="adopt-phone" required placeholder="358 1234567" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+              <label for="adopt-email" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Correo Electrónico *</label>
+              <input type="email" id="adopt-email" required placeholder="ejemplo@correo.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloque 2: Entorno -->
+        <div class="space-y-3 pt-2">
+          <h4 class="font-bold text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">2. Hogar y Entorno</h4>
+          <div>
+            <label for="adopt-housing" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Tipo de Vivienda *</label>
+            <select id="adopt-housing" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+              <option value="casa_patio_cerrado">Casa con patio totalmente cerrado</option>
+              <option value="departamento_balcon">Departamento con red de seguridad / balcón</option>
+              <option value="casa_sin_patio">Casa sin patio / Abierta</option>
+              <option value="zona_rural">Quinta / Zona Rural</option>
+            </select>
+          </div>
+          <div>
+            <label for="adopt-other-pets" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">¿Tenés otros animales actualmente? *</label>
+            <input type="text" id="adopt-other-pets" required placeholder="Ej: 1 perro castrado, 2 gatos vacunados..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+          </div>
+        </div>
+
+        <!-- Bloque 3: Compromiso -->
+        <div class="pt-2">
+          <label class="flex items-start gap-2.5 cursor-pointer">
+            <input type="checkbox" required class="mt-0.5 rounded text-orange-500 focus:ring-orange-500">
+            <span class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Me comprometo a brindar alimentación adecuada, atención veterinaria regular, mantener las vacunas al día y no abandonar a la mascota bajo ninguna circunstancia.
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+          Enviar Solicitud de Adopción
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL DE CONFIRMACIÓN Y ÉXITO                                             -->
+  <!-- ========================================================================= -->
+  <div id="modal-exito-envio" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-6 sm:p-8 text-center border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center text-3xl mx-auto shadow-inner">
+        ✓
+      </div>
+      <div>
+        <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">¡Solicitud Enviada!</h3>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 leading-relaxed">
+          Un voluntario de Callejeros Río Cuarto revisará tu cuestionario y se contactará vía WhatsApp para coordinar la entrevista.
+        </p>
+      </div>
+      <button type="button" id="btn-modal-ir-inicio" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+        Ir al inicio
+      </button>
+    </div>
+  </div>
+
+  <!-- FAB ALERTA -->
+  <a href="alerta.html" id="fab-alerta" class="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xl backdrop-blur-md border border-orange-500/40 transition-all duration-300 opacity-25 hover:opacity-100" aria-label="Alerta Callejeros">
+    <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+    <span class="hidden sm:inline">Alerta Callejeros</span>
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors duration-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-xs text-slate-600 dark:text-slate-300">
+      <p>© 2026 Callejeros Río Cuarto. Red comunitaria de protección animal.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/adopciones.js"></script>
+</body>
+</html>

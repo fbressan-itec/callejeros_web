@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adopción Responsable — Callejeros Río Cuarto</title>
+  
+  <meta name="description" content="Guía y consejos para una adopción responsable: salud preventiva, adaptación al hogar, castración y respeto animal.">
+  <meta name="theme-color" content="#ea580c">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#ea580c',
+              'orange-light': '#ff7849',
+              'orange-dark': '#c2410c',
+              green: '#10b981',
+              red: '#ef4444',
+            },
+            slate: {
+              750: '#293548',
+              850: '#151e2e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'soft-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- NAVBAR COMPARTIDO -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl p-1" aria-label="Ir al inicio">
+        <img src="public/images/logo_callejeros.jpg" alt="Logo Callejeros" class="h-11 sm:h-12 w-auto object-contain rounded-lg shadow-sm">
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button type="button" id="btn-notifications" class="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Centro de Notificaciones">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="notif-badge-count" class="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-[11px] font-extrabold flex items-center justify-center px-1 rounded-full ring-2 ring-white dark:ring-slate-900 shadow-sm animate-pulse">3</span>
+        </button>
+
+        <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
+          <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-6 h-6 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <button type="button" id="menu-btn" class="p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Menú">
+          <svg id="menu-icon-bars" class="w-7 h-7 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="menu-icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slider Notificaciones -->
+    <div id="notifications-slider-panel" class="hidden border-t border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg shadow-xl">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">Últimas 5 Notificaciones</h3>
+        </div>
+        <div id="notif-slider-container" class="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER HAMBURGUESA -->
+  <div id="menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" aria-hidden="true"></div>
+  <nav id="mobile-menu" class="fixed top-16 right-0 w-full sm:max-w-md h-[calc(100vh-4rem)] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto flex flex-col justify-between p-6 shadow-2xl">
+    <div class="space-y-6">
+      <div id="user-status-container" class="pb-4 border-b border-slate-100 dark:border-slate-800"></div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Adoptá un Callejero</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="adopciones.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Adoptar</a>
+          <a href="alerta.html#publicar" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Publicar</a>
+          <a href="alerta.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Reportar</a>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Información</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="quienes-somos.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Quiénes Somos</a>
+          <a href="adopcion-responsable.html" class="px-3.5 py-1.5 rounded-full bg-orange-500 text-white text-sm font-semibold">Adopción Responsable</a>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 flex justify-between">
+      <span>Estado: <strong id="auth-state-label" class="text-orange-500">No Registrado</strong></span>
+      <button type="button" id="btn-toggle-auth-state" class="underline">Modo Test</button>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO: GUÍA DE ADOPCIÓN RESPONSABLE -->
+  <main class="flex-grow max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 w-full space-y-8">
+    <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+      <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600">Guía Comunitaria</span>
+      <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white mt-1">
+        ¿Qué implica una Adopción Responsable?
+      </h1>
+      <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1">
+        Adoptar es un compromiso de amor y cuidado de 10 a 15 años. Antes de tomar la decisión, considerá estas pautas fundamentales.
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      
+      <!-- Grid de Pilares -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Pilar 1 -->
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🏠</span>
+            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">1. Espacio y Seguridad</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Verificá que las rejas, alambrados y balcones estén cerrados o cuenten con red de protección para evitar escapes y accidentes viales.
+          </p>
+        </div>
+
+        <!-- Pilar 2 -->
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🩺</span>
+            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">2. Salud Preventiva</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            La esterilización previene enfermedades y camadas no deseadas. Es vital contar con visitas regulares al veterinario, desparasitación trimestral y vacunas anuales.
+          </p>
+        </div>
+
+        <!-- Pilar 3 -->
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">⏳</span>
+            <h2 class="font-display font-bold text-lg text-slate-900 dark:text-white">3. Regla 3-3-3</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            3 días para desestresarse, 3 semanas para aprender la rutina del hogar, y 3 meses para sentirse completamente en confianza y seguro en familia.
+          </p>
+        </div>
+      </div>
+
+      <!-- Banner CTA -->
+      <div class="p-8 rounded-3xl bg-gradient-to-r from-orange-500 to-amber-500 text-white text-center space-y-3 shadow-lg">
+        <h3 class="font-display font-bold text-xl sm:text-2xl">¿Estás listo para dar el paso?</h3>
+        <p class="text-xs sm:text-sm max-w-lg mx-auto text-orange-100">
+          Revisá las mascotas que hoy esperan una familia y postulate a través de nuestro cuestionario online.
+        </p>
+        <a href="adopciones.html" class="inline-block px-6 py-2.5 rounded-xl font-bold text-xs bg-white text-orange-600 hover:bg-orange-50 active:scale-95 transition-all shadow-md">
+          Ver Rescatados en Adopción
+        </a>
+      </div>
+
+    </div>
+  </main>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-8 text-center text-xs text-slate-600 dark:text-slate-300 mt-auto">
+    <p>© 2026 Callejeros Río Cuarto. Red comunitaria de protección animal.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

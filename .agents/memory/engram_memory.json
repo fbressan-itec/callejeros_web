@@ -1,0 +1,170 @@
+{
+  "project": "callejeros_web",
+  "memory_entries": [
+    {
+      "topic_key": "project_operating_system",
+      "scope": "global",
+      "category": "engineering_protocol",
+      "source": "Gentle-AI",
+      "timestamp": "2026-10-31T17:58:10-03:00",
+      "sections": {
+        "1_persona_mindset": "Senior Product Engineer: Prioritize Why before How, pragmatic speed-to-market, outstanding UX, accessibility, and critical proactive thinking.",
+        "2_tech_stack_defaults": "SPA / Vite / TypeScript (strict) / Semantic HTML5 + Tailwind CSS / Mandatory 5 component states (Default, Hover, Active, Focus, Disabled) / IndexedDB (offline/structured data) + LocalStorage (preferences).",
+        "3_definition_of_done": "Technical justification (Why/How), strict TypeScript & tests, visual verification of 5 states, WCAG AA contrast (4.5:1), clean code without debris/console.logs.",
+        "4_guards_business_telemetry": "Centralized in docs/contexto/ (glosario.md, decisiones.md, arquitectura.md without scattering files). Prior approval strictly required before applying changes.",
+        "5_master_context": "6 live docs in docs/contexto/ (arquitectura, convenciones, decisiones, glosario, flujo-de-trabajo, errores-conocidos).",
+        "6_workflow_adaptive_sdd": "Fast-Path for single-file fixes; structured SDD cycle (explore -> propose -> tasks -> apply -> verify) for complex tasks (>2 files or architectural impact); Engram memory integration (mem_context, mem_save, mem_session_summary)."
+      }
+    },
+    {
+      "topic_key": "callejeros_r4_discovery_interview",
+      "scope": "project",
+      "category": "product_and_ux_specification",
+      "timestamp": "2026-10-31T19:32:00-03:00",
+      "data": {
+        "1_identity_and_purpose": {
+          "name": "Callejeros Río Cuarto (Callejeros RIV / R4)",
+          "purpose": "Plataforma comunitaria de bienestar animal en Río Cuarto que conecta refugios, rescatistas y adoptantes.",
+          "pillars": [
+            "Gestión de Adopciones Responsables con cuestionario educativo previo",
+            "Sistema de Alertas y Seguimiento Geolocalizado en tiempo real con Google Maps",
+            "Ecosistema de Financiamiento Sostenible (donaciones, apadrinamiento, tienda benéfica)",
+            "Difusión y Educación (eventos, castración gratuita, tenencia responsable)"
+          ]
+        },
+        "2_personas": [
+          {
+            "name": "Juan",
+            "role": "El Alertador Urbano / Vecino en Movimiento",
+            "context": "Móvil 4G, vía pública, acción inmediata.",
+            "pain_points": "Lentitud de carga y formularios largos. Requiere reporte en 2 pasos (foto + geolocalización) vía FAB."
+          },
+          {
+            "name": "Mirta",
+            "role": "La Adoptante Familiar / Buscadora de Confianza",
+            "context": "Desktop/tablet en el hogar con tiempo para evaluar.",
+            "pain_points": "Falta de claridad en comportamiento y salud. Requiere badges visibles (sociabilidad, vacunas) y filtros precisos."
+          },
+          {
+            "name": "Roberto",
+            "role": "El Administrador de Refugio / Gestor de Recursos",
+            "context": "Escritorio o móvil durante gestión operativa.",
+            "pain_points": "Difusión dispersa y dificultad para recaudar. Requiere centralización de fichas, campañas y eventos."
+          }
+        ],
+        "3_labeling_dictionary": {
+          "catalogue_view": "Adoptá un Callejero",
+          "submit_adoption": "¡Adoptame! / Adoptar a [Nombre]",
+          "badges_system": "Insignias de Salud y Conducta",
+          "info_hub": "Información (Quiénes Somos + Adopción Responsable)",
+          "support_module": "Quiero Colaborar",
+          "recurrent_sub": "Plan de Apadrinamiento",
+          "news_feed": "Noticias y Eventos",
+          "e_commerce": "Tienda Solidaria",
+          "create_pet_form": "Publicar Adopción",
+          "alert_map_view": "Alerta Callejeros",
+          "auth_portal": "Mi Cuenta / Iniciar Sesión"
+        },
+        "4_information_architecture_spa": {
+          "approach": "Mobile-First adaptable a Desktop",
+          "layout_hierarchy": [
+            "Header / Navbar fija (Logo, alertas/campana, menú hamburguesa táctil de 44px, toggle Dark/Light)",
+            "Hero / Carrusel de imágenes promocionales y CTAs",
+            "Bloques Hero en scroll: Adopciones, Quiénes Somos, Quiero Colaborar",
+            "FAB persistente en esquina inferior derecha (icono ubicación/cámara, opacidad atenuada tras inactividad, recuperación al hover/tap)",
+            "Footer institucional"
+          ]
+        },
+        "5_card_anatomy_and_sample_data": {
+          "card_structure": {
+            "container": "Bordes redondeados, sombra suave, hover con sutil escala y elevación de sombra",
+            "image_area": "Foto descriptiva, Badge de Sociabilidad (verde: Sociable / rojo: Salvaje o manejo especial), Botón de Favorito (corazón outline que se rellena de rojo al click/active)",
+            "info_area": "Nombre h3 bold, Edad y castración, Indicador de urgencia con privacidad (campanita roja y texto Urgente; omitiendo dirección exacta)",
+            "interaction": "Móvil: toda la tarjeta es clicable. Desktop: botón explícito 'Adoptar a [Nombre]'"
+          },
+          "sample_items": [
+            { "name": "Loki", "type": "Perro", "age": "6 Años", "castrado": false, "sociable": true, "urgente": true },
+            { "name": "Luna", "type": "Gata", "age": "1 Año", "castrado": true, "sociable": true, "urgente": false },
+            { "name": "Rocco", "type": "Perro", "age": "3 Años", "castrado": true, "sociable": false, "urgente": true },
+            { "name": "Misa", "type": "Gato", "age": "4 Meses", "castrado": false, "sociable": true, "urgente": false },
+            { "name": "Bora", "type": "Perra", "age": "2 Años", "castrado": true, "sociable": true, "urgente": false },
+            { "name": "Thor", "type": "Perro", "age": "8 Años", "castrado": true, "sociable": true, "urgente": true }
+          ]
+        },
+        "6_forms_and_feedback": {
+          "fields": [
+            "Contacto: Nombre y Apellido, Teléfono/WhatsApp, Barrio/Zona",
+            "Entorno: Tipo vivienda, patio/balcón seguro, conformidad familiar",
+            "Tenencia: Mascotas actuales, compromiso castración, aceptación visitas"
+          ],
+          "confirmation_modal": "Overlay semitransparente, popup redondeado con checkmark circular, texto '¡Datos enviados correctamente! Te avisaremos si el formulario es aceptado', botón CTA 'Ir al inicio' con icono Home"
+        },
+        "7_color_palette": {
+          "primary": "#F97316 (orange-500) - Energía y empatía para CTAs principales",
+          "secondary": "#10B981 (emerald-500) - Salud y esperanza en detalles secundarios y confirmaciones",
+          "semantics": {
+            "success_sociable": "#059669 (emerald-600) con texto blanco",
+            "danger_urgent_favorite": "#EF4444 (red-500)",
+            "info_health": "#2563EB (blue-600)"
+          },
+          "themes": {
+            "light": "Fondo #F8FAFC (slate-50), cards #FFFFFF, texto #0F172A (slate-900)",
+            "dark": "Fondo #0F172A (slate-900), cards #1E293B (slate-800), texto #F1F5F9 (slate-100)"
+          },
+          "toggle": "Botón Sol / Luna en Navbar"
+        },
+        "8_typography": {
+          "display_headings": "Poppins / Outfit (Google Fonts) en h1, h2, h3 y badges",
+          "body_ui": "Inter / Plus Jakarta Sans (Google Fonts) para textos largos y formularios",
+          "modular_scale": {
+            "h1": "32px mobile / 48px desktop (bold 700)",
+            "h2": "24px mobile / 32px desktop (semibold 600)",
+            "h3": "18px mobile / 20px desktop (bold 700)",
+            "p": "16px base (line-height 1.5, previene autozoom iOS)",
+            "caption_badges": "12px - 14px (medium 500)"
+          }
+        },
+        "9_responsive_mobile_first": {
+          "breakpoints": {
+            "mobile_sm": "Grilla en 2 columnas (conmutable a 1 columna)",
+            "tablet_md": "Grilla en 2 a 3 columnas",
+            "desktop_lg_xl": "Grilla en 3 a 4 columnas limpias"
+          },
+          "touch_targets": "Mínimo 44px en botón hamburguesa y FAB",
+          "overflow_prevention": "overflow-x: hidden en contenedor principal"
+        },
+        "10_five_states": {
+          "1_default": "Bordes redondeados, sombra suave, contraste accesible, corazón en outline negro",
+          "2_hover": "Brillo brightness-105, cursor-pointer, elevación hover:-translate-y-1 shadow-lg, FAB al 100% opacidad",
+          "3_active": "Efecto compresión scale-95, corazón pulso scale-125 y relleno rojo sólido",
+          "4_focus": "Anillo de alto contraste ring-2 ring-orange-500 ring-offset-2 en inputs y botones para teclado",
+          "5_disabled": "Botón envío con opacity-50, cursor-not-allowed y bloqueo de submit si faltan campos"
+        },
+        "11_css_framework": {
+          "selected": "Tailwind CSS v3 (vía CDN/ligero para prototipado ágil)",
+          "reasons": "Utility-first, responsive mobile-first nativo, clases dark: out-of-the-box, transiciones fluidas"
+        },
+        "12_technical_boundaries": {
+          "in_scope": "Mapa interactivo Google Maps funcional con puntos de reporte de Alerta Callejeros; persistencia local (LocalStorage/mock data)",
+          "out_of_scope_mvp_v1": "Pasarelas de pagos reales (solo maquetación demo en Tienda y Donaciones); alertas por WhatsApp/correo reales (solo modal visual en pantalla); backend/DB externa de producción"
+        },
+        "13_definition_of_done": {
+          "ux_usability": "Navegación SPA fluida entre las 10 secciones sin recargas, 5 estados en componentes, validación en tiempo real y modal de éxito",
+          "ui_quality": "Consistencia de diseño, Dark/Light mode con alto contraste, microinteracciones (hover, corazón rojo, FAB)",
+          "responsive_mobile_first": "Grilla 2 cols mobile a 3/4 cols desktop, touch targets >= 44px, cero scroll horizontal",
+          "functionality": "Mapa interactivo Google Maps 100% funcional"
+        },
+        "14_development_methodology": {
+          "strategy": "Mobile-First orientada a componentes: diseñar e iterar móvil primero contra wireframe Figma; aprobada, escalar a desktop; avanzar a siguiente ruta",
+          "roadmap_order": [
+            "Shell Global & Layout Base (Móvil): Tailwind v3, Poppins/Inter, Navbar hamburguesa, Footer, Dark/Light toggle, FAB",
+            "Ruta 1: HOME (Inicio): Hero, accesos directos, avances de mascotas y noticias",
+            "Ruta 2: ADOPTÁ UN CALLEJERO: Filtros, grilla adaptativa de cards con badges y modal de adopción",
+            "Ruta 3: ALERTA CALLEJEROS: Integración funcional con Google Maps API y reporte",
+            "Rutas 4 a 10: Quiénes Somos, Adopción Responsable, Quiero Colaborar, Noticias, Tienda Solidaria, Auth"
+          ]
+        }
+      }
+    }
+  ]
+}
