@@ -112,3 +112,12 @@
      - **Paso 3 (Verify Phone Number)**: Interfaz de verificación con teléfono enmascarado (`+54 9 358 •••• 567`), 4 casilleros individuales para dígitos OTP con avance y retroceso automático de foco, temporizador regresivo de 04:30 minutos (`#countdown-timer`), botón *Verify* y enlace *Send Again*.
      - Se fijó el código de referencia `8596` fiel al mockup de Figma (con soporte para cualquier código de 4 dígitos) y persistencia del estado verificado en `callejeros_user`.
 * **Consecuencias**: Fidelidad total con las pantallas 4, 5 y 6 de `ruta_loguin_mobile.png`, experiencia de usuario fluida con validación por SMS/WhatsApp, y visualización nítida y legible de los títulos del carrusel en todos los dispositivos.
+
+### [ADR-021] · [2026-11-05 01:10] — Publicación del Repositorio Público en GitHub y Documentación Oficial
+* **Contexto**: El usuario solicitó subir el proyecto completo con todas sus carpetas a un repositorio público de GitHub (`https://github.com/pablo-itec/callejeros_web.git`).
+* **Decisiones**:
+  1. **Generación de README.md Profesional**: Se elaboró un documento raíz con la descripción integral del proyecto, arquitectura de vistas, stack tecnológico (HTML5, Tailwind CSS, JS modular), accesibilidad WCAG AA, estructura de carpetas y guía de ejecución local.
+  2. **Configuración de .gitignore**: Se protegieron archivos de sistema operativo (`Thumbs.db`, `.DS_Store`), editores y eventuales dependencias.
+  3. **Control de Versiones y Rama Principal**: Se inicializó el commit raíz con las 75 entidades del proyecto en la rama estándar `main`, configurando el remoto `origin` y sincronizando el árbol de trabajo con GitHub.
+* **Consecuencias**: Código fuente 100% versionado y disponible públicamente en GitHub, listo para despliegues continuos, revisiones comunitarias y colaboración externa.
+
