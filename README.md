@@ -12,7 +12,7 @@ Proyecto Final (EFI) de la materia **Interfaz de Usuario**, ITEC 2026. Es un **p
 
 **Callejeros Río Cuarto** conecta a la comunidad con animales que buscan hogar, permite avisar rápido cuando se ve un animal perdido o en peligro, y ofrece formas de ayudar aunque no se pueda adoptar (apadrinar, donar o comprar en la tienda solidaria).
 
-Está diseñada **Mobile First** (cada pantalla se pensó y probó primero a 375px de ancho), con fidelidad a los bocetos de Figma de `imagen_figma/` y criterios de accesibilidad **WCAG AA**: contraste mínimo de 4.5:1, controles táctiles de al menos 44px, campos de 16px y navegación con teclado.
+Está diseñada **Mobile First** (cada pantalla se pensó y probó primero a 375px de ancho), con fidelidad a los bocetos de Figma de `imagen_figma/` y criterios de accesibilidad **WCAG AA**: controles táctiles de al menos 44px, campos de 16px y navegación con teclado. El objetivo es un contraste mínimo de 4.5:1: la mayoría de los textos lo cumple, pero el texto blanco sobre el naranja de los botones y algunas etiquetas de color todavía no llegan. Queda pendiente corregirlos junto con la definición del naranja principal (ver `.agents/ToDo.md`).
 
 ---
 
