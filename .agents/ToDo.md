@@ -10,12 +10,26 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 
 ### Front
 - [ ] Revisar las correcciones que encontró el equipo (lista a completar).
+- [ ] **Ver más adelante (detalles del botón flotante):** en tablet y desktop, `alerta.html` todavía tiene el botón "+ Publicar Alerta" en el navbar, además del botón flotante. En el inicio, el texto fijo del botón en tablet/desktop sigue diciendo "Alerta Callejeros" aunque ahora lleva al formulario.
+- [ ] **Para la fase de desarrollo (front + back end):** "Tipo de Vivienda" (cuestionario de adopción) pasa de menú desplegable a un campo que el usuario completa a mano, controlado por un moderador / admin. El desplegable queda solo en el maquetado para mostrar el mensaje de solicitud desaprobada (ADR-035).
+
+### Contraste de colores (a definir con el grupo)
+- [ ] **Problema:** el sitio promete WCAG AA (4.5:1 para texto normal), pero varias combinaciones no llegan:
+  - Texto blanco sobre el naranja principal `#F97316` (`bg-orange-500`): **2.8:1**. Afecta los botones principales de casi todas las páginas ("Adoptar", "¡Adoptame!", "Ingresar", "Registrarme", "Siguiente", "Guardar cambios", pestaña activa del catálogo, etiquetas de notificaciones).
+  - Blanco sobre verde `bg-emerald-600` ("Sociable", "Llamar", "WhatsApp", "Consultar por WhatsApp"): **3.8:1**.
+  - Blanco sobre ámbar `bg-amber-500` (etiqueta "Avistado" y leyenda del mapa): **2.2:1**.
+  - Modo oscuro: gris `text-slate-500` sobre `slate-800` (descripciones de tienda, donaciones y apadrinar): **3.1:1**.
+- [ ] **Recomendación:** para botones con texto blanco usar un naranja de al menos 4.5:1, por ejemplo `#c2410c` (`orange-700`, 5.2:1). El `#ea580c` de la config de Tailwind tampoco alcanza (3.6:1). Verde: `emerald-700` (5.5:1). Ámbar: texto oscuro (`text-amber-950`) en lugar de blanco. Modo oscuro: `dark:text-slate-400` en vez de `text-slate-500`. Se decide junto con el naranja principal (ADR-007 / ADR-032) porque la paleta no se cambia sin aprobación (ADR-033).
+
+### Para revisar más adelante
+- [ ] **Registro y login:** la contraseña acepta cualquier largo ("123" pasa sin aviso); los ejemplos "Alt Efe Cuatro" / "alt_f4@mail.com" son poco serios; faltan los atributos `autocomplete` (`name`, `email`, `new-password`, `current-password`, `tel`, `one-time-code`) para que el celular y los gestores de contraseñas completen solos; y al volver a iniciar sesión el login reemplaza el perfil guardado (se pierden el apellido y el teléfono, y queda "verificado" sin teléfono).
 
 ### Falta respecto al diagrama de flujo
 - [ ] **Para la fase de desarrollo (con backend), no en este maquetado:** mejorar la información de Adopción Responsable — hero con foto, filtro de contenido por temas (Perros · Gatos · Cachorros · Adultos mayores), checklist interactivo "¿Estás listo para adoptar?" y costos estimados por mes.
 
 ### Sistema de alertas (separado de adopciones)
 Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo publica para que otros lo reconozcan (si es su mascota perdida) o puedan ayudarlo (alimento, atención, tránsito). No publica en el catálogo de adopción.
+- [ ] **Para la fase de desarrollo (con backend):** el tiempo de publicación ("Recién publicado", "Hace 18 minutos") es hoy un texto fijo que no cambia. El servidor tiene que guardar la fecha de cada alerta y el front calcular "hace X min / h / días". Lo mismo para el "Recién" de las notificaciones. Marcado con comentarios en `alerta.html` y `js/main.js`.
 - [ ] Verificar con el equipo si alguien ya trabajó estos cambios (ya están hechos en la rama `fix/bugs-consistencia`).
 - [ ] Comentarios reales (que se guarden y los vean otros usuarios): hoy son simulados porque no hay backend. Queda para cuando exista uno.
 
@@ -38,6 +52,16 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [ ] Redactar los "conocimientos implementados" (punto 5 de la Parte 1 de la consigna) en el Documento de Investigación, referenciando la bitácora.
 
 ## Hecho
+- [x] **Revisión UX a 375px (rama `fix/revision-ux-mobile`):**
+  - Publicar mascota: la foto es obligatoria de verdad (antes, sin foto, se usaba la de Loki); el error aparece junto al campo. Castración y Sociabilidad arrancan sin opción marcada y son obligatorias, para no publicar datos favorables que nadie respondió (ADR-031).
+  - Alerta Callejeros: el mapa (maqueta) queda más chico, para que el listado se vea antes. La ficha de cada alerta usa `alerta.html#id`: el "atrás" del celular la cierra y cada alerta se puede compartir. Los marcadores del mapa abren su ficha.
+  - Una sola palabra para la tercera situación: **"Avistado"** (filtro, etiqueta, leyenda y formulario). El valor interno sigue siendo `encontrado`.
+  - Reportar alerta: "Tocá para sacar o elegir una foto", sin el dato inventado del 80%, límite de 5 MB que se controla, error de foto junto al campo (sin `alert()`), botones de foto de 44px, aviso de que el teléfono se muestra en la alerta y, al publicar, "Ver en el listado de alertas" lleva directo al listado (`alerta.html#listado`).
+  - Inicio: "Adopta un Callejero" → "Adoptá un Callejero".
+  - Alerta Callejeros: un solo llamado a publicar en el celular, el **botón flotante** (se sacaron el botón grande del encabezado y la tarjeta "¿Encontraste o perdiste…?"). El mapa vuelve arriba del listado, más chico.
+  - Reportar alerta: "Tipo de Situación" con tarjetas de opciones fijas (Perdido, Avistado, Emergencia), sin opción marcada, en lugar del menú desplegable.
+  - Notificaciones: en el celular, "Marcar todas leídas" va debajo del título, en una línea.
+  - Botón flotante en inicio y Alerta Callejeros (`data-fab-hint`, `js/main.js`): en el celular despliega "Publicar Alerta Callejero" 3 s, a los 2 s de entrar y después cada 30 s, y mientras tanto se ve rojo sólido (sin transparencia). Deja de hacerlo cuando la persona ya lo tocó una vez (`callejeros_fab_usado`). Respeta "reducir movimiento". El del inicio ahora lleva al formulario (`reportar-alerta.html`).
 - [x] `</main>` duplicado en `adopcion-responsable.html`.
 - [x] Clases de Tailwind inexistentes (`opacity-85`, `dark:bg-slate-855`).
 - [x] Enlace "Publicar" del menú → abre el modal de publicar mascota en `adopciones.html`.

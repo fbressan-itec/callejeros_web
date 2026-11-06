@@ -403,6 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Se guarda la solicitud y un voluntario "responde" a los segundos (js/main.js).
   // Regla de la demo: casa abierta sin patio → desaprobada; el resto → aprobada.
+  // Solo maquetado: con back end, "Tipo de Vivienda" es un campo libre y la aprobación la decide un moderador / admin.
   formAdopcion?.addEventListener('submit', (e) => {
     e.preventDefault();
     const housing = document.getElementById('adopt-housing').value;

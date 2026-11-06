@@ -298,6 +298,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const pubDropzonePreview = document.getElementById('pub-dropzone-preview');
   const pubPreviewImg = document.getElementById('pub-preview-img');
   const pubPhotoData = document.getElementById('pub-photo-data');
+  const pubDropzone = document.getElementById('pub-dropzone');
+  const pubPhotoError = document.getElementById('pub-photo-error');
+
+  // Error de la foto obligatoria: mensaje junto al campo (no un alert del navegador)
+  function setPubPhotoError(show) {
+    pubPhotoError?.classList.toggle('hidden', !show);
+    pubDropzone?.classList.toggle('border-red-500', show);
+    pubDropzone?.classList.toggle('border-slate-300', !show);
+  }
 
   // Publicar exige cuenta (diagrama de flujo: usuario no registrado → login)
   function openPublishPetModal() {
@@ -381,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.onload = (event) => {
       pubPreviewImg.src = event.target.result;
       pubPhotoData.value = event.target.result;
+      setPubPhotoError(false);
       pubDropzoneEmpty.classList.add('hidden');
       pubDropzonePreview.classList.remove('hidden');
     };
@@ -389,6 +399,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   formPublicarPet?.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    // La foto es obligatoria: sin ella no se publica (antes se usaba la foto de otra mascota)
+    if (!pubPhotoData.value) {
+      setPubPhotoError(true);
+      pubDropzone?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
     const name = document.getElementById('pub-name').value.trim();
     const specie = document.getElementById('pub-specie').value;
@@ -408,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Badge seleccionable "Casos Urgentes"
     const isUrgent = document.getElementById('pub-pet-urgent')?.checked || false;
     const desc = document.getElementById('pub-desc').value.trim();
-    const image = pubPhotoData.value || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80';
+    const image = pubPhotoData.value;
 
     const newPet = {
       id: 'custom-' + Date.now(),
@@ -458,6 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pubPhotoData.value = '';
     pubDropzonePreview.classList.add('hidden');
     pubDropzoneEmpty.classList.remove('hidden');
+    setPubPhotoError(false);
 
     openSuccessModal('¡Publicación enviada!', `Un voluntario va a revisar la publicación de ${name}. Cuando la apruebe, aparece en el catálogo y te avisamos en tus notificaciones.`);
   });

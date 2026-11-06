@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alerta Callejeros — Mapa y Reportes en Río Cuarto</title>
   
-  <meta name="description" content="Visualizá en tiempo real mascotas perdidas, encontradas o en emergencia en Río Cuarto ordenadas por publicación reciente.">
+  <meta name="description" content="Visualizá en tiempo real mascotas perdidas, avistadas o en emergencia en Río Cuarto ordenadas por publicación reciente.">
   <meta name="theme-color" content="#ef4444">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -188,7 +188,7 @@
       </a>
     </div>
     
-    <!-- Encabezado con Botón Visible de Acceso Rápido -->
+    <!-- Encabezado. Para publicar queda solo el botón flotante (abajo a la derecha), igual que en el inicio -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
       <div>
         <div class="flex items-center gap-2">
@@ -199,27 +199,19 @@
           Alerta Callejeros Río Cuarto
         </h1>
         <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-xl">
-          Visualizá en el mapa los reportes en curso y consultá abajo las alertas ordenadas de más recientes a más antiguas.
+          Mirá las alertas de la más reciente a la más antigua y ubicalas en el mapa.
         </p>
       </div>
-
-      <!-- BOTÓN VISIBLE Y DE ACCESO RÁPIDO A VISTA APARTE -->
-      <a href="reportar-alerta.html" class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-display font-bold text-sm text-white bg-red-600 hover:bg-red-700 active:scale-95 shadow-xl shadow-red-600/30 transition-all text-center">
-        <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-        <span>+ Publicar Alerta de Mascota</span>
-      </a>
     </div>
 
-    <!-- Contenedor del Mapa Interactivo (Río Cuarto) -->
+    <!-- Mapa (maqueta, ADR-032): arriba del listado, como en el diseño original, pero más chico
+         para que las alertas se vean sin bajar tanto -->
     <section class="rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl bg-slate-100 dark:bg-slate-850 relative">
-      <div class="h-72 sm:h-96 w-full relative flex items-center justify-center bg-slate-200 dark:bg-slate-800">
+      <div class="h-44 sm:h-64 w-full relative flex items-center justify-center bg-slate-200 dark:bg-slate-800">
         <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px]"></div>
         
-        <div class="relative z-10 text-center p-6 max-w-md">
-          <div class="w-14 h-14 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 flex items-center justify-center text-2xl mx-auto mb-2 shadow-md">
-            📍
-          </div>
-          <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Mapa en Tiempo Real — Río Cuarto</h3>
+        <div class="relative z-10 text-center px-16 py-4 max-w-md">
+          <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">📍 Mapa en Tiempo Real — Río Cuarto</h3>
           <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">
             Centro, Banda Norte, Alberdi, Castelli, Costanera y Universidad.
           </p>
@@ -231,33 +223,19 @@
         </div>
 
         <!-- Marcadores interactivos -->
-        <a href="#alert-alt-1" class="absolute top-1/4 left-1/3 p-3 rounded-full bg-red-600 text-white shadow-xl animate-bounce hover:scale-125 transition-transform" title="Perro perdido en Plaza Roca">
+        <a href="#alt-1" class="absolute bottom-3 left-3 sm:bottom-auto sm:top-1/4 sm:left-1/4 z-20 p-3 rounded-full bg-red-600 text-white shadow-xl animate-bounce hover:scale-125 transition-transform" title="Perro perdido en Plaza Roca" aria-label="Ver alerta: perro perdido en Plaza Roca">
           🐾
         </a>
-        <a href="#alert-alt-2" class="absolute top-1/2 right-1/4 p-3 rounded-full bg-amber-500 text-white shadow-xl hover:scale-125 transition-transform" title="Gatito en Banda Norte">
+        <a href="#alt-2" class="absolute bottom-3 right-3 sm:top-1/2 sm:bottom-auto sm:right-1/4 z-20 p-3 rounded-full bg-amber-500 text-white shadow-xl hover:scale-125 transition-transform" title="Gatito en Banda Norte" aria-label="Ver alerta: gatito avistado en Banda Norte">
           🐱
         </a>
       </div>
     </section>
 
-    <!-- Banner Rápido Bajo el Mapa -->
-    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-500/10 via-orange-500/10 to-amber-500/10 border border-red-200 dark:border-red-900/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <span class="text-2xl">🚨</span>
-        <div>
-          <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">¿Encontraste o perdiste una mascota recién?</h4>
-          <p class="text-xs text-slate-600 dark:text-slate-300">Publicá la foto y ubicación en 1 minuto en el formulario dedicado.</p>
-        </div>
-      </div>
-      <a href="reportar-alerta.html" class="inline-flex items-center justify-center min-h-[44px] px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-red-600 hover:bg-red-700 active:scale-95 shadow-md whitespace-nowrap transition-all">
-        Completar Formulario con Foto
-      </a>
-    </div>
-
     <!-- =================================================================== -->
     <!-- LISTADO DE ALERTAS ORDENADAS POR TIEMPO (MÁS RECIENTES PRIMERO)      -->
     <!-- =================================================================== -->
-    <section class="space-y-6 pt-4">
+    <section id="listado" class="space-y-6 pt-2 scroll-mt-24">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
         <div>
           <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white">
@@ -280,7 +258,7 @@
             🔴 Perdidos
           </button>
           <button type="button" class="filter-alert-tab min-h-[44px] px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all" data-situation="encontrado">
-            🟡 Encontrados
+            🟡 Avistados
           </button>
         </div>
       </div>
@@ -369,9 +347,9 @@
   </div>
 
   <!-- FAB ALERTA RÁPIDA -->
-  <a href="reportar-alerta.html" id="fab-alerta" class="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xl backdrop-blur-md border border-orange-500/40 transition-all duration-300 opacity-25 hover:opacity-100" aria-label="Publicar Alerta con Foto">
+  <a href="reportar-alerta.html" id="fab-alerta" data-fab-hint="Publicar Alerta Callejero" class="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xl backdrop-blur-md border border-orange-500/40 transition-all duration-300 opacity-25 hover:opacity-100" aria-label="Publicar Alerta con Foto">
     <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-    <span class="hidden sm:inline">+ Publicar Alerta</span>
+    <span class="hidden sm:inline">Publicar Alerta Callejero</span>
   </a>
 
   <!-- FOOTER -->
@@ -425,7 +403,10 @@
           return `
             <article id="alert-${escapeHtml(a.id)}" data-alert-id="${escapeHtml(a.id)}" class="alert-card bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-soft dark:shadow-soft-dark hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer">
 
-              <!-- Foto de la Mascota y Badges de Tiempo -->
+              <!-- Foto de la Mascota y Badges de Tiempo.
+                   MAQUETADO: "timeAgo" es un texto fijo ("Recién publicado", "Hace 18 minutos") y no se
+                   actualiza con el paso del tiempo. FASE DE DESARROLLO (back end): el servidor guarda la
+                   fecha de publicación y el front calcula "hace X min / h / días" a partir de ella. -->
               <div class="relative w-full h-48 sm:h-52 bg-slate-900 overflow-hidden">
                 <img src="${escapeHtml(a.image)}" alt="${escapeHtml(a.title)}" class="w-full h-full object-cover">
                 <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${badge.cls}">
@@ -481,8 +462,7 @@
         alertsGrid.querySelectorAll('.alert-card').forEach(card => {
           card.addEventListener('click', (e) => {
             if (e.target.closest('a[href^="tel:"], .btn-copy-contact')) return;
-            const alertData = alerts.find(item => item.id === card.getAttribute('data-alert-id'));
-            if (alertData) openAlertDetail(alertData);
+            openAlertById(card.getAttribute('data-alert-id'));
           });
         });
       }
@@ -492,7 +472,7 @@
       // ===================================================================
       // En Alerta Callejeros todas las alertas son urgentes: el badge solo indica la situación
       function situationBadge(situation) {
-        if (situation === 'encontrado') return { cls: 'bg-amber-500', text: 'Encontrado' };
+        if (situation === 'encontrado') return { cls: 'bg-amber-500', text: 'Avistado' };
         if (situation === 'emergencia') return { cls: 'bg-rose-700', text: '🚨 Emergencia' };
         return { cls: 'bg-red-600', text: 'Perdido' };
       }
@@ -549,10 +529,55 @@
         selectedAlert = null;
       }
 
-      document.getElementById('btn-cerrar-alerta')?.addEventListener('click', closeAlertDetail);
+      // La ficha usa la dirección alerta.html#id (como mascota.html#id, ADR-029):
+      // el "atrás" del celular cierra la ficha en vez de salir de Alerta Callejeros,
+      // y cada alerta se puede compartir con su enlace.
+      let openedFromList = false;
+
+      function openAlertById(id) {
+        if (!alerts.some(item => item.id === id)) return;
+        openedFromList = true;
+        if (window.location.hash === '#' + id) syncAlertWithHash();
+        else window.location.hash = id; // suma un paso al historial → "atrás" la cierra
+      }
+
+      function syncAlertWithHash() {
+        const id = decodeURIComponent(window.location.hash.slice(1));
+        const alertData = alerts.find(item => item.id === id);
+        if (alertData) openAlertDetail(alertData);
+        else if (selectedAlert) closeAlertDetail();
+        if (id === 'listado') document.getElementById('listado')?.scrollIntoView();
+      }
+
+      // Cerrar desde la app: si la ficha se abrió desde el listado, se vuelve un paso atrás;
+      // si se entró directo con el enlace, se quita el #id sin salir de la página.
+      function requestCloseAlert() {
+        if (openedFromList) {
+          openedFromList = false;
+          history.back();
+        } else {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+          closeAlertDetail();
+        }
+      }
+
+      window.addEventListener('hashchange', syncAlertWithHash);
+
+      // Marcadores del mapa: abren la ficha igual que las tarjetas (con su paso en el historial)
+      document.querySelectorAll('a[href^="#alt-"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          openAlertById(link.getAttribute('href').slice(1));
+        });
+      });
+
+      document.getElementById('btn-cerrar-alerta')?.addEventListener('click', requestCloseAlert);
       // En desktop, tocar fuera del panel también cierra
       modalAlerta?.addEventListener('click', (e) => {
-        if (e.target === modalAlerta) closeAlertDetail();
+        if (e.target === modalAlerta) requestCloseAlert();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && selectedAlert) requestCloseAlert();
       });
       document.getElementById('alerta-detalle-copiar')?.addEventListener('click', () => {
         if (selectedAlert) copyContact(selectedAlert.contact);
@@ -575,6 +600,7 @@
       });
 
       renderAlerts();
+      syncAlertWithHash(); // enlace directo: alerta.html#alt-1 abre la ficha, alerta.html#listado baja al listado
     });
   </script>
 </body>

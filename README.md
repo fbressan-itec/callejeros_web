@@ -51,7 +51,7 @@ El detalle y los motivos de cada regla están en la [bitácora de diseño](https
 El otro aporte original del proyecto. **Alerta Callejeros** es un sistema propio, separado del catálogo de adopción, pensado para los animales que todavía están en la calle. No vimos esta idea en otras páginas.
 
 - **Para qué sirve:** quien ve un animal perdido, desamparado o herido lo publica con foto y ubicación. Otros vecinos pueden reconocerlo si es su mascota perdida, o ayudarlo con alimento, atención veterinaria o un tránsito.
-- **Tres situaciones:** perdido, encontrado y emergencia. No hay etiqueta de "urgente": en la calle todos los casos lo son.
+- **Tres situaciones:** perdido, avistado y emergencia. No hay etiqueta de "urgente": en la calle todos los casos lo son.
 - **Rápido desde el celular:** el menú de todas las páginas tiene el acceso "Alerta Callejero!" en rojo, hay un botón flotante en el inicio, el catálogo y Quiénes Somos, y el formulario pide lo justo: foto (obligatoria), situación, especie, ubicación, descripción y teléfono.
 - **Seguimiento entre vecinos:** cada alerta tiene su ficha con los datos de contacto y comentarios ("lo vi hace un rato por tal calle", "le dejé agua", "puedo darle tránsito"). Así el caso no queda en un solo aviso, sino que la comunidad lo va siguiendo hasta resolverlo.
 - **Lo más nuevo primero:** el listado va de la alerta más reciente a la más antigua, con filtros por situación.
@@ -70,7 +70,7 @@ El detalle está en la [bitácora de diseño](https://docs.google.com/document/d
    - Ficha de cada mascota en su propia página (`mascota.html#id`): carrusel de fotos, insignias, padrinos e información desplegable (Descripción, Estado de salud y Notas).
    - Cuestionario de adopción que exige sesión, y respuesta simulada de un voluntario (aprobada o desaprobada) en `solicitud.html#id`.
    - Publicar una mascota pide cuenta y queda en revisión hasta que un voluntario la aprueba.
-3. **🚨 Alerta Callejeros:** listado de alertas de la más reciente a la más antigua (perdidos, encontrados y emergencias), ficha con comentarios de vecinos y formulario de reporte con foto obligatoria. El mapa es una maqueta.
+3. **🚨 Alerta Callejeros:** listado de alertas de la más reciente a la más antigua (perdidos, avistados y emergencias), ficha con comentarios de vecinos y formulario de reporte con foto obligatoria. El mapa es una maqueta.
 4. **💛 Colaborar:** donaciones con preguntas frecuentes, apadrinamiento en 3 pasos (monto, a quién ayudar y método de pago simulado) y tienda solidaria que conecta con quien publica cada producto.
 5. **📰 Noticias y eventos:** listado y noticia completa con comentarios.
 6. **🔔 Notificaciones:** campanita con contador, panel con las últimas 5 y página con el historial completo.

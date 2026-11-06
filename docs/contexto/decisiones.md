@@ -236,3 +236,18 @@ Tomadas durante la revisión con Claude Code. El detalle de UX/UI y el porqué d
 * **Contexto**: Las reglas iniciales de Antigravity (`.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json`) pedían SPA, Vite, TypeScript e IndexedDB, y Google Maps funcional. Si otro integrante sigue el proyecto con Antigravity, la IA podría intentar migrar el proyecto y deshacer lo decidido.
 * **Decisión**: El stack oficial es **HTML5 semántico multipágina + Tailwind CSS v3 por CDN + JavaScript vanilla sin compilación + LocalStorage**. Se corrigen las reglas y la memoria de Antigravity con este stack y con guardas explícitas: no migrar a SPA, TypeScript, Vite, frameworks ni IndexedDB; no integrar mapas reales; no cambiar las reglas de las insignias ni la paleta sin aprobación; mantener `.agents/ToDo.md` y este registro al día.
 
+### [ADR-035] · [2026-11-06 12:00] — Revisión UX Mobile: Alerta Callejeros y Formularios
+* **Contexto**: Revisión a 375px de los flujos principales, en modo claro y oscuro.
+* **Decisiones**:
+  1. En Alerta Callejeros el mapa (maqueta, ADR-032) queda arriba del listado pero **más chico**, y en el celular hay **un solo llamado a publicar: el botón flotante** (igual que en el inicio, ADR-004). Se sacaron el botón grande del encabezado y la tarjeta "¿Encontraste o perdiste…?".
+  2. La ficha de alerta usa `alerta.html#id` (como `mascota.html#id`, ADR-029): el "atrás" del celular la cierra y cada alerta tiene su enlace.
+  3. La tercera situación se llama **"Avistado"** en toda la interfaz (antes "Encontrado" en el filtro y "Avistados" en el mapa). Sigue habiendo tres situaciones (ADR-023); el valor interno sigue siendo `encontrado`.
+  4. Al publicar una alerta se vuelve directo al listado (`alerta.html#listado`). El teléfono de la alerta se avisa como público.
+  5. Al publicar una mascota, la foto es obligatoria y Castración / Sociabilidad arrancan sin respuesta (refuerza ADR-031: la ficha no se "embellece" con valores por defecto).
+  6. El tiempo de publicación de alertas y notificaciones queda como texto fijo en el maquetado; el cálculo real va con el back end.
+  7. En el celular, el botón flotante del inicio y de Alerta Callejeros despliega "Publicar Alerta Callejero" 3 s (a los 2 s de entrar y cada 30 s) hasta que la persona lo usa una vez. Mientras el texto está desplegado el botón se ve **rojo sólido** (sin transparencia) y vuelve a la transparencia de reposo al plegarse, en el mismo momento. Así un usuario nuevo sabe para qué sirve el ícono. El del inicio lleva al formulario (`reportar-alerta.html`).
+  8. **"Tipo de Vivienda" (cuestionario de adopción) sigue siendo menú desplegable, solo en el maquetado.** Se mantiene para poder mostrar en la demo el mensaje de solicitud desaprobada (regla: "Casa sin patio / Abierta" → desaprobada). **Para la fase de desarrollo (front + back end)** se espera un campo que el usuario completa a mano, porque la aprobación la controla un moderador / admin. Está comentado en `mascota.html` y `js/mascota.js`.
+  9. **"Tipo de Situación" (reportar alerta) pasa a tarjetas con opciones fijas** (Perdido, Avistado, Emergencia), sin opción marcada. Son pocas opciones y no cambian, así que se eligen de una lista cerrada y el usuario no escribe texto libre. En el celular el menú desplegable cortaba el texto.
+  10. En `notificaciones.html`, "Marcar todas leídas" va debajo del título en el celular, en una línea y alineado a la derecha; desde tablet vuelve al costado. Al costado se partía en tres líneas y se veía como un recuadro grande.
+* **Pendiente de decisión del grupo**: el contraste de colores (junto con el naranja principal) y detalles del botón flotante. Detalle en `.agents/ToDo.md`.
+

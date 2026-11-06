@@ -59,6 +59,9 @@ function saveNotificationList(list) {
 }
 
 // { title, text, tag, link? } → se agrega arriba, sin leer
+// MAQUETADO: "time" queda como texto fijo ("Recién") y no cambia con el paso del tiempo.
+// FASE DE DESARROLLO (back end): guardar la fecha de cada notificación en el servidor y
+// mostrar "hace X min / h / días" calculado a partir de ella (igual que en las alertas).
 function pushNotification(notif) {
   const list = getNotifications();
   list.unshift({ id: Date.now() + Math.floor(Math.random() * 1000), time: 'Recién', unread: true, ...notif });
@@ -569,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let fabIdleTimer = null;
 
   function resetFab() {
-    if (!fabBtn) return;
+    if (!fabBtn || fabBtn.dataset.hintActive) return; // mientras muestra su texto queda sólido (punto 6)
     fabBtn.classList.remove('opacity-25');
     fabBtn.classList.add('opacity-90');
     clearTimeout(fabIdleTimer);
@@ -603,5 +606,68 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', resetFab, { passive: true });
   window.addEventListener('touchstart', resetFab, { passive: true });
   resetFab();
+
+  // -----------------------------------------------------------------------
+  // 6. FAB: TEXTO QUE APARECE CADA TANTO (solo celular, páginas con data-fab-hint)
+  // En el celular el botón flotante es solo un ícono. Para que un usuario nuevo
+  // sepa para qué sirve, cada tanto se despliega el texto por unos segundos.
+  // Deja de hacerlo cuando la persona ya usó el botón una vez (queda guardado).
+  // -----------------------------------------------------------------------
+  const FAB_HINT_FIRST_DELAY = 2000;  // primera vez: 2 s después de cargar la página
+  const FAB_HINT_VISIBLE = 3000;      // queda desplegado 3 s
+  const FAB_HINT_EVERY = 30000;       // se repite cada 30 s mientras la página está abierta
+  const fabHintUsedKey = 'callejeros_fab_usado';
+
+  if (fabBtn && fabBtn.hasAttribute('data-fab-hint')) {
+    let fabUsed = false;
+    try { fabUsed = localStorage.getItem(fabHintUsedKey) === '1'; } catch { fabUsed = false; }
+
+    fabBtn.addEventListener('click', () => {
+      try { localStorage.setItem(fabHintUsedKey, '1'); } catch { /* sin almacenamiento: no pasa nada */ }
+    });
+
+    const mobile = window.matchMedia('(max-width: 639px)');
+    if (!fabUsed) {
+      // Texto que se despliega a la derecha del ícono (en tablet y desktop ya se ve siempre)
+      const hint = document.createElement('span');
+      hint.className = 'fab-hint sm:hidden overflow-hidden whitespace-nowrap';
+      hint.setAttribute('aria-hidden', 'true'); // el botón ya tiene su aria-label
+      hint.textContent = fabBtn.getAttribute('data-fab-hint') || 'Publicar Alerta Callejero';
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      hint.style.cssText = `max-width:0;margin-left:-0.5rem;${reduceMotion ? '' : 'transition:max-width .45s ease, margin-left .45s ease;'}`;
+      fabBtn.appendChild(hint);
+
+      // Mientras el texto está desplegado, el botón se ve rojo sólido (sin transparencia);
+      // al plegarse vuelve a la transparencia de reposo. Las dos cosas pasan al mismo tiempo.
+      const FAB_IDLE_CLASSES = ['opacity-25', 'opacity-90', 'bg-red-600/90'];
+      function setFabSolid(solid) {
+        if (solid) {
+          clearTimeout(fabIdleTimer); // que la transparencia de reposo no lo apague a mitad del texto
+          fabBtn.dataset.hintActive = '1';
+          fabBtn.classList.remove(...FAB_IDLE_CLASSES);
+          fabBtn.classList.add('opacity-100', 'bg-red-600');
+        } else {
+          delete fabBtn.dataset.hintActive;
+          fabBtn.classList.remove('opacity-100', 'bg-red-600');
+          fabBtn.classList.add('opacity-25', 'bg-red-600/90');
+        }
+      }
+
+      function showFabHint() {
+        if (document.hidden || !mobile.matches || fabBtn.classList.contains('hidden')) return;
+        setFabSolid(true);
+        hint.style.maxWidth = '15rem';
+        hint.style.marginLeft = '0';
+        setTimeout(() => {
+          hint.style.maxWidth = '0';
+          hint.style.marginLeft = '-0.5rem';
+          setFabSolid(false);
+        }, FAB_HINT_VISIBLE);
+      }
+
+      setTimeout(showFabHint, FAB_HINT_FIRST_DELAY);
+      setInterval(showFabHint, FAB_HINT_EVERY);
+    }
+  }
 
 });
