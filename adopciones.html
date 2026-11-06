@@ -271,9 +271,7 @@
       <!-- SECCIÓN EDAD EN NÚMEROS (Fiel a boceto_filtro-mascotas_mobile) -->
       <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
         <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
-          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Edad</span>
-          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </div>
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Edad</span>        </div>
         
         <div class="divide-y divide-slate-100 dark:divide-slate-800 p-2 space-y-1">
           <!-- Mismos grupos que la badge de edad de la ficha (getAgeGroup en js/main.js) -->
@@ -309,9 +307,7 @@
       <!-- Sociabilidad -->
       <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
         <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
-          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sociabilidad</span>
-          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sociabilidad</span>        </div>
         <div class="grid grid-cols-3 gap-2 p-2.5">
           <label class="flex items-center justify-center min-h-[44px] p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-orange-500 text-xs font-medium">
             <input type="radio" name="filter-sociable" value="all" checked class="sr-only peer">
@@ -349,9 +345,7 @@
       <!-- Castración: Dividida en Castrados y No Castrados -->
       <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
         <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
-          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Castración</span>
-          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Castración</span>        </div>
         <div class="grid grid-cols-3 gap-2 p-2.5">
           <label class="flex items-center justify-center min-h-[44px] p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-orange-500 text-xs font-medium">
             <input type="radio" name="filter-castrado" value="all" checked class="sr-only peer">
@@ -383,9 +377,7 @@
       <!-- Sexo (Fiel a Figma) -->
       <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850">
         <div class="px-4 py-2.5 bg-slate-200/70 dark:bg-slate-800 flex items-center justify-between">
-          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sexo</span>
-          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        </div>
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sexo</span>        </div>
         <div class="grid grid-cols-3 gap-2 p-2.5">
           <label class="flex items-center justify-center min-h-[44px] p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 cursor-pointer hover:border-orange-500 text-xs font-medium">
             <input type="radio" name="filter-sex" value="all" checked class="sr-only peer">
@@ -411,8 +403,10 @@
         </label>
       </div>
 
-      <!-- Botones de Acción (Fiel a Figma: Botón negro/marca VER RESULTADOS + Limpiar Filtros) -->
-      <div class="pt-2 space-y-3 text-center">
+      <!-- Botones de Acción (Fiel a Figma: Botón negro/marca VER RESULTADOS + Limpiar Filtros).
+           Fijos abajo del panel: se alcanzan con el pulgar sin bajar hasta el final (ADR-034).
+           Los grupos de filtros no tienen flecha: están siempre visibles, no son desplegables. -->
+      <div class="sticky -bottom-6 -mx-6 -mb-6 px-6 pt-3 pb-4 space-y-1 text-center bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
         <button type="button" id="btn-apply-filters" class="w-full py-3.5 rounded-full font-display font-bold text-sm text-white bg-slate-950 hover:bg-slate-800 dark:bg-orange-500 dark:hover:bg-orange-600 active:scale-95 shadow-lg transition-all tracking-wider uppercase">
           VER RESULTADOS
         </button>

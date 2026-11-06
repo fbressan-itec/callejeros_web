@@ -225,6 +225,13 @@ Tomadas durante la revisión con Claude Code. El detalle de UX/UI y el porqué d
   7. **Presentación con internet:** se presenta por Google Classroom; no hace falta versión offline aunque Tailwind, las fuentes y las fotos se carguen desde la web.
   8. **A definir con el grupo:** el naranja principal (ver nota en ADR-007).
 
+### [ADR-034] · [2026-11-06 09:00] — Filtros sin Desplegables y "Ver Resultados" Fijo
+* **Contexto**: En el modal de filtros, los grupos (Edad, Sociabilidad, Castración, Sexo) tenían una flecha como si fueran desplegables, pero no hacían nada al tocarlos. El panel mide más de una pantalla y media en el celular, y "VER RESULTADOS" quedaba al final.
+* **Decisiones**:
+  1. Se sacan las flechas y todos los grupos quedan siempre visibles. Cada grupo tiene 2 o 3 opciones: desplegarlos sumaría toques y escondería filtros activos (el usuario olvida que marcó uno y no entiende por qué ve pocos animales). Se aparta del Figma, que mostraba flechas.
+  2. "VER RESULTADOS" y "Limpiar Filtros" quedan fijos abajo del panel, al alcance del pulgar sin bajar hasta el final.
+* **Consecuencias**: No quedan controles que parecen interactivos y no lo son. No volver a poner flechas en los filtros sin hacerlos desplegables de verdad.
+
 ### [ADR-033] · [2026-11-06 08:30] — Stack Real y Reglas para las IA
 * **Contexto**: Las reglas iniciales de Antigravity (`.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json`) pedían SPA, Vite, TypeScript e IndexedDB, y Google Maps funcional. Si otro integrante sigue el proyecto con Antigravity, la IA podría intentar migrar el proyecto y deshacer lo decidido.
 * **Decisión**: El stack oficial es **HTML5 semántico multipágina + Tailwind CSS v3 por CDN + JavaScript vanilla sin compilación + LocalStorage**. Se corrigen las reglas y la memoria de Antigravity con este stack y con guardas explícitas: no migrar a SPA, TypeScript, Vite, frameworks ni IndexedDB; no integrar mapas reales; no cambiar las reglas de las insignias ni la paleta sin aprobación; mantener `.agents/ToDo.md` y este registro al día.
