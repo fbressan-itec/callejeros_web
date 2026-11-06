@@ -134,38 +134,8 @@
       </p>
     </div>
 
-    <!-- Grilla de Noticias -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      
-      <!-- Evento 1 -->
-      <article class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-3">
-        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
-          Próximo Sábado • 16:00 hs
-        </span>
-        <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Gran Feria de Adopción en Plaza Olmos</h3>
-        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          Traé a tu familia a conocer más de 15 cachorros y adultos listos para adopción responsable. Habrá asesoramiento veterinario gratuito y recepción de donaciones de alimento.
-        </p>
-        <div class="pt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-          📍 Plaza Olmos de la Juventud (Frente al Palacio Municipal)
-        </div>
-      </article>
-
-      <!-- Evento 2 -->
-      <article class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-3">
-        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400">
-          Campaña Barrial
-        </span>
-        <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Jornada de Castración Gratuita en Alberdi</h3>
-        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          Organizada junto a la Vecinal Alberdi. Cupos limitados por orden de llegada para perros y gatos mayores a 6 meses con 12 hs de ayuno previo.
-        </p>
-        <div class="pt-2 text-xs font-semibold text-blue-600 dark:text-blue-400">
-          📍 Centro Vecinal Alberdi • 09:00 hs
-        </div>
-      </article>
-
-    </div>
+    <!-- Grilla de Noticias (se arma desde sampleNews en js/data.js) -->
+    <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </main>
 
   <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-8 text-center text-xs text-slate-600 dark:text-slate-300 mt-auto">
@@ -174,5 +144,39 @@
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('news-grid');
+      const tagColors = {
+        emerald: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400',
+        blue: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400'
+      };
+      const placeColors = {
+        emerald: 'text-emerald-600 dark:text-emerald-400',
+        blue: 'text-blue-600 dark:text-blue-400'
+      };
+
+      // Cada tarjeta es un enlace a la noticia en grande (noticia.html#id)
+      grid.innerHTML = sampleNews.map(n => `
+        <a href="noticia.html#${encodeURIComponent(n.id)}" class="group flex flex-col rounded-3xl overflow-hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft hover:-translate-y-1 hover:shadow-xl active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-all duration-300">
+          <div class="relative w-full h-44 sm:h-48 overflow-hidden bg-slate-200 dark:bg-slate-900">
+            <img src="${escapeHtml(n.image)}" alt="${escapeHtml(n.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          </div>
+          <div class="p-5 sm:p-6 flex flex-col flex-grow space-y-3">
+            <span class="w-fit px-2.5 py-1 rounded-md text-[10px] font-bold uppercase ${tagColors[n.color] || tagColors.emerald}">
+              ${escapeHtml(n.tag)}
+            </span>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">${escapeHtml(n.title)}</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3">${escapeHtml(n.summary)}</p>
+            <div class="pt-1 text-xs font-semibold ${placeColors[n.color] || placeColors.emerald}">📍 ${escapeHtml(n.location)}</div>
+            <span class="mt-auto pt-2 inline-flex items-center gap-1 text-sm font-bold text-orange-600 dark:text-orange-400">
+              Leer noticia
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </a>
+      `).join('');
+    });
+  </script>
 </body>
 </html>

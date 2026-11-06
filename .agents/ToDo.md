@@ -13,6 +13,8 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 - [ ] Mapa de `alerta.html`: por ahora queda el mapa de muestra. Decidir más adelante si se reemplaza por uno real (Leaflet + OpenStreetMap, sin API key) o si se mantiene como maqueta.
 - [ ] Flujo "¿Olvidaste tu contraseña?" de Figma (`ruta_loguin_mobile.png`): elegir Email/Teléfono → código → nueva contraseña. Hoy el enlace de `login.html` apunta a `#`.
 - [ ] Registro paso 3: el teléfono enmascarado se ve mal (`+54  •••• 456`); toma los primeros 4 caracteres en vez del código de área.
+- [ ] Revisar el menú hamburguesa de la home: que tenga enlaces a todas las secciones del sitio. Ojo: el menú está copiado en cada página y no es igual en todas (por ejemplo, `noticias.html` y `adopcion-responsable.html` no tienen el grupo "Quiero Colaborar").
+- [ ] Quiénes Somos: hay una foto de un hámster; reemplazarla por una de un perro o un gato.
 - [ ] Revisar el resto de pantallas contra Figma (menú hamburguesa, filtros, detalle, formulario y confirmación).
 
 ### Sistema de alertas (separado de adopciones)
@@ -41,4 +43,6 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Botón "Volver" (estilo Figma "<", 44px) en todas las páginas internas. Vuelve a la pantalla anterior; si se entró directo, va a un destino fijo (inicio, o el mapa en reportar-alerta). Reemplaza los "← Volver" / "Volver al Mapa" del encabezado.
 - [x] Alertas: quitado el "Caso Urgente" (checkbox del formulario, badge y animación). Se mantienen los 3 tipos: Perdido, Encontrado y Emergencia. El badge "Caso Urgente" de **adopciones** se mantiene (tránsitos que vencen pronto).
 - [x] Alertas: ficha de detalle (pantalla completa en mobile) con contacto y sección de comentarios. Los comentarios son de personas ficticias (`sampleAlertComments` en `js/data.js`) y el campo para comentar está solo maquetado.
+- [x] Noticias: cada tarjeta (ahora con foto) abre la noticia en grande en `noticia.html#id`. Los datos están en `sampleNews` (`js/data.js`). Se usa `#id` en vez de `?id=` porque algunos servidores borran el `?` al redirigir.
+- [x] Noticias con comentarios simulados (personas ficticias y respuestas de "Callejeros R4"), como pedía el diagrama original. Campo para comentar solo maquetado. Alertas y noticias usan la misma función `renderCommentItems()` de `js/main.js`.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.

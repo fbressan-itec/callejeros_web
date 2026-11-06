@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticia — Callejeros Río Cuarto</title>
+  
+  <meta name="description" content="Noticias, eventos benéficos y campañas de Callejeros Río Cuarto.">
+  <meta name="theme-color" content="#10b981">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#ea580c',
+              'orange-light': '#ff7849',
+              'orange-dark': '#c2410c',
+              green: '#10b981',
+              red: '#ef4444',
+            },
+            slate: {
+              750: '#293548',
+              850: '#151e2e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'soft-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- NAVBAR COMPARTIDO -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl p-1" aria-label="Ir al inicio">
+        <img src="public/images/logo_callejeros.jpg" alt="Logo Callejeros" class="h-11 sm:h-12 w-auto object-contain rounded-lg shadow-sm">
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button type="button" id="btn-notifications" class="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Centro de Notificaciones">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="notif-badge-count" class="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-[11px] font-extrabold flex items-center justify-center px-1 rounded-full ring-2 ring-white dark:ring-slate-900 shadow-sm animate-pulse">3</span>
+        </button>
+
+        <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
+          <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-6 h-6 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <button type="button" id="menu-btn" class="p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Menú">
+          <svg id="menu-icon-bars" class="w-7 h-7 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="menu-icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slider Notificaciones -->
+    <div id="notifications-slider-panel" class="hidden border-t border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg shadow-xl">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">Últimas 5 Notificaciones</h3>
+        </div>
+        <div id="notif-slider-container" class="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER HAMBURGUESA -->
+  <div id="menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" aria-hidden="true"></div>
+  <nav id="mobile-menu" class="fixed top-16 right-0 w-full sm:max-w-md h-[calc(100vh-4rem)] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto flex flex-col justify-between p-6 shadow-2xl">
+    <div class="space-y-6">
+      <div id="user-status-container" class="pb-4 border-b border-slate-100 dark:border-slate-800"></div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Adoptá un Callejero</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="adopciones.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Adoptar</a>
+          <a href="adopciones.html#publicar" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Publicar</a>
+          <a href="alerta.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Reportar</a>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Noticias</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="noticias.html" class="px-3.5 py-1.5 rounded-full bg-emerald-600 text-white text-sm font-semibold">Eventos Benéficos y Noticias</a>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white">Información</h3>
+        <div class="flex flex-wrap gap-2 pl-2">
+          <a href="quienes-somos.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Quiénes Somos</a>
+          <a href="adopcion-responsable.html" class="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-sm">Adopción Responsable</a>
+        </div>
+      </div>
+    </div>
+    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 flex justify-between">
+      <span>Estado: <strong id="auth-state-label" class="text-orange-500">No Registrado</strong></span>
+      <button type="button" id="btn-toggle-auth-state" class="underline">Modo Test</button>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO: NOTICIA EN GRANDE (noticia.html#id) -->
+  <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-8 py-8 sm:py-12 w-full space-y-6">
+    <!-- Botón Volver (estilo Figma "<") -->
+    <div class="-mb-2">
+      <a href="noticias.html" data-back class="inline-flex items-center gap-1.5 min-w-[44px] min-h-[44px] px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-all" aria-label="Volver a la pantalla anterior">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        <span class="hidden sm:inline text-sm font-semibold">Volver</span>
+      </a>
+    </div>
+
+    <!-- Se completa con la noticia elegida desde js/data.js -->
+    <article id="news-article" class="space-y-5"></article>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-8 text-center text-xs text-slate-600 dark:text-slate-300 mt-auto">
+    <p>© 2026 Callejeros Río Cuarto. Red comunitaria de protección animal.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const article = document.getElementById('news-article');
+      // El id va en el hash (noticia.html#id): se conserva aunque el servidor redirija
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      const news = sampleNews.find(n => n.id === id);
+
+      // Noticia inexistente o sin id: mensaje y vuelta al listado
+      if (!news) {
+        article.innerHTML = `
+          <div class="py-16 text-center space-y-3">
+            <span class="text-4xl block">📰</span>
+            <h1 class="font-display font-bold text-xl text-slate-900 dark:text-white">No encontramos esa noticia</h1>
+            <p class="text-sm text-slate-600 dark:text-slate-300">Puede que ya no esté disponible.</p>
+            <a href="noticias.html" class="inline-flex items-center justify-center min-h-[44px] px-5 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all">Ver todas las noticias</a>
+          </div>
+        `;
+        return;
+      }
+
+      document.title = `${news.title} — Callejeros Río Cuarto`;
+
+      const tagColors = {
+        emerald: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400',
+        blue: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400'
+      };
+      const placeColors = {
+        emerald: 'text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-900/60',
+        blue: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-900/60'
+      };
+
+      article.innerHTML = `
+        <div class="w-full h-56 sm:h-80 rounded-3xl overflow-hidden bg-slate-200 dark:bg-slate-800 shadow-soft">
+          <img src="${escapeHtml(news.image)}" alt="${escapeHtml(news.title)}" class="w-full h-full object-cover">
+        </div>
+
+        <div class="space-y-3">
+          <span class="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold uppercase ${tagColors[news.color] || tagColors.emerald}">
+            ${escapeHtml(news.tag)}
+          </span>
+          <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white leading-tight">
+            ${escapeHtml(news.title)}
+          </h1>
+          <div class="flex items-start gap-2 p-3 rounded-2xl border text-sm font-semibold ${placeColors[news.color] || placeColors.emerald}">
+            <span aria-hidden="true">📍</span>
+            <span>${escapeHtml(news.location)}</span>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+          ${news.body.map(p => `<p>${escapeHtml(p)}</p>`).join('')}
+        </div>
+
+        <!-- Llamado a la acción -->
+        <div class="p-5 rounded-3xl bg-orange-50 dark:bg-slate-800 border border-orange-200 dark:border-slate-700 space-y-3">
+          <h2 class="font-display font-bold text-base text-slate-900 dark:text-white">¿Querés sumarte?</h2>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <a href="adopciones.html" class="flex-1 inline-flex items-center justify-center min-h-[44px] px-4 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
+              Ver mascotas en adopción
+            </a>
+            <a href="donaciones.html" class="flex-1 inline-flex items-center justify-center min-h-[44px] px-4 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 active:scale-95 transition-all">
+              Quiero colaborar
+            </a>
+          </div>
+        </div>
+
+        <!-- Comentarios (simulados, mismo diseño que en Alerta Callejeros) -->
+        <section class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800" aria-labelledby="news-comments-title">
+          <h2 id="news-comments-title" class="font-display font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+            💬 Comentarios
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">${(news.comments || []).length}</span>
+          </h2>
+          <ul class="space-y-3">
+            ${renderCommentItems(news.comments, 'Todavía no hay comentarios en esta noticia.')}
+          </ul>
+
+          <!-- Campo para comentar: solo maquetado -->
+          <form id="form-comentario-noticia" class="pt-3 space-y-2">
+            <label for="noticia-comentario-texto" class="sr-only">Escribí un comentario</label>
+            <div class="flex items-end gap-2">
+              <textarea id="noticia-comentario-texto" rows="2" placeholder="Escribí un comentario..." class="flex-1 px-3.5 py-2.5 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-base text-slate-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+              <button type="submit" class="min-w-[44px] min-h-[44px] px-4 rounded-2xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
+                Enviar
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Vista previa: los comentarios se habilitan próximamente.</p>
+          </form>
+        </section>
+      `;
+
+      // Campo de comentario solo maquetado: no envía nada
+      document.getElementById('form-comentario-noticia')?.addEventListener('submit', (e) => e.preventDefault());
+    });
+  </script>
+</body>
+</html>

@@ -140,6 +140,54 @@ const initialNotifications = [
   { id: 5, title: 'Colecta de Mantas y Alimento', text: 'Recibimos donaciones para los refugios este fin de semana.', time: 'Hace 2 días', unread: false, tag: 'Colecta' }
 ];
 
+// Noticias y eventos benéficos. Las tarjetas de noticias.html y la vista
+// en grande de noticia.html (noticia.html#id) se arman con estos datos.
+const sampleNews = [
+  {
+    id: 'feria-plaza-olmos',
+    tag: 'Próximo Sábado • 16:00 hs',
+    color: 'emerald',
+    title: 'Gran Feria de Adopción en Plaza Olmos',
+    summary: 'Traé a tu familia a conocer más de 15 cachorros y adultos listos para adopción responsable. Habrá asesoramiento veterinario gratuito y recepción de donaciones de alimento.',
+    location: 'Plaza Olmos de la Juventud (Frente al Palacio Municipal)',
+    image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=80',
+    body: [
+      'Este sábado a partir de las 16:00 hs vamos a estar en Plaza Olmos con más de 15 perros y gatos rescatados que buscan una familia. Hay cachorros, adultos y algunos abuelitos que esperan su segunda oportunidad.',
+      'Todos los animales se entregan vacunados, desparasitados y con compromiso de castración. Los voluntarios van a estar para contarte la historia de cada uno y ayudarte a elegir el compañero que mejor se adapte a tu casa y a tu rutina.',
+      'También vamos a tener una mesa de asesoramiento veterinario gratuito y un punto de recepción de donaciones: alimento balanceado, mantas, correas y piedritas sanitarias.',
+      'Si querés adoptar, acordate de traer tu DNI. La adopción se completa con el cuestionario de adopción responsable y una visita de seguimiento.'
+    ],
+    // Comentarios simulados (personas ficticias)
+    comments: [
+      { author: 'Florencia D.', time: 'Hace 2 días', text: '¿Van a llevar gatitos también? Estamos buscando uno para el departamento.' },
+      { author: 'Callejeros R4', time: 'Hace 2 días', text: '¡Hola Flor! Sí, vamos a tener 5 gatitos y 2 gatas adultas, todos acostumbrados a piedritas.' },
+      { author: 'Gustavo A.', time: 'Ayer', text: 'Yo no puedo adoptar pero voy a llevar una bolsa de alimento. ¿Hasta qué hora reciben donaciones?' },
+      { author: 'Callejeros R4', time: 'Ayer', text: 'Gracias Gustavo, recibimos donaciones hasta las 19:00 hs en la mesa de entrada.' }
+    ]
+  },
+  {
+    id: 'castracion-alberdi',
+    tag: 'Campaña Barrial',
+    color: 'blue',
+    title: 'Jornada de Castración Gratuita en Alberdi',
+    summary: 'Organizada junto a la Vecinal Alberdi. Cupos limitados por orden de llegada para perros y gatos mayores a 6 meses con 12 hs de ayuno previo.',
+    location: 'Centro Vecinal Alberdi • 09:00 hs',
+    image: 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=1200&q=80',
+    body: [
+      'Junto a la Vecinal Alberdi organizamos una nueva jornada de castración gratuita para perros y gatos del barrio y alrededores. La castración es la única forma ética de controlar la población de animales en la calle.',
+      'Los cupos son limitados y se otorgan por orden de llegada desde las 09:00 hs. Pueden castrarse perros y gatos mayores de 6 meses, en buen estado de salud.',
+      'Requisitos: 12 horas de ayuno previo (sin comida ni agua), traer una manta, y los gatos en transportadora o bolso cerrado. Los perros, con correa y collar.',
+      'Después de la cirugía, el equipo veterinario te va a explicar los cuidados para la recuperación en casa.'
+    ],
+    // Comentarios simulados (personas ficticias)
+    comments: [
+      { author: 'Mariana C.', time: 'Hace 3 días', text: 'Mi perra tiene 5 meses y medio, ¿la puedo llevar igual?' },
+      { author: 'Callejeros R4', time: 'Hace 3 días', text: 'Hola Mariana, tiene que tener 6 meses cumplidos. ¡Te esperamos en la próxima jornada!' },
+      { author: 'Raúl V.', time: 'Hace 1 día', text: 'Llevé a mi gato en la jornada anterior y la atención fue excelente. Muy recomendable.' }
+    ]
+  }
+];
+
 // Comentarios de ejemplo (simulados) para la ficha de cada alerta.
 // Son personas ficticias: la sección de comentarios es solo una maqueta.
 const sampleAlertComments = {

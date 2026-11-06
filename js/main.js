@@ -14,6 +14,28 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+// Arma la lista de comentarios (burbujas con inicial, nombre, hora y texto).
+// La usan la ficha de alertas y la noticia en grande, con comentarios simulados.
+function renderCommentItems(comments, emptyText) {
+  if (!comments || comments.length === 0) {
+    return `<p class="text-sm text-slate-500 dark:text-slate-400 py-2">${escapeHtml(emptyText)}</p>`;
+  }
+  return comments.map(c => `
+    <li class="flex gap-3">
+      <div class="w-9 h-9 flex-shrink-0 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 flex items-center justify-center font-bold text-sm" aria-hidden="true">
+        ${escapeHtml(String(c.author).charAt(0).toUpperCase())}
+      </div>
+      <div class="flex-1 min-w-0 rounded-2xl rounded-tl-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3.5 py-2.5">
+        <div class="flex items-baseline justify-between gap-2">
+          <span class="font-bold text-sm text-slate-900 dark:text-white truncate">${escapeHtml(c.author)}</span>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeHtml(c.time)}</span>
+        </div>
+        <p class="text-sm text-slate-700 dark:text-slate-200 mt-0.5 leading-relaxed">${escapeHtml(c.text)}</p>
+      </div>
+    </li>
+  `).join('');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // -----------------------------------------------------------------------
