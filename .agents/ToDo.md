@@ -44,7 +44,7 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [ ] Quitar el botón "Rol de prueba" de la card de Mi Cuenta en la fase de desarrollo (está comentado en `mi-cuenta.html`).
 
 ### Documentación
-- [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
+- [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores. **Borradores hechos** en `imagen_diagrama_flujo/diagramas_sitio_actual_2026-11/`: un solo diagrama (`diagrama_flujo_actual`) y por recorridos (`diagrama_flujo_por_recorridos.md` + `recorridos/`). Falta elegir uno con el grupo.
 - [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. A definir con el grupo.
 
 ### Entrega / presentación
