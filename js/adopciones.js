@@ -275,6 +275,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (detalleImg) detalleImg.src = pet.image;
     if (detalleDesc) detalleDesc.textContent = pet.description;
 
+    // Menciones a padrinos (diagrama de flujo)
+    const padrinosEl = document.getElementById('detalle-padrinos');
+    if (padrinosEl) {
+      const count = getPadrinosCount(pet);
+      padrinosEl.textContent = count > 0
+        ? `${pet.name} tiene ${count} padrino${count === 1 ? '' : 's'} que cubren su alimento y cuidados.`
+        : `${pet.name} todavía no tiene padrinos. ¡Podés ser el primero!`;
+    }
+
     // Actualizar icono de favorito
     if (detalleFavIcon) {
       if (isFav) {
@@ -481,7 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnDetalleApadrinar?.addEventListener('click', () => {
     closePetDetailModal();
-    window.location.href = 'donaciones.html#apadrinar';
+    // Directo al flujo de apadrinamiento con esta mascota ya elegida
+    window.location.href = 'apadrinar.html#' + encodeURIComponent(currentSelectedPet?.id || '');
   });
 
   // =========================================================================

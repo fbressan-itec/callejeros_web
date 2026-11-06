@@ -73,6 +73,12 @@ function saveStoredList(key, list) {
   localStorage.setItem(key, JSON.stringify(list));
 }
 
+// Padrinos de una mascota: los de ejemplo (data.js) + los apadrinamientos hechos en este dispositivo
+function getPadrinosCount(pet) {
+  const mine = getStoredList('callejeros_apadrinamientos').filter(a => a.petId === pet.id).length;
+  return (pet.padrinos || 0) + mine;
+}
+
 // Programa un evento que main.js resuelve cuando pasa el tiempo (aunque se cambie de página)
 function scheduleDemoEvent(evt) {
   const list = getStoredList('callejeros_pendientes');

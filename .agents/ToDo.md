@@ -20,11 +20,9 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 
 ### Falta respecto a Figma
 - [ ] Formulario de adopción: Figma separa **Nombre** y **Apellido** en dos campos; hoy es uno solo ("Nombre Completo"). Opcional.
-- [ ] (En análisis) Catálogo de adopciones: Figma muestra "¿Qué preferís adoptar?" con dos botones grandes Perro / Gato y el texto "Encontrá a tu próximo compañero de vida"; hoy son pestañas chicas Todos/Perros/Gatos.
 
 ### Falta respecto al diagrama de flujo
-- [ ] Ficha de mascota: comentarios (solo usuarios), menciones a "Padrinos" y galería de varias fotos.
-- [ ] Apadrinamiento: botón "Apadriná ahora" → elegir monto mensual → elegir mascota o fondo general → método de pago (simulado, sin cobro real).
+- [ ] Ficha de mascota: comentarios (solo usuarios) y galería de varias fotos.
 - [ ] Tienda: detalle de producto, botón "Agregar al carrito", carrito y elegir método de pago (simulado).
 - [ ] Donaciones: hero con fotos, cómo se usan las donaciones y preguntas frecuentes.
 - [ ] Adopción Responsable: filtro de contenido y botón para compartir en redes.
@@ -37,7 +35,7 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 
 ### Documentación
 - [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html` y `solicitud.html` (también en `docs/contexto/arquitectura.md`).
+- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html` y `apadrinar.html` (también en `docs/contexto/arquitectura.md`).
 - [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
 - [ ] ADR-020 dice que el registro usa los textos en inglés de Figma ("Verify", "Send Again"); ahora está en español. Registrar el cambio en un ADR nuevo.
@@ -72,4 +70,7 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Publicar adopción: exige cuenta (si no, popup de login que vuelve a `adopciones.html#publicar`), pide teléfono de contacto (no se muestra en el catálogo) y queda **en revisión**; a los segundos se aprueba, aparece en el catálogo y llega la notificación.
 - [x] Notificaciones con enlace ("Ver detalle") y eventos demo que se resuelven solos (`scheduleDemoEvent` y `pushNotification` en `js/main.js`).
 - [x] Registro en español ("Registrarme", "Ingresá tu número de teléfono", "Verificar", "Más tarde", "Verificá tu teléfono", "Reenviar código"), igual que recuperar contraseña.
+- [x] Apadrinamiento (diagrama de flujo) en `apadrinar.html`: "Apadriná ahora" → monto mensual ($ 2.000 / 5.000 / 10.000 u otro, mínimo $ 500) → fondo general o un rescatado → método de pago (Mercado Pago, transferencia o tarjeta, simulado y sin cobro) → confirmación + notificación. Pide cuenta. Se entra desde Donaciones ("💛 Apadriná ahora") o desde la ficha de una mascota, que llega con ese animal ya elegido.
+- [x] Ficha de mascota: muestra cuántos padrinos tiene (los de ejemplo de `js/data.js` + los del usuario, con `getPadrinosCount()`).
+- [x] Decidido: el catálogo mantiene las pestañas chicas Todos / Perros / Gatos (más espacio para las tarjetas en mobile y conserva "Todos"), con el texto de Figma "¿Qué preferís adoptar?" encima.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.

@@ -215,6 +215,10 @@
       </div>
 
       <!-- Barra de Filtros Rápidos & Botón Modal Filtros -->
+      <!-- Texto de Figma ("¿Qué preferís adoptar?") sobre pestañas compactas: se priorizan
+           las tarjetas en mobile y se conserva la opción "Todos" que Figma no tiene -->
+      <div class="space-y-1.5">
+      <p class="text-xs font-bold text-slate-700 dark:text-slate-300">¿Qué preferís adoptar?</p>
       <div class="flex items-center gap-2">
         <div class="flex items-center p-1 rounded-xl bg-slate-200/80 dark:bg-slate-800 gap-1 text-xs font-semibold">
           <button type="button" class="filter-specie-btn min-h-[44px] px-3 py-1.5 rounded-lg bg-orange-500 text-white shadow-md transition-all" data-filter="all">Todos</button>
@@ -233,6 +237,7 @@
           <span class="text-sm font-extrabold">+</span>
           <span class="hidden sm:inline">Publicar</span>
         </button>
+      </div>
       </div>
     </div>
 
@@ -452,6 +457,12 @@
           <div id="detalle-badges-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <!-- Badges renderizados dinámicamente: Sociable, Castrado, Urgente, Sexo, Edad, Especie -->
           </div>
+        </div>
+
+        <!-- Menciones a padrinos (diagrama de flujo) -->
+        <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/60">
+          <span class="text-2xl" aria-hidden="true">💛</span>
+          <p id="detalle-padrinos" class="flex-1 text-sm text-slate-700 dark:text-slate-200"></p>
         </div>
 
         <!-- =================================================================== -->

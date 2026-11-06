@@ -14,6 +14,7 @@ const samplePets = [
     sociable: true,
     castrado: true,
     urgent: false,
+    padrinos: 3, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80',
     description: 'Rescatado en barrio Alberdi. Es juguetón, sociable con otros perros y niños, muy compañero y con libreta sanitaria al día.',
     salud: {
@@ -35,6 +36,7 @@ const samplePets = [
     sociable: true,
     castrado: true,
     urgent: false,
+    padrinos: 2, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
     description: 'Gatita muy dulce y tranquila. Utiliza piedritas sanitarias a la perfección, ideal para departamento o casa cerrada.',
     salud: {
@@ -56,6 +58,7 @@ const samplePets = [
     sociable: false,
     castrado: true,
     urgent: true,
+    padrinos: 5, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80',
     description: 'Perro leal y protector. Su hogar de tránsito vence en pocos días. Necesita una familia sin otros animales que le brinde paciencia y afecto.',
     salud: {
@@ -77,6 +80,7 @@ const samplePets = [
     sociable: true,
     castrado: false,
     urgent: false,
+    padrinos: 1, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=80',
     description: 'Curiosa y ronroneadora. Se entrega con compromiso formal de castración gratuita por parte de la red de voluntarios.',
     salud: {
@@ -98,6 +102,7 @@ const samplePets = [
     sociable: true,
     castrado: false,
     urgent: true,
+    padrinos: 4, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1591160690555-5debfba289f0?auto=format&fit=crop&w=600&q=80',
     description: 'Cachorrita mestiza de tamaño mediano encontrada en Banda Norte. Muy juguetona, desparasitada y con primera vacuna aplicada.',
     salud: {
@@ -119,6 +124,7 @@ const samplePets = [
     sociable: true,
     castrado: true,
     urgent: false,
+    padrinos: 2, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=600&q=80',
     description: 'Un gigante bueno y bonachón. Camina muy bien con correa y adora las siestas al sol. Apto para convivir con niños.',
     salud: {
