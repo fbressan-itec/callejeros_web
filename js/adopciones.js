@@ -289,6 +289,19 @@ document.addEventListener('DOMContentLoaded', () => {
   btnClosePublishPet?.addEventListener('click', closePublishPetModal);
 
   // Subida y preview de foto para publicar mascota
+  // Contador de la descripción (máximo 400 caracteres para que la ficha se lea bien)
+  const pubDesc = document.getElementById('pub-desc');
+  const pubDescCount = document.getElementById('pub-desc-count');
+  function updateDescCount() {
+    if (!pubDesc || !pubDescCount) return;
+    const max = parseInt(pubDesc.getAttribute('maxlength'), 10) || 400;
+    const len = pubDesc.value.length;
+    pubDescCount.textContent = len + ' / ' + max;
+    pubDescCount.classList.toggle('text-orange-600', len >= max - 40);
+  }
+  pubDesc?.addEventListener('input', updateDescCount);
+  formPublicarPet?.addEventListener('reset', () => setTimeout(updateDescCount, 0));
+
   pubPhotoFile?.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;

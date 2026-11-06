@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Desplegable cerrado por defecto (Figma "Info desplegable")
   function accordion(title, icon, inner) {
     return `
-      <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+      <details class="group scroll-mt-36 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
         <summary class="flex items-center justify-between gap-3 min-h-[56px] px-4 py-3 cursor-pointer list-none font-display font-bold text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
           <span class="flex items-center gap-2"><span aria-hidden="true">${icon}</span>${title}</span>
           <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -113,14 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
         ` : ''}
 
-        <!-- Degradado fijo (opción A): siempre legible, no tapa la cara del animal -->
-        <div class="absolute inset-x-0 bottom-0 pt-24 p-5 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent pointer-events-none space-y-2">
-          <div class="flex flex-wrap gap-1.5">
-            <span class="px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${pet.sociable ? 'bg-emerald-600' : 'bg-red-500'}">${pet.sociable ? 'Sociable' : 'Salvaje / Tímido'}</span>
-            ${pet.urgent ? '<span class="px-2.5 py-1 rounded-md text-xs font-extrabold text-white bg-rose-600 shadow-md">🚨 Caso Urgente</span>' : ''}
-            <span class="px-2.5 py-1 rounded-md text-xs font-bold text-white bg-slate-950/60 backdrop-blur-sm">${escapeHtml(pet.age)} · ${sexLabel}</span>
-          </div>
-          <p class="text-sm text-white leading-relaxed line-clamp-2">${escapeHtml(pet.description)}</p>
+        <!-- Degradado fijo (opción A): solo el resumen de la descripción, siempre legible.
+             Las etiquetas (sociable, urgente, edad, sexo) están en el Sistema de Badges de abajo. -->
+        <div class="absolute inset-x-0 bottom-0 pt-20 p-5 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent pointer-events-none">
+          <p id="pet-summary" class="text-sm text-white leading-relaxed line-clamp-2">${escapeHtml(pet.description)}</p>
+          <!-- Solo aparece si el resumen no entra en 2 líneas: abre "Descripción" con el texto completo -->
+          <button type="button" id="btn-pet-more" class="hidden pointer-events-auto mt-1 min-h-[44px] -mb-3 text-sm font-bold text-orange-300 hover:text-orange-200 underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 rounded">
+            Ver más
+          </button>
         </div>
       </section>
 
@@ -195,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     setupGallery(photos.length);
+    setupSeeMore();
     document.getElementById('btn-pet-adopt').addEventListener('click', onAdopt);
     document.getElementById('btn-pet-share').addEventListener('click', onShare);
   }
@@ -227,6 +228,20 @@ document.addEventListener('DOMContentLoaded', () => {
     dots.forEach(dot => dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index, 10))));
     document.getElementById('pet-photo-prev')?.addEventListener('click', () => goTo(Math.max(0, current() - 1)));
     document.getElementById('pet-photo-next')?.addEventListener('click', () => goTo(Math.min(count - 1, current() + 1)));
+  }
+
+  // "Ver más": solo si la descripción se corta; abre el desplegable "Descripción" y lleva hasta ahí
+  function setupSeeMore() {
+    const summary = document.getElementById('pet-summary');
+    const more = document.getElementById('btn-pet-more');
+    if (!summary || !more) return;
+    more.classList.toggle('hidden', summary.scrollHeight <= summary.clientHeight + 1);
+    more.addEventListener('click', () => {
+      const desc = document.querySelector('#pet-content details');
+      if (!desc) return;
+      desc.open = true;
+      desc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 
   // ---------------------------------------------------------------------
