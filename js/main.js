@@ -3,6 +3,17 @@
 // Lógica compartida para Navbar, Menú Lateral, Notificaciones, Temas y FAB.
 // =========================================================================
 
+// Escapa texto antes de insertarlo con innerHTML, para que los datos cargados
+// por usuarios (nombres, descripciones, alertas) no se interpreten como HTML.
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // -----------------------------------------------------------------------
@@ -63,15 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
           n.unread 
             ? 'bg-orange-50/90 dark:bg-orange-950/30 border-orange-300 dark:border-orange-800/60 shadow-sm' 
             : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700/60 opacity-80'
-        }" data-id="${n.id}">
+        }" data-id="${escapeHtml(n.id)}">
           <div class="flex items-center justify-between gap-1 mb-1">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
               n.unread ? 'bg-orange-500 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-            }">${n.tag}</span>
-            <span class="text-[11px] text-slate-600 dark:text-slate-300 font-medium">${n.time}</span>
+            }">${escapeHtml(n.tag)}</span>
+            <span class="text-[11px] text-slate-600 dark:text-slate-300 font-medium">${escapeHtml(n.time)}</span>
           </div>
-          <h4 class="font-bold text-xs text-slate-900 dark:text-white line-clamp-1">${n.title}</h4>
-          <p class="text-[11px] text-slate-600 dark:text-slate-300 line-clamp-2 mt-1 leading-relaxed">${n.text}</p>
+          <h4 class="font-bold text-xs text-slate-900 dark:text-white line-clamp-1">${escapeHtml(n.title)}</h4>
+          <p class="text-[11px] text-slate-600 dark:text-slate-300 line-clamp-2 mt-1 leading-relaxed">${escapeHtml(n.text)}</p>
         </div>
       `).join('');
 
@@ -99,15 +110,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                 n.unread ? 'bg-orange-500 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-              }">${n.tag}</span>
-              <span class="text-xs text-slate-600 dark:text-slate-300 font-medium">${n.time}</span>
+              }">${escapeHtml(n.tag)}</span>
+              <span class="text-xs text-slate-600 dark:text-slate-300 font-medium">${escapeHtml(n.time)}</span>
               ${n.unread ? '<span class="w-2 h-2 rounded-full bg-orange-500"></span>' : ''}
             </div>
-            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">${n.title}</h3>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${n.text}</p>
+            <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">${escapeHtml(n.title)}</h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtml(n.text)}</p>
           </div>
           ${n.unread ? `
-            <button type="button" class="btn-mark-single-read px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 active:scale-95 whitespace-nowrap" data-id="${n.id}">
+            <button type="button" class="btn-mark-single-read px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 active:scale-95 whitespace-nowrap" data-id="${escapeHtml(n.id)}">
               Marcar leída
             </button>
           ` : ''}
@@ -224,6 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   menuBackdrop?.addEventListener('click', () => toggleMenu(false));
 
+  // Cerrar el menú al elegir un enlace (necesario cuando el enlace apunta a la misma página, ej. #publicar)
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+
   // Cierre automático al presionar Escape o al hacer clic fuera de los sliders
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -257,11 +273,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="flex items-center justify-between">
           <div>
             <span class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold block">Cuenta activa</span>
-            <p class="font-display font-bold text-lg text-slate-900 dark:text-white">¡Hola, ${currentUser.name}!</p>
+            <p class="font-display font-bold text-lg text-slate-900 dark:text-white">¡Hola, ${escapeHtml(currentUser.name)}!</p>
             <span class="text-xs text-orange-600 dark:text-orange-400 font-medium">Voluntario Callejeros</span>
           </div>
           <div class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
-            ${currentUser.name.charAt(0).toUpperCase()}
+            ${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}
           </div>
         </div>
         <button type="button" id="btn-logout" class="mt-3 w-full py-2 px-3 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
@@ -327,11 +343,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function resetFab() {
     if (!fabBtn) return;
     fabBtn.classList.remove('opacity-25');
-    fabBtn.classList.add('opacity-85');
+    fabBtn.classList.add('opacity-90');
     clearTimeout(fabIdleTimer);
 
     fabIdleTimer = setTimeout(() => {
-      fabBtn.classList.remove('opacity-85');
+      fabBtn.classList.remove('opacity-90');
       fabBtn.classList.add('opacity-25');
     }, 2500);
   }

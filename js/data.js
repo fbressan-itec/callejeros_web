@@ -136,7 +136,7 @@ const initialNotifications = [
   { id: 1, title: 'Alerta Perro Perdido en Centro', text: 'Mestizo mediano marrón con collar azul visto en Plaza Roca.', time: 'Hace 15 min', unread: true, tag: 'Urgente' },
   { id: 2, title: 'Jornada de Castración Gratuita', text: 'Sábado 10:00 hs en Vecinal Alberdi. Cupos limitados por orden de llegada.', time: 'Hace 2 horas', unread: true, tag: 'Comunidad' },
   { id: 3, title: 'Cachorritos Huérfanos Rescatados', text: '3 gatitos de 1 mes buscan nodriza o leche especial en Banda Norte.', time: 'Hace 4 horas', unread: true, tag: 'Urgente' },
-  { id: 4, title: '¡Final Feliz!', text: 'Rocco fue adoptado y ya está en su nuevo hogar definitivo.', time: 'Ayer', unread: false, tag: 'Adopción' },
+  { id: 4, title: '¡Final Feliz!', text: 'Pancho fue adoptado y ya está en su nuevo hogar definitivo.', time: 'Ayer', unread: false, tag: 'Adopción' },
   { id: 5, title: 'Colecta de Mantas y Alimento', text: 'Recibimos donaciones para los refugios este fin de semana.', time: 'Hace 2 días', unread: false, tag: 'Colecta' }
 ];
 

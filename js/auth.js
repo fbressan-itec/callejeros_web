@@ -3,6 +3,13 @@
 // Gestión de login, registro multi-paso, validación por teléfono/código OTP (Figma) y persistencia local.
 // =========================================================================
 
+// Devuelve la página a la que volver después del login/registro.
+// Solo acepta páginas propias del sitio (ej. "adopciones.html"), nunca URLs externas ni "javascript:".
+function getSafeRedirect() {
+  const redirect = new URLSearchParams(window.location.search).get('redirect') || '';
+  return /^[a-z0-9-]+\.html(#[a-z0-9-]*)?$/i.test(redirect) ? redirect : 'index.html';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const formLogin = document.getElementById('form-login');
   const formRegister = document.getElementById('form-register');
@@ -27,9 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('callejeros_user', JSON.stringify(currentUser));
     
     // Redirección inteligente al origen o Home
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectUrl = urlParams.get('redirect') || 'index.html';
-    window.location.href = redirectUrl;
+    window.location.href = getSafeRedirect();
   });
 
   // =======================================================================
@@ -55,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let tempUserData = null;
   let timerInterval = null;
   let targetCode = '8596'; // Código de referencia exacto de Figma
+  let codeExpired = false;
 
   function completeRegistration(verified = true) {
     if (!tempUserData) return;
@@ -73,8 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (stepVerifyCode) stepVerifyCode.classList.add('hidden');
     if (stepSuccess) stepSuccess.classList.remove('hidden');
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectUrl = urlParams.get('redirect') || 'index.html';
+    const redirectUrl = getSafeRedirect();
 
     setTimeout(() => {
       window.location.href = redirectUrl;
@@ -182,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Temporizador de cuenta regresiva (04:30 en Figma)
   function startCountdownTimer(durationSeconds) {
     clearInterval(timerInterval);
+    codeExpired = false;
     let remaining = durationSeconds;
 
     function updateDisplay() {
@@ -192,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (remaining <= 0) {
         clearInterval(timerInterval);
+        codeExpired = true;
         if (countdownTimer) countdownTimer.textContent = '⏱️ (00:00) Código expirado';
       }
       remaining--;
@@ -219,8 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Acepta el código oficial de Figma '8596' o cualquier código válido de 4 dígitos para pruebas fluidas
-    if (enteredCode === targetCode || enteredCode.length === 4) {
+    if (codeExpired) {
+      alert('El código expiró. Tocá "Send Again" para recibir uno nuevo.');
+      return;
+    }
+
+    // Solo se acepta el código demo de Figma (8596), que se muestra en pantalla
+    if (enteredCode === targetCode) {
       clearInterval(timerInterval);
       completeRegistration(true);
     } else {

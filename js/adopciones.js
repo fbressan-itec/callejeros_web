@@ -85,12 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     petsGrid.innerHTML = filtered.map(pet => {
       const isFav = favorites.includes(pet.id);
+      const id = escapeHtml(pet.id);
+      const name = escapeHtml(pet.name);
+      const age = escapeHtml(pet.age);
       return `
-        <article class="pet-card group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-soft dark:shadow-soft-dark hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer" data-id="${pet.id}">
-          
+        <article class="pet-card group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-soft dark:shadow-soft-dark hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer" data-id="${id}">
+
           <!-- Foto y Badges Superiores -->
           <div class="relative w-full h-44 sm:h-52 overflow-hidden bg-slate-100 dark:bg-slate-900">
-            <img src="${pet.image}" alt="Foto de ${pet.name}, ${pet.age}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <img src="${escapeHtml(pet.image)}" alt="Foto de ${name}, ${age}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             
             <!-- Badges Superiores Izquierdos (Sociabilidad y Caso Urgente) -->
             <div class="absolute top-2.5 left-2.5 flex flex-col gap-1.5 items-start">
@@ -108,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Botón Me Gusta / Favoritos -->
             <div class="absolute top-2.5 right-2.5 z-10">
-              <button type="button" class="btn-toggle-fav w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-white hover:text-red-500 flex items-center justify-center shadow-md active:scale-125 transition-transform" data-id="${pet.id}" aria-label="Guardar a ${pet.name} en favoritos">
+              <button type="button" class="btn-toggle-fav w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-white hover:text-red-500 flex items-center justify-center shadow-md active:scale-125 transition-transform" data-id="${id}" aria-label="Guardar a ${name} en favoritos">
                 <svg class="w-4 h-4 transition-colors ${
                   isFav ? 'fill-red-500 text-red-500' : 'fill-none text-slate-900 dark:text-white'
                 }" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,17 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="p-3.5 sm:p-4 flex flex-col justify-between flex-grow bg-white dark:bg-slate-850">
             <div>
               <div class="flex items-center justify-between gap-1">
-                <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">${pet.name}</h3>
-                <span class="text-xs text-slate-400 capitalize">${pet.sex || ''}</span>
+                <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">${name}</h3>
+                <span class="text-xs text-slate-400 capitalize">${escapeHtml(pet.sex)}</span>
               </div>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                ${pet.age} • ${pet.castrado ? 'Castrado' : 'No Castrado'}
+                ${age} • ${pet.castrado ? 'Castrado' : 'No Castrado'}
               </p>
             </div>
 
             <!-- Botón Adoptar: Lleva a la descripción del animal (Fiel a Figma) -->
             <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-              <button type="button" class="btn-open-detail-view w-full py-2.5 px-3 rounded-xl font-display font-bold text-xs text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-1.5" data-id="${pet.id}">
+              <button type="button" class="btn-open-detail-view w-full py-2.5 px-3 rounded-xl font-display font-bold text-xs text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-1.5" data-id="${id}">
                 <span>Adoptar</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
               </button>
@@ -340,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="text-base">${pet.sex === 'macho' ? '♂' : '♀'}</span>
           <div>
             <span class="text-[10px] uppercase font-bold text-slate-400 block">Sexo</span>
-            <span class="text-xs font-bold text-slate-800 dark:text-slate-200 capitalize">${pet.sex || 'Macho'}</span>
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-200 capitalize">${escapeHtml(pet.sex || 'Macho')}</span>
           </div>
         </div>
 
@@ -349,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="text-base">🎂</span>
           <div>
             <span class="text-[10px] uppercase font-bold text-slate-400 block">Edad</span>
-            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${pet.age}</span>
+            <span class="text-xs font-bold text-slate-800 dark:text-slate-200">${escapeHtml(pet.age)}</span>
           </div>
         </div>
 
@@ -377,23 +380,23 @@ document.addEventListener('DOMContentLoaded', () => {
       detalleSaludContent.innerHTML = `
         <div class="flex justify-between py-1">
           <span class="text-slate-500">Estado Clínico:</span>
-          <span class="font-bold text-slate-900 dark:text-white">${salud.estado}</span>
+          <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(salud.estado)}</span>
         </div>
         <div class="flex justify-between py-1">
           <span class="text-slate-500">Vacunación:</span>
-          <span class="font-bold text-slate-900 dark:text-white">${salud.vacunas}</span>
+          <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(salud.vacunas)}</span>
         </div>
         <div class="flex justify-between py-1">
           <span class="text-slate-500">Desparasitación:</span>
-          <span class="font-bold text-slate-900 dark:text-white">${salud.parasitos}</span>
+          <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(salud.parasitos)}</span>
         </div>
         <div class="flex justify-between py-1">
           <span class="text-slate-500">Pulgas / Garrapatas:</span>
-          <span class="font-bold text-slate-900 dark:text-white">${salud.pulgas}</span>
+          <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(salud.pulgas)}</span>
         </div>
         <div class="flex justify-between py-1">
           <span class="text-slate-500">Observaciones:</span>
-          <span class="font-bold text-slate-900 dark:text-white">${salud.otros}</span>
+          <span class="font-bold text-slate-900 dark:text-white">${escapeHtml(salud.otros)}</span>
         </div>
       `;
     }
@@ -532,10 +535,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const pubPreviewImg = document.getElementById('pub-preview-img');
   const pubPhotoData = document.getElementById('pub-photo-data');
 
-  btnOpenPublishPet?.addEventListener('click', () => {
+  function openPublishPetModal() {
     modalPublicarPet?.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
-  });
+  }
+
+  btnOpenPublishPet?.addEventListener('click', openPublishPetModal);
+
+  // Acceso directo desde el menú hamburguesa ("Publicar" → adopciones.html#publicar)
+  function openPublishFromHash() {
+    if (window.location.hash !== '#publicar') return;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    openPublishPetModal();
+  }
+  window.addEventListener('hashchange', openPublishFromHash);
+  openPublishFromHash();
 
   function closePublishPetModal() {
     modalPublicarPet?.classList.add('hidden');
