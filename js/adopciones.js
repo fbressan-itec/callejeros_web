@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Botón Me Gusta / Favoritos -->
             <div class="absolute top-2.5 right-2.5 z-10">
-              <button type="button" class="btn-toggle-fav w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-white hover:text-red-500 flex items-center justify-center shadow-md active:scale-125 transition-transform" data-id="${id}" aria-label="Guardar a ${name} en favoritos">
+              <button type="button" class="btn-toggle-fav w-11 h-11 rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-white hover:text-red-500 flex items-center justify-center shadow-md active:scale-125 transition-transform" data-id="${id}" aria-label="Guardar a ${name} en favoritos">
                 <svg class="w-4 h-4 transition-colors ${
                   isFav ? 'fill-red-500 text-red-500' : 'fill-none text-slate-900 dark:text-white'
                 }" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <!-- Botón Adoptar: Lleva a la descripción del animal (Fiel a Figma) -->
             <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-              <button type="button" class="btn-open-detail-view w-full py-2.5 px-3 rounded-xl font-display font-bold text-xs text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-1.5" data-id="${id}">
+              <button type="button" class="btn-open-detail-view w-full min-h-[44px] py-2.5 px-3 rounded-xl font-display font-bold text-xs text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all shadow-sm flex items-center justify-center gap-1.5" data-id="${id}">
                 <span>Adoptar</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
               </button>

@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtml(n.text)}</p>
           </div>
           ${n.unread ? `
-            <button type="button" class="btn-mark-single-read px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 active:scale-95 whitespace-nowrap" data-id="${escapeHtml(n.id)}">
+            <button type="button" class="btn-mark-single-read min-h-[44px] px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 active:scale-95 whitespace-nowrap" data-id="${escapeHtml(n.id)}">
               Marcar leída
             </button>
           ` : ''}
@@ -230,6 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleMenu(show) {
     isMenuOpen = typeof show === 'boolean' ? show : !isMenuOpen;
+    // Menú cerrado = fuera de pantalla e inaccesible con teclado/lector de pantalla
+    if (mobileMenu) mobileMenu.inert = !isMenuOpen;
+    // El botón flotante de alerta tapaba el final del menú: se oculta mientras está abierto
+    document.getElementById('fab-alerta')?.classList.toggle('hidden', isMenuOpen);
     if (isMenuOpen) {
       // Cierre automático: cerrar panel de notificaciones si está abierto
       closeNotifPanel();
@@ -260,6 +264,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cerrar el menú al elegir un enlace (necesario cuando el enlace apunta a la misma página, ej. #publicar)
   mobileMenu?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => toggleMenu(false));
+  });
+  if (mobileMenu) mobileMenu.inert = true;
+
+  // Resaltar en el menú la sección actual (noticia.html cuenta como Noticias)
+  const currentPage = (window.location.pathname.split('/').pop() || 'index').replace(/\.html$/, '');
+  const sectionPage = currentPage === 'noticia' ? 'noticias' : currentPage;
+  mobileMenu?.querySelectorAll('a[href]').forEach(link => {
+    const [file, hash] = link.getAttribute('href').split('#');
+    if (hash) return; // "Publicar" y "Apadrinar" son accesos dentro de otra sección
+    if (file.replace(/\.html$/, '') === sectionPage) {
+      link.setAttribute('aria-current', 'page');
+      link.classList.add('ring-2', 'ring-orange-500', 'font-bold');
+    }
   });
 
   // Cierre automático al presionar Escape o al hacer clic fuera de los sliders
@@ -302,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}
           </div>
         </div>
-        <button type="button" id="btn-logout" class="mt-3 w-full py-2 px-3 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
+        <button type="button" id="btn-logout" class="mt-3 w-full min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
           Cerrar Sesión
         </button>
       `;
@@ -331,10 +348,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ¡Conectate con la comunidad! Registrate para adoptar, publicar casos de rescate o reportar alertas comunitarias.
           </p>
           <div class="flex items-center gap-2 pt-1">
-            <a href="registro.html" class="flex-1 py-2 px-3 rounded-xl font-bold text-xs text-center text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
+            <a href="registro.html" class="flex-1 inline-flex items-center justify-center min-h-[44px] py-2 px-3 rounded-xl font-bold text-xs text-center text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
               Registrarme
             </a>
-            <a href="login.html" class="flex-1 py-2 px-3 rounded-xl font-bold text-xs text-center text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 active:scale-95 transition-all">
+            <a href="login.html" class="flex-1 inline-flex items-center justify-center min-h-[44px] py-2 px-3 rounded-xl font-bold text-xs text-center text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 active:scale-95 transition-all">
               Iniciar Sesión
             </a>
           </div>

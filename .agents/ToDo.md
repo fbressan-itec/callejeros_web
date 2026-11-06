@@ -13,9 +13,30 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 - [ ] Mapa de `alerta.html`: por ahora queda el mapa de muestra. Decidir más adelante si se reemplaza por uno real (Leaflet + OpenStreetMap, sin API key) o si se mantiene como maqueta.
 - [ ] Flujo "¿Olvidaste tu contraseña?" de Figma (`ruta_loguin_mobile.png`): elegir Email/Teléfono → código → nueva contraseña. Hoy el enlace de `login.html` apunta a `#`.
 - [ ] Registro paso 3: el teléfono enmascarado se ve mal (`+54  •••• 456`); toma los primeros 4 caracteres en vez del código de área.
-- [ ] Revisar el menú hamburguesa de la home: que tenga enlaces a todas las secciones del sitio. Ojo: el menú está copiado en cada página y no es igual en todas (por ejemplo, `noticias.html` y `adopcion-responsable.html` no tienen el grupo "Quiero Colaborar").
 - [ ] Quiénes Somos: hay una foto de un hámster; reemplazarla por una de un perro o un gato.
-- [ ] Revisar el resto de pantallas contra Figma (menú hamburguesa, filtros, detalle, formulario y confirmación).
+- [ ] Ocultar o mover el link de desarrollo "Alternar Modo Test" del menú antes de la presentación.
+
+### Revisión general mobile first (2026-11-06)
+- [ ] La ficha de mascota en mobile es un modal con márgenes; la de alertas ocupa toda la pantalla. Unificar (pantalla completa en mobile).
+- [ ] Botones sin acción: "Consultar por WhatsApp" (tienda), "Google" y "Facebook" (login y registro), "Recordarme" (login).
+- [ ] Registro: el paso 3 agrega los listeners del código cada vez que se entra, y quedan duplicados si se vuelve atrás y se avanza de nuevo.
+- [ ] `<img src="">` vacíos en las fichas (adopciones y alertas) generan un pedido extra al servidor; sacar el `src` hasta que se cargue la foto.
+- [ ] Formularios: los botones de envío no se ven deshabilitados cuando faltan datos (estado "Disabled" de la convención de 5 estados).
+
+### Falta respecto a Figma
+- [ ] Flujo "¿Olvidaste tu contraseña?" (ya listado arriba).
+- [ ] Formulario de adopción: Figma pide Nombre y Apellido por separado, **Edad** y **Dirección y localidad**; hoy no están (en cambio hay vivienda, otros animales y compromiso).
+- [ ] Catálogo de adopciones: Figma muestra "¿Qué preferís adoptar?" con dos botones grandes Perro / Gato y el texto "Encontrá a tu próximo compañero de vida"; hoy son pestañas chicas Todos/Perros/Gatos.
+
+### Falta respecto al diagrama de flujo
+- [ ] Ficha de mascota: comentarios (solo usuarios), menciones a "Padrinos" y galería de varias fotos.
+- [ ] Resultado de la solicitud de adopción: aprobada (contacto del cuidador/refugio, datos/mapa, mensaje) o desaprobada (mensaje cordial + botón "Aprender sobre Adopción Responsable"). Se puede simular con una notificación.
+- [ ] Publicar adopción: exigir usuario registrado (si no, ir a login), pedir número de contacto y mostrar "publicación pendiente de aprobación" en vez de publicar directo.
+- [ ] Apadrinamiento: botón "Apadriná ahora" → elegir monto mensual → elegir mascota o fondo general → método de pago (simulado, sin cobro real).
+- [ ] Tienda: detalle de producto, botón "Agregar al carrito", carrito y elegir método de pago (simulado).
+- [ ] Donaciones: hero con fotos, cómo se usan las donaciones y preguntas frecuentes.
+- [ ] Adopción Responsable: filtro de contenido y botón para compartir en redes.
+- [ ] Sección de Voluntariado (nota del diagrama: "Ver de agregar sección de voluntariados").
 
 ### Sistema de alertas (separado de adopciones)
 Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo publica para que otros lo reconozcan (si es su mascota perdida) o puedan ayudarlo (alimento, atención, tránsito). No publica en el catálogo de adopción.
@@ -46,4 +67,8 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Noticias: cada tarjeta (ahora con foto) abre la noticia en grande en `noticia.html#id`. Los datos están en `sampleNews` (`js/data.js`). Se usa `#id` en vez de `?id=` porque algunos servidores borran el `?` al redirigir.
 - [x] Noticias con comentarios simulados (personas ficticias y respuestas de "Callejeros R4"), como pedía el diagrama original. Campo para comentar solo maquetado. Alertas y noticias usan la misma función `renderCommentItems()` de `js/main.js`.
 - [x] Carrusel de la home en mobile: las flechas tapaban el título. Ahora se ocultan en mobile (siguen en tablet/desktop), se puede deslizar con el dedo y los puntitos son botones de 44px.
+- [x] Mobile first: los 23 campos de formulario pasan a 16px (`text-base`), así iOS no hace zoom al tocarlos.
+- [x] Mobile first: todos los botones y enlaces táctiles miden al menos 44px (pestañas, filtros, favoritos, Adoptar, Llamar/Copiar, ojito de contraseña, CTA de la home y del carrusel, cerrar de modales, botones del menú). Solo queda chico "Alternar Modo Test", que se va a ocultar.
+- [x] Menú hamburguesa unificado: el de la home (completo y fiel a Figma) está en las 10 páginas que tienen menú, con chips de 44px. Resalta la sección actual y, cerrado, queda fuera del alcance del teclado (`inert`).
+- [x] El botón flotante de alerta se oculta mientras el menú está abierto.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.
