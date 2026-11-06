@@ -36,6 +36,50 @@ function renderCommentItems(comments, emptyText) {
   `).join('');
 }
 
+// =========================================================================
+// NOTIFICACIONES Y EVENTOS SIMULADOS (versión demo, sin backend)
+// Cualquier página puede agregar una notificación o programar un "evento demo"
+// (por ejemplo, la respuesta a una solicitud de adopción) que se resuelve solo
+// unos segundos después, como si respondiera un voluntario.
+// =========================================================================
+const DEMO_RESPONSE_DELAY_MS = 8000;
+
+function getNotifications() {
+  let list = JSON.parse(localStorage.getItem('callejeros_notifications') || 'null');
+  if (!list) {
+    list = [...initialNotifications];
+    localStorage.setItem('callejeros_notifications', JSON.stringify(list));
+  }
+  return list;
+}
+
+function saveNotificationList(list) {
+  localStorage.setItem('callejeros_notifications', JSON.stringify(list));
+  window.dispatchEvent(new CustomEvent('callejeros:notificaciones'));
+}
+
+// { title, text, tag, link? } → se agrega arriba, sin leer
+function pushNotification(notif) {
+  const list = getNotifications();
+  list.unshift({ id: Date.now() + Math.floor(Math.random() * 1000), time: 'Recién', unread: true, ...notif });
+  saveNotificationList(list);
+}
+
+function getStoredList(key) {
+  return JSON.parse(localStorage.getItem(key) || '[]');
+}
+
+function saveStoredList(key, list) {
+  localStorage.setItem(key, JSON.stringify(list));
+}
+
+// Programa un evento que main.js resuelve cuando pasa el tiempo (aunque se cambie de página)
+function scheduleDemoEvent(evt) {
+  const list = getStoredList('callejeros_pendientes');
+  list.push({ ...evt, resolveAt: Date.now() + DEMO_RESPONSE_DELAY_MS });
+  saveStoredList('callejeros_pendientes', list);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // -----------------------------------------------------------------------
@@ -63,11 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // -----------------------------------------------------------------------
   // 2. GESTIÓN DE NOTIFICACIONES (Badge, Slider y Persistencia)
   // -----------------------------------------------------------------------
-  let notifications = JSON.parse(localStorage.getItem('callejeros_notifications') || 'null');
-  if (!notifications) {
-    notifications = [...initialNotifications];
-    localStorage.setItem('callejeros_notifications', JSON.stringify(notifications));
-  }
+  let notifications = getNotifications();
 
   const notifBtn = document.getElementById('btn-notifications');
   const notifBadge = document.getElementById('notif-badge-count');
@@ -76,6 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const fullNotifsList = document.getElementById('full-notifications-list');
 
   function renderNotifications() {
+    // Releer siempre: otras páginas o eventos demo pueden haber agregado notificaciones
+    notifications = getNotifications();
     const unreadCount = notifications.filter(n => n.unread).length;
 
     // Actualizar badge en campanita
@@ -108,13 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `).join('');
 
-      // Marcar individual como leída al hacer click
+      // Marcar individual como leída al hacer click (y abrir su detalle si tiene enlace)
       notifSliderContainer.querySelectorAll('[data-id]').forEach(card => {
         card.addEventListener('click', () => {
           const id = parseInt(card.getAttribute('data-id'));
           const notif = notifications.find(item => item.id === id);
           if (notif) notif.unread = false;
           saveNotifications();
+          if (notif?.link) {
+            window.location.href = notif.link;
+            return;
+          }
           renderNotifications();
         });
       });
@@ -138,6 +184,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <h3 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">${escapeHtml(n.title)}</h3>
             <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtml(n.text)}</p>
+            ${n.link ? `
+              <a href="${escapeHtml(n.link)}" data-id="${escapeHtml(n.id)}" class="notif-link inline-flex items-center gap-1 min-h-[44px] text-sm font-bold text-orange-600 dark:text-orange-400 hover:underline">
+                Ver detalle <span aria-hidden="true">→</span>
+              </a>
+            ` : ''}
           </div>
           ${n.unread ? `
             <button type="button" class="btn-mark-single-read min-h-[44px] px-3 py-1.5 rounded-lg text-xs font-semibold bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-50 active:scale-95 whitespace-nowrap" data-id="${escapeHtml(n.id)}">
@@ -146,6 +197,15 @@ document.addEventListener('DOMContentLoaded', () => {
           ` : ''}
         </div>
       `).join('');
+
+      // Abrir el detalle también la marca como leída
+      fullNotifsList.querySelectorAll('.notif-link').forEach(link => {
+        link.addEventListener('click', () => {
+          const notif = notifications.find(n => n.id === parseInt(link.getAttribute('data-id')));
+          if (notif) notif.unread = false;
+          saveNotifications();
+        });
+      });
 
       fullNotifsList.querySelectorAll('.btn-mark-single-read').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -213,6 +273,46 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   renderNotifications();
+  window.addEventListener('callejeros:notificaciones', renderNotifications);
+
+  // -----------------------------------------------------------------------
+  // 2.b EVENTOS DEMO PENDIENTES (respuesta simulada de voluntarios)
+  // -----------------------------------------------------------------------
+  function resolveDemoEvent(evt) {
+    if (evt.type === 'solicitud') {
+      // Resultado de la solicitud de adopción
+      const solicitudes = getStoredList('callejeros_solicitudes');
+      const sol = solicitudes.find(s => s.id === evt.solicitudId);
+      if (!sol) return;
+      sol.status = evt.result;
+      saveStoredList('callejeros_solicitudes', solicitudes);
+      pushNotification(evt.result === 'aprobada'
+        ? { title: `¡Tu solicitud para adoptar a ${sol.petName} fue aprobada!`, text: 'Mirá los datos de contacto del hogar de tránsito para coordinar el encuentro.', tag: 'Adopción', link: `solicitud.html#${sol.id}` }
+        : { title: `Respuesta a tu solicitud para ${sol.petName}`, text: 'Esta vez no pudimos aprobarla. Te contamos por qué y cómo seguir.', tag: 'Adopción', link: `solicitud.html#${sol.id}` });
+    }
+
+    if (evt.type === 'publicacion') {
+      // Publicación de adopción aprobada: recién ahora aparece en el catálogo
+      const customPets = getStoredList('callejeros_custom_pets');
+      customPets.unshift(evt.pet);
+      saveStoredList('callejeros_custom_pets', customPets);
+      pushNotification({ title: `¡${evt.pet.name} ya está publicado!`, text: 'Un voluntario aprobó tu publicación y ya aparece en el catálogo de adopción.', tag: 'Publicación', link: 'adopciones.html' });
+    }
+  }
+
+  function processDemoEvents() {
+    const pending = getStoredList('callejeros_pendientes');
+    if (pending.length === 0) return;
+    const now = Date.now();
+    const due = pending.filter(evt => evt.resolveAt <= now);
+    if (due.length === 0) return;
+    saveStoredList('callejeros_pendientes', pending.filter(evt => evt.resolveAt > now));
+    due.forEach(resolveDemoEvent);
+    window.dispatchEvent(new CustomEvent('callejeros:datos'));
+  }
+
+  processDemoEvents();
+  setInterval(processDemoEvents, 2000);
 
   // -----------------------------------------------------------------------
   // 3. MENÚ HAMBURGUESA Y ESTADO DE SESIÓN (Logueado vs No Registrado)

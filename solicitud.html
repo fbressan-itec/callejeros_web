@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Solicitud de Adopción — Callejeros Río Cuarto</title>
+  
+  <meta name="description" content="Estado y resultado de tu solicitud de adopción en Callejeros Río Cuarto.">
+  <meta name="theme-color" content="#10b981">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#ea580c',
+              'orange-light': '#ff7849',
+              'orange-dark': '#c2410c',
+              green: '#10b981',
+              red: '#ef4444',
+            },
+            slate: {
+              750: '#293548',
+              850: '#151e2e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'soft-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- NAVBAR COMPARTIDO -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl p-1" aria-label="Ir al inicio">
+        <img src="public/images/logo_callejeros.jpg" alt="Logo Callejeros" class="h-11 sm:h-12 w-auto object-contain rounded-lg shadow-sm">
+      </a>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button type="button" id="btn-notifications" class="relative p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Centro de Notificaciones">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span id="notif-badge-count" class="absolute -top-1 -right-1 min-w-[20px] h-5 bg-red-500 text-white text-[11px] font-extrabold flex items-center justify-center px-1 rounded-full ring-2 ring-white dark:ring-slate-900 shadow-sm animate-pulse">3</span>
+        </button>
+
+        <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
+          <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-6 h-6 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+        <button type="button" id="menu-btn" class="p-2.5 rounded-xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Menú">
+          <svg id="menu-icon-bars" class="w-7 h-7 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="menu-icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slider Notificaciones -->
+    <div id="notifications-slider-panel" class="hidden border-t border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-900/98 backdrop-blur-lg shadow-xl">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider">Últimas 5 Notificaciones</h3>
+        </div>
+        <div id="notif-slider-container" class="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth pb-2"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWER HAMBURGUESA -->
+  <div id="menu-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" aria-hidden="true"></div>
+  <nav id="mobile-menu" class="fixed top-16 right-0 w-full sm:max-w-md h-[calc(100vh-4rem)] bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-40 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto flex flex-col justify-between p-6 shadow-2xl" aria-label="Menú principal de navegación">
+    <div class="space-y-6">
+      <div id="user-status-container" class="pb-4 border-b border-slate-100 dark:border-slate-800"></div>
+
+      <!-- Grupos Fieles a boceto_menu-hamburguesa_mobile.png -->
+      <!-- Grupo 1: Adoptá un Callejero -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          <h3>Adoptá un Callejero</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="adopciones.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white dark:bg-slate-800 dark:hover:bg-orange-500 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Adoptar
+          </a>
+          <a href="adopciones.html#publicar" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white dark:bg-slate-800 dark:hover:bg-orange-500 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Publicar
+          </a>
+          <a href="alerta.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white dark:bg-slate-800 dark:hover:bg-orange-500 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Reportar
+          </a>
+        </div>
+      </div>
+
+      <!-- Grupo 2: Noticias -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <h3>Noticias</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="noticias.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-emerald-600 hover:text-white dark:bg-slate-800 dark:hover:bg-emerald-600 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Eventos Benéficos y Noticias
+          </a>
+        </div>
+      </div>
+
+      <!-- Grupo 3: Información -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <h3>Información</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="quienes-somos.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Quiénes Somos
+          </a>
+          <a href="adopcion-responsable.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Adopción Responsable
+          </a>
+        </div>
+      </div>
+
+      <!-- Grupo 4: Quiero Colaborar -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2.5 text-slate-900 dark:text-white font-display font-bold text-base">
+          <svg class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          <h3>Quiero Colaborar</h3>
+        </div>
+        <div class="flex flex-wrap gap-2 pl-7">
+          <a href="donaciones.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-rose-600 hover:text-white dark:bg-slate-800 dark:hover:bg-rose-600 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Donaciones
+          </a>
+          <a href="donaciones.html#apadrinar" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-rose-600 hover:text-white dark:bg-slate-800 dark:hover:bg-rose-600 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Colaboraciones y Apadrinamientos
+          </a>
+          <a href="tienda.html" class="inline-flex items-center min-h-[44px] px-4 rounded-full bg-slate-100 hover:bg-rose-600 hover:text-white dark:bg-slate-800 dark:hover:bg-rose-600 text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors shadow-sm">
+            Tienda
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dev Toggle de Sesión -->
+    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300">
+      <span>Estado: <strong id="auth-state-label" class="text-orange-600 dark:text-orange-400">No Registrado</strong></span>
+      <button type="button" id="btn-toggle-auth-state" class="underline hover:text-slate-900 dark:hover:text-white transition-colors">
+        Alternar Modo Test
+      </button>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO: RESULTADO DE LA SOLICITUD DE ADOPCIÓN (solicitud.html#id) -->
+  <!-- Diagrama de flujo: Formulario → Aprobado (contacto, datos/mapa, mensaje) / Desaprobado (mensaje cordial + Adopción Responsable) -->
+  <main class="flex-grow max-w-2xl mx-auto px-4 sm:px-8 py-8 sm:py-12 w-full space-y-6">
+    <!-- Botón Volver (estilo Figma "<") -->
+    <div class="-mb-2">
+      <a href="notificaciones.html" data-back class="inline-flex items-center gap-1.5 min-w-[44px] min-h-[44px] px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-all" aria-label="Volver a la pantalla anterior">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        <span class="hidden sm:inline text-sm font-semibold">Volver</span>
+      </a>
+    </div>
+
+    <!-- Se completa según el estado de la solicitud (js abajo) -->
+    <section id="solicitud-detalle" class="space-y-5" aria-live="polite"></section>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-8 text-center text-xs text-slate-600 dark:text-slate-300 mt-auto">
+    <p>© 2026 Callejeros Río Cuarto. Red comunitaria de protección animal.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('solicitud-detalle');
+
+      // Datos de contacto simulados del hogar de tránsito (versión demo).
+      // Por privacidad nunca se muestra la dirección del tránsito: solo un punto de encuentro público.
+      const transito = {
+        nombre: 'Laura M.',
+        rol: 'Voluntaria a cargo del tránsito',
+        telefono: '358 412 0000',
+        encuentro: 'Centro Vecinal Alberdi (Av. Colombres y Pasteur)'
+      };
+
+      function petCard(sol) {
+        return `
+          <div class="flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+            ${sol.petImage ? `<img src="${escapeHtml(sol.petImage)}" alt="Foto de ${escapeHtml(sol.petName)}" class="w-16 h-16 rounded-2xl object-cover flex-shrink-0">` : ''}
+            <div class="min-w-0">
+              <span class="block text-[11px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400">Solicitud de adopción</span>
+              <span class="block font-display font-bold text-lg text-slate-900 dark:text-white truncate">${escapeHtml(sol.petName)}</span>
+              <span class="block text-xs text-slate-500 dark:text-slate-400">Enviada el ${new Date(sol.createdAt).toLocaleDateString('es-AR')}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      function render() {
+        const id = decodeURIComponent(window.location.hash.slice(1));
+        const sol = getStoredList('callejeros_solicitudes').find(s => s.id === id);
+
+        if (!sol) {
+          container.innerHTML = `
+            <div class="py-16 text-center space-y-3">
+              <span class="text-4xl block" aria-hidden="true">📄</span>
+              <h1 class="font-display font-bold text-xl text-slate-900 dark:text-white">No encontramos esa solicitud</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-300">Puede que se haya borrado de este dispositivo.</p>
+              <a href="adopciones.html" class="inline-flex items-center justify-center min-h-[44px] px-5 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all">Ver mascotas en adopción</a>
+            </div>
+          `;
+          return;
+        }
+
+        if (sol.status === 'pendiente') {
+          container.innerHTML = `
+            <div class="text-center space-y-3 pt-2">
+              <div class="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-950/60 flex items-center justify-center text-3xl mx-auto animate-pulse" aria-hidden="true">⏳</div>
+              <h1 class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">Tu solicitud está en revisión</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-300">Un voluntario está leyendo tu cuestionario. Esta pantalla se actualiza sola cuando haya respuesta.</p>
+            </div>
+            ${petCard(sol)}
+          `;
+          return;
+        }
+
+        if (sol.status === 'aprobada') {
+          const tel = transito.telefono.replace(/\D/g, '');
+          container.innerHTML = `
+            <div class="text-center space-y-3 pt-2">
+              <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl mx-auto" aria-hidden="true">🎉</div>
+              <h1 class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">¡Solicitud aprobada!</h1>
+              <p class="text-sm text-slate-600 dark:text-slate-300">Gracias por elegir la adopción responsable. ${escapeHtml(sol.petName)} está muy cerca de tener un hogar para siempre.</p>
+            </div>
+            ${petCard(sol)}
+
+            <!-- Contacto del cuidador / refugio -->
+            <div class="p-5 rounded-3xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/60 space-y-3">
+              <h2 class="font-display font-bold text-base text-slate-900 dark:text-white">Contacto del hogar de tránsito</h2>
+              <div class="text-sm text-slate-700 dark:text-slate-200">
+                <span class="block font-bold">${escapeHtml(transito.nombre)}</span>
+                <span class="block text-xs text-slate-500 dark:text-slate-400">${escapeHtml(transito.rol)}</span>
+                <span class="block font-mono mt-1">${escapeHtml(transito.telefono)}</span>
+              </div>
+              <a href="tel:${tel}" class="flex items-center justify-center w-full min-h-[44px] rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 shadow-sm transition-all">📞 Llamar para coordinar</a>
+            </div>
+
+            <!-- Datos / mapa: punto de encuentro público -->
+            <div class="p-5 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-3">
+              <h2 class="font-display font-bold text-base text-slate-900 dark:text-white">Punto de encuentro</h2>
+              <p class="text-sm text-slate-700 dark:text-slate-200">📍 ${escapeHtml(transito.encuentro)}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Por la seguridad del animal y de la familia de tránsito, el primer encuentro es en un lugar público.</p>
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Centro Vecinal Alberdi, Río Cuarto')}" target="_blank" rel="noopener" class="flex items-center justify-center w-full min-h-[44px] rounded-xl font-bold text-sm text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95 transition-all">🗺️ Ver en el mapa</a>
+            </div>
+
+            <!-- Próximos pasos -->
+            <div class="p-5 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-2">
+              <h2 class="font-display font-bold text-base text-slate-900 dark:text-white">Próximos pasos</h2>
+              <ol class="list-decimal pl-5 space-y-1 text-sm text-slate-700 dark:text-slate-200">
+                <li>Coordiná el encuentro con la voluntaria.</li>
+                <li>Conocé a ${escapeHtml(sol.petName)} y hacé todas las preguntas que necesites.</li>
+                <li>Firmamos juntos el acta de adopción responsable.</li>
+              </ol>
+            </div>
+          `;
+          return;
+        }
+
+        // Desaprobada: mensaje cordial + sección educativa (diagrama de flujo)
+        container.innerHTML = `
+          <div class="text-center space-y-3 pt-2">
+            <div class="w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-950/60 flex items-center justify-center text-3xl mx-auto" aria-hidden="true">💛</div>
+            <h1 class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">Esta vez no pudimos aprobar tu solicitud</h1>
+            <p class="text-sm text-slate-600 dark:text-slate-300">Gracias de corazón por querer darle un hogar a ${escapeHtml(sol.petName)}. No es un "no" para siempre.</p>
+          </div>
+          ${petCard(sol)}
+
+          <div class="p-5 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-2">
+            <h2 class="font-display font-bold text-base text-slate-900 dark:text-white">¿Por qué?</h2>
+            <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+              Para cuidar la seguridad de cada animal pedimos un espacio cerrado: patio con cerco o balcón con red de protección. Con una casa abierta, el riesgo de escapes y accidentes en la calle es muy alto.
+            </p>
+            <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+              Si podés adaptar tu hogar, ¡te esperamos de nuevo! También podés ayudar apadrinando o como hogar de tránsito.
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <a href="adopcion-responsable.html" class="flex items-center justify-center w-full min-h-[44px] rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-md transition-all">📘 Aprender sobre Adopción Responsable</a>
+            <a href="donaciones.html#apadrinar" class="flex items-center justify-center w-full min-h-[44px] rounded-xl font-bold text-sm text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all">Otras formas de ayudar</a>
+          </div>
+        `;
+      }
+
+      render();
+      // Si la respuesta llega mientras la pantalla está abierta, se actualiza sola
+      window.addEventListener('callejeros:datos', render);
+      window.addEventListener('hashchange', render);
+    });
+  </script>
+</body>
+</html>

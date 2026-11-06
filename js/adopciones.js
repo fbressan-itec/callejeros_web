@@ -438,13 +438,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // BOTÓN "¡ADOPTAME!" DENTRO DE LA FICHA: VALIDACIÓN DE SESIÓN OBLIGATORIA
   // =========================================================================
   const modalAuthRequired = document.getElementById('modal-auth-required');
-  const authRequiredPetName = document.getElementById('auth-required-pet-name');
   const btnCloseAuthRequired = document.getElementById('btn-close-auth-required');
 
-  function openAuthRequiredModal(pet) {
-    if (authRequiredPetName) authRequiredPetName.textContent = pet ? pet.name : 'la mascota';
+  // Mismo popup para adoptar y para publicar: cambia el texto y a dónde volver después del login
+  function openAuthRequiredModal({ text, redirect }) {
+    const textEl = document.getElementById('auth-required-text');
+    if (textEl) textEl.textContent = text;
+    const target = encodeURIComponent(redirect || 'adopciones.html');
+    document.getElementById('auth-required-login')?.setAttribute('href', `login.html?redirect=${target}`);
+    document.getElementById('auth-required-register')?.setAttribute('href', `registro.html?redirect=${target}`);
     modalAuthRequired?.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
+  }
+
+  function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('callejeros_user') || 'null');
   }
 
   function closeAuthRequiredModal() {
@@ -458,11 +466,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!currentSelectedPet) return;
 
     // Validación de sesión activa
-    const currentUser = JSON.parse(localStorage.getItem('callejeros_user') || 'null');
-
-    if (!currentUser) {
+    if (!getCurrentUser()) {
       // SI NO ESTÁ LOGUEADO: Mostrar popup obligatorio con opción de login/registro
-      openAuthRequiredModal(currentSelectedPet);
+      openAuthRequiredModal({
+        text: `Para postularte a la adopción responsable de ${currentSelectedPet.name} es obligatorio ingresar con tu cuenta. Así podremos ponernos en contacto para coordinar la entrevista y el seguimiento.`,
+        redirect: 'adopciones.html'
+      });
     } else {
       // SI ESTÁ LOGUEADO: Cerrar detalle y abrir cuestionario oficial de adopción
       closePetDetailModal();
@@ -508,12 +517,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnCloseAdopcion?.addEventListener('click', closeAdopcionModal);
 
-  formAdopcion?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    closeAdopcionModal();
+  function openSuccessModal(title, text) {
+    document.getElementById('modal-exito-titulo').textContent = title;
+    document.getElementById('modal-exito-texto').textContent = text;
     modalExito?.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
+  }
+
+  // Envío del cuestionario: se guarda la solicitud y un voluntario "responde" a los segundos.
+  // Regla de la demo: si la vivienda no es segura (casa abierta, sin patio) se desaprueba,
+  // así en la presentación se pueden mostrar los dos resultados del diagrama de flujo.
+  formAdopcion?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const pet = currentSelectedPet;
+    const housing = document.getElementById('adopt-housing').value;
+    const solicitud = {
+      id: 'sol-' + Date.now(),
+      petId: pet?.id || '',
+      petName: pet?.name || 'la mascota',
+      petImage: pet?.image || '',
+      specie: pet?.specie || 'perro',
+      applicant: document.getElementById('adopt-name').value.trim(),
+      housing,
+      createdAt: Date.now(),
+      status: 'pendiente'
+    };
+    const solicitudes = getStoredList('callejeros_solicitudes');
+    solicitudes.unshift(solicitud);
+    saveStoredList('callejeros_solicitudes', solicitudes);
+
+    scheduleDemoEvent({
+      type: 'solicitud',
+      solicitudId: solicitud.id,
+      result: housing === 'casa_sin_patio' ? 'desaprobada' : 'aprobada'
+    });
+    pushNotification({
+      title: `Recibimos tu solicitud para adoptar a ${solicitud.petName}`,
+      text: 'Un voluntario está revisando tu cuestionario. Te avisamos acá cuando haya respuesta.',
+      tag: 'Adopción',
+      link: `solicitud.html#${solicitud.id}`
+    });
+
+    closeAdopcionModal();
     formAdopcion.reset();
+    openSuccessModal('¡Datos enviados correctamente!', `Te avisaremos en tus notificaciones si la solicitud para adoptar a ${solicitud.petName} es aceptada.`);
   });
 
   document.getElementById('btn-modal-ir-inicio')?.addEventListener('click', () => {
@@ -535,7 +582,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const pubPreviewImg = document.getElementById('pub-preview-img');
   const pubPhotoData = document.getElementById('pub-photo-data');
 
+  // Publicar exige cuenta (diagrama de flujo: usuario no registrado → login)
   function openPublishPetModal() {
+    if (!getCurrentUser()) {
+      openAuthRequiredModal({
+        text: 'Para publicar una mascota en adopción es obligatorio ingresar con tu cuenta. Así el equipo puede contactarte para revisar la publicación.',
+        redirect: 'adopciones.html#publicar'
+      });
+      return;
+    }
     modalPublicarPet?.classList.remove('hidden');
     document.body.classList.add('overflow-hidden');
   }
@@ -611,9 +666,16 @@ document.addEventListener('DOMContentLoaded', () => {
         : 'Publicado por la comunidad de Callejeros R4 para adopción responsable.'
     };
 
-    let customPets = JSON.parse(localStorage.getItem('callejeros_custom_pets') || '[]');
-    customPets.unshift(newPet);
-    localStorage.setItem('callejeros_custom_pets', JSON.stringify(customPets));
+    // El teléfono queda para los voluntarios; no se muestra en el catálogo
+    newPet.contact = document.getElementById('pub-contact').value.trim();
+
+    // No se publica directo: queda pendiente y un voluntario la aprueba a los segundos (demo)
+    scheduleDemoEvent({ type: 'publicacion', pet: newPet });
+    pushNotification({
+      title: `Tu publicación de ${name} está en revisión`,
+      text: 'Un voluntario la va a revisar antes de que aparezca en el catálogo. Te avisamos acá.',
+      tag: 'Publicación'
+    });
 
     closePublishPetModal();
     formPublicarPet.reset();
@@ -621,9 +683,11 @@ document.addEventListener('DOMContentLoaded', () => {
     pubDropzonePreview.classList.add('hidden');
     pubDropzoneEmpty.classList.remove('hidden');
 
-    renderPets();
-    openPetDetailModal(newPet);
+    openSuccessModal('¡Publicación enviada!', `Un voluntario va a revisar la publicación de ${name}. Cuando la apruebe, aparece en el catálogo y te avisamos en tus notificaciones.`);
   });
+
+  // Cuando un evento demo se resuelve (ej. publicación aprobada), actualizar el catálogo
+  window.addEventListener('callejeros:datos', renderPets);
 
   renderPets();
 });

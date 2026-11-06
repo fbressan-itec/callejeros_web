@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (codeExpired) {
-      alert('El código expiró. Tocá "Send Again" para recibir uno nuevo.');
+      alert('El código expiró. Tocá "Reenviar código" para recibir uno nuevo.');
       return;
     }
 

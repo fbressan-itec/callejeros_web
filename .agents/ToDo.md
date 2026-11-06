@@ -20,12 +20,10 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 
 ### Falta respecto a Figma
 - [ ] Formulario de adopción: Figma separa **Nombre** y **Apellido** en dos campos; hoy es uno solo ("Nombre Completo"). Opcional.
-- [ ] Catálogo de adopciones: Figma muestra "¿Qué preferís adoptar?" con dos botones grandes Perro / Gato y el texto "Encontrá a tu próximo compañero de vida"; hoy son pestañas chicas Todos/Perros/Gatos.
+- [ ] (En análisis) Catálogo de adopciones: Figma muestra "¿Qué preferís adoptar?" con dos botones grandes Perro / Gato y el texto "Encontrá a tu próximo compañero de vida"; hoy son pestañas chicas Todos/Perros/Gatos.
 
 ### Falta respecto al diagrama de flujo
 - [ ] Ficha de mascota: comentarios (solo usuarios), menciones a "Padrinos" y galería de varias fotos.
-- [ ] Resultado de la solicitud de adopción: aprobada (contacto del cuidador/refugio, datos/mapa, mensaje) o desaprobada (mensaje cordial + botón "Aprender sobre Adopción Responsable"). Se puede simular con una notificación.
-- [ ] Publicar adopción: exigir usuario registrado (si no, ir a login), pedir número de contacto y mostrar "publicación pendiente de aprobación" en vez de publicar directo.
 - [ ] Apadrinamiento: botón "Apadriná ahora" → elegir monto mensual → elegir mascota o fondo general → método de pago (simulado, sin cobro real).
 - [ ] Tienda: detalle de producto, botón "Agregar al carrito", carrito y elegir método de pago (simulado).
 - [ ] Donaciones: hero con fotos, cómo se usan las donaciones y preguntas frecuentes.
@@ -39,9 +37,10 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 
 ### Documentación
 - [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html` y `recuperar.html` (también en `docs/contexto/arquitectura.md`).
+- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html` y `solicitud.html` (también en `docs/contexto/arquitectura.md`).
 - [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
+- [ ] ADR-020 dice que el registro usa los textos en inglés de Figma ("Verify", "Send Again"); ahora está en español. Registrar el cambio en un ADR nuevo.
 - [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. Definir cuál queda.
 
 ### Entrega / presentación
@@ -69,4 +68,8 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Flujo "¿Olvidaste tu contraseña?" de Figma en `recuperar.html`: elegir Email o Teléfono → código de 4 dígitos (demo: `7098`, temporizador 02:30) → nueva contraseña → éxito. Enlazado desde "¿Olvidaste tu clave?" del login.
 - [x] Formulario de adopción: se agregaron **Edad** (mínimo 18 años), **Dirección** y **Localidad**, como en Figma.
 - [x] Decidido (versión demo): queda visible "Alternar Modo Test", y no se corrigen el teléfono enmascarado del registro ni los listeners duplicados del código.
+- [x] Resultado de la solicitud de adopción (diagrama de flujo): al enviar el cuestionario llega la notificación "Recibimos tu solicitud" y, unos 8 segundos después, la respuesta simulada. Se ve en `solicitud.html#id`: **aprobada** (contacto del hogar de tránsito, punto de encuentro público con mapa y próximos pasos) o **desaprobada** (mensaje cordial + "Aprender sobre Adopción Responsable"). Regla de la demo: casa abierta sin patio → desaprobada; el resto → aprobada.
+- [x] Publicar adopción: exige cuenta (si no, popup de login que vuelve a `adopciones.html#publicar`), pide teléfono de contacto (no se muestra en el catálogo) y queda **en revisión**; a los segundos se aprueba, aparece en el catálogo y llega la notificación.
+- [x] Notificaciones con enlace ("Ver detalle") y eventos demo que se resuelven solos (`scheduleDemoEvent` y `pushNotification` en `js/main.js`).
+- [x] Registro en español ("Registrarme", "Ingresá tu número de teléfono", "Verificar", "Más tarde", "Verificá tu teléfono", "Reenviar código"), igual que recuperar contraseña.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.
