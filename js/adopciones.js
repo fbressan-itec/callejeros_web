@@ -69,6 +69,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (filtered.length === 0) {
+      // Filtro de favoritos sin ninguno guardado: estado vacío propio (no es un error de filtros)
+      if (activeFilterOnlyFavs && favorites.length === 0) {
+        petsGrid.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-500 dark:text-slate-400 space-y-3">
+            <span class="text-4xl block" aria-hidden="true">🤍</span>
+            <p class="font-bold text-base sm:text-lg text-slate-800 dark:text-slate-200">Todavía no tenés favoritos</p>
+            <p class="text-xs sm:text-sm max-w-sm mx-auto">Tocá el ❤️ en las mascotas que te gusten para guardarlas y encontrarlas rápido acá.</p>
+            <button type="button" id="btn-quick-reset" class="inline-flex items-center justify-center min-h-[44px] px-5 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
+              Ver mascotas en adopción
+            </button>
+          </div>
+        `;
+        document.getElementById('btn-quick-reset')?.addEventListener('click', resetAllFilters);
+        return;
+      }
       petsGrid.innerHTML = `
         <div class="col-span-full py-16 text-center text-slate-500 dark:text-slate-400">
           <span class="text-4xl block mb-2">🔍</span>
@@ -208,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activeFilterSex = document.querySelector('input[name="filter-sex"]:checked')?.value || 'all';
     activeFilterOnlyFavs = filterOnlyFavs?.checked || false;
     activeFilterOnlyUrgent = filterOnlyUrgent?.checked || false;
+    if (!activeFilterOnlyFavs) clearFavoritesHash();
 
     closeFiltersModal();
     renderPets();
@@ -232,11 +248,30 @@ document.addEventListener('DOMContentLoaded', () => {
     activeFilterSex = 'all';
     activeFilterOnlyFavs = false;
     activeFilterOnlyUrgent = false;
+    clearFavoritesHash();
 
     renderPets();
   }
 
   btnResetFilters?.addEventListener('click', resetAllFilters);
+
+  // Acceso directo desde Mi Cuenta ("Favoritos" → adopciones.html#favoritos).
+  // El #favoritos queda en la URL para que al volver de una ficha siga el filtro;
+  // se borra al limpiar o quitar el filtro.
+  function clearFavoritesHash() {
+    if (window.location.hash === '#favoritos') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }
+
+  function applyFavoritesFromHash() {
+    if (window.location.hash !== '#favoritos') return;
+    activeFilterOnlyFavs = true;
+    if (filterOnlyFavs) filterOnlyFavs.checked = true;
+    renderPets();
+  }
+  window.addEventListener('hashchange', applyFavoritesFromHash);
+  applyFavoritesFromHash();
 
   // =========================================================================
   // FICHA DE MASCOTA: ahora es una página propia (mascota.html#id, js/mascota.js),

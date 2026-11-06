@@ -157,7 +157,7 @@
       </div>
     </div>
 
-    <!-- Dev Toggle de Sesión -->
+    <!-- Dev Toggle de Sesión: QUITAR ESTE BOTÓN EN LA FASE DE DESARROLLO (solo sirve para probar la demo con y sin sesión) -->
     <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300">
       <span>Estado: <strong id="auth-state-label" class="text-orange-600 dark:text-orange-400">No Registrado</strong></span>
       <button type="button" id="btn-toggle-auth-state" class="underline hover:text-slate-900 dark:hover:text-white transition-colors">
@@ -181,7 +181,6 @@
     <div class="space-y-1">
       <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600 dark:text-orange-400">Mi Cuenta</span>
       <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white">Administrá tu cuenta</h1>
-      <p class="text-sm text-slate-600 dark:text-slate-300">Tu foto, tus datos de contacto, la seguridad de tu cuenta y cómo querés que te avisemos.</p>
     </div>
 
     <!-- Aviso de sesión (se muestra si no hay usuario) -->
@@ -200,7 +199,10 @@
     <div id="account-content" class="hidden space-y-6">
 
       <!-- =============================================================== -->
-      <!-- TARJETA DE PERFIL: foto, nombre y estado de la cuenta           -->
+      <!-- TARJETA DE PERFIL: foto, nombre y badges de la cuenta           -->
+      <!-- En el back end, esta card es la que se va a mostrar a otros     -->
+      <!-- usuarios (perfil público). Por eso no lleva datos privados:     -->
+      <!-- teléfono, dirección y su estado van solo en Configuración.      -->
       <!-- =============================================================== -->
       <section class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft dark:shadow-soft-dark text-center space-y-4" aria-labelledby="account-name">
         <div class="relative w-28 h-28 mx-auto">
@@ -219,9 +221,25 @@
           <p id="account-email" class="text-sm text-slate-500 dark:text-slate-400 break-all"></p>
         </div>
 
+        <!-- BADGES DE ROL: las asigna SOLO el admin desde el back end; el usuario no puede
+             ponérselas ni sacárselas. Se muestra una sola badge de rol. Si la cuenta no tiene
+             rol, va "Miembro de la comunidad".
+             No hay badge para voluntarios de refugios: no se puede comprobar quién lo es.
+             Demo: se muestra "Staff Callejeros" como ejemplo. -->
         <div class="flex flex-wrap justify-center gap-2">
-          <span id="account-phone-badge" class="px-2.5 py-1 rounded-full text-[11px] font-bold"></span>
-          <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300">🐾 Miembro de la comunidad</span>
+          <!-- Staff Callejeros: equipo que modera el sitio (asigna el admin) -->
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300">
+            <span aria-hidden="true">🛡️</span> Staff Callejeros
+          </span>
+          <!-- Refugio verificado: refugios oficiales (asigna el admin). Para verla, quitar "hidden". -->
+          <span class="hidden inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300">
+            <span class="w-4 h-4 rounded-full bg-blue-600 text-white flex items-center justify-center" aria-hidden="true">
+              <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </span>
+            Refugio verificado
+          </span>
+          <!-- Miembro de la comunidad: solo para cuentas sin rol (oculta en la demo porque se muestra Staff) -->
+          <span class="hidden px-2.5 py-1 rounded-full text-[11px] font-bold bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300">🐾 Miembro de la comunidad</span>
         </div>
 
         <button type="button" id="btn-remove-photo" class="hidden min-h-[44px] px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 transition-colors">
@@ -235,7 +253,7 @@
       <section class="space-y-3" aria-labelledby="activity-title">
         <h2 id="activity-title" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Mi actividad</h2>
         <div class="grid grid-cols-2 gap-3">
-          <a href="adopciones.html" class="flex flex-col gap-1 min-h-[88px] p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft hover:-translate-y-0.5 hover:border-orange-400 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 transition-all">
+          <a href="adopciones.html#favoritos" class="flex flex-col gap-1 min-h-[88px] p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft hover:-translate-y-0.5 hover:border-orange-400 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 transition-all">
             <span class="text-xl" aria-hidden="true">❤️</span>
             <span class="font-bold text-sm text-slate-900 dark:text-white">Favoritos</span>
             <span id="count-favorites" class="text-xs text-slate-500 dark:text-slate-400"></span>
@@ -263,15 +281,17 @@
       <!-- =============================================================== -->
       <section class="space-y-3" aria-labelledby="settings-title">
         <h2 id="settings-title" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Configuración</h2>
+        <!-- Cada fila cerrada muestra el dato actual (se completa desde el script).
+             name="cuenta" en los <details>: se abre uno a la vez. -->
 
         <!-- 1. Datos personales -->
-        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <details name="cuenta" class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
           <summary class="flex items-center justify-between gap-3 min-h-[64px] px-4 py-3 cursor-pointer list-none focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
             <span class="flex items-center gap-3">
               <span class="w-10 h-10 flex-shrink-0 rounded-xl bg-orange-100 dark:bg-orange-950/60 flex items-center justify-center text-lg" aria-hidden="true">👤</span>
               <span>
                 <span class="block font-display font-bold text-base text-slate-900 dark:text-white">Datos personales</span>
-                <span class="block text-xs text-slate-500 dark:text-slate-400">Nombre, fecha de nacimiento y dirección</span>
+                <span id="sum-datos" class="block text-xs text-slate-500 dark:text-slate-400">Nombre, fecha de nacimiento y dirección</span>
               </span>
             </span>
             <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -312,13 +332,13 @@
         </details>
 
         <!-- 2. Correo electrónico -->
-        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <details name="cuenta" class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
           <summary class="flex items-center justify-between gap-3 min-h-[64px] px-4 py-3 cursor-pointer list-none focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
             <span class="flex items-center gap-3">
               <span class="w-10 h-10 flex-shrink-0 rounded-xl bg-blue-100 dark:bg-blue-950/60 flex items-center justify-center text-lg" aria-hidden="true">✉️</span>
               <span>
                 <span class="block font-display font-bold text-base text-slate-900 dark:text-white">Correo electrónico</span>
-                <span class="block text-xs text-slate-500 dark:text-slate-400">Con el que iniciás sesión</span>
+                <span id="sum-email" class="block text-xs text-slate-500 dark:text-slate-400 break-all">Con el que iniciás sesión</span>
               </span>
             </span>
             <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -345,18 +365,20 @@
         </details>
 
         <!-- 3. Teléfono -->
-        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <details name="cuenta" class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
           <summary class="flex items-center justify-between gap-3 min-h-[64px] px-4 py-3 cursor-pointer list-none focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
             <span class="flex items-center gap-3">
               <span class="w-10 h-10 flex-shrink-0 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-lg" aria-hidden="true">📱</span>
               <span>
                 <span class="block font-display font-bold text-base text-slate-900 dark:text-white">Teléfono / WhatsApp</span>
-                <span class="block text-xs text-slate-500 dark:text-slate-400">Para coordinar adopciones y alertas</span>
+                <span id="sum-phone" class="block text-xs text-slate-500 dark:text-slate-400">Para coordinar adopciones y alertas</span>
               </span>
             </span>
             <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </summary>
           <form class="account-form px-4 pb-5 pt-1 space-y-4">
+            <!-- Aviso si falta cargar o verificar el teléfono (ámbar: es algo pendiente, no un error) -->
+            <p id="acc-phone-note" class="hidden p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-xs font-semibold text-amber-800 dark:text-amber-300" role="status"></p>
             <div>
               <label for="acc-phone" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Número de teléfono</label>
               <input type="tel" id="acc-phone" required inputmode="tel" autocomplete="tel" placeholder="358 4123456" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
@@ -368,13 +390,13 @@
         </details>
 
         <!-- 4. Contraseña -->
-        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <details name="cuenta" class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
           <summary class="flex items-center justify-between gap-3 min-h-[64px] px-4 py-3 cursor-pointer list-none focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
             <span class="flex items-center gap-3">
               <span class="w-10 h-10 flex-shrink-0 rounded-xl bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-lg" aria-hidden="true">🔒</span>
               <span>
                 <span class="block font-display font-bold text-base text-slate-900 dark:text-white">Contraseña</span>
-                <span class="block text-xs text-slate-500 dark:text-slate-400">Cambiala cuando quieras</span>
+                <span class="block text-xs text-slate-500 dark:text-slate-400"><span aria-hidden="true">••••••••</span> · Cambiala cuando quieras</span>
               </span>
             </span>
             <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -408,18 +430,18 @@
         </details>
 
         <!-- 5. Notificaciones -->
-        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <details name="cuenta" class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
           <summary class="flex items-center justify-between gap-3 min-h-[64px] px-4 py-3 cursor-pointer list-none focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
             <span class="flex items-center gap-3">
               <span class="w-10 h-10 flex-shrink-0 rounded-xl bg-amber-100 dark:bg-amber-950/60 flex items-center justify-center text-lg" aria-hidden="true">🔔</span>
               <span>
                 <span class="block font-display font-bold text-base text-slate-900 dark:text-white">Notificaciones</span>
-                <span class="block text-xs text-slate-500 dark:text-slate-400">Qué avisos recibís y por dónde</span>
+                <span id="sum-notif" class="block text-xs text-slate-500 dark:text-slate-400">Qué avisos recibís y por dónde</span>
               </span>
             </span>
             <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
           </summary>
-          <form class="account-form px-4 pb-5 pt-1 space-y-4">
+          <form id="form-account-notif" class="account-form px-4 pb-5 pt-1 space-y-4">
             <fieldset class="divide-y divide-slate-100 dark:divide-slate-700/60">
               <legend class="text-[11px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 pb-1">Quiero que me avisen de</legend>
               <label class="flex items-center justify-between gap-4 min-h-[56px] py-2 cursor-pointer">
@@ -482,7 +504,7 @@
         </details>
 
         <!-- 6. Privacidad -->
-        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <details name="cuenta" class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
           <summary class="flex items-center justify-between gap-3 min-h-[64px] px-4 py-3 cursor-pointer list-none focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
             <span class="flex items-center gap-3">
               <span class="w-10 h-10 flex-shrink-0 rounded-xl bg-rose-100 dark:bg-rose-950/60 flex items-center justify-center text-lg" aria-hidden="true">🛡️</span>
@@ -592,6 +614,20 @@
         return `${n} ${n === 1 ? one : many}`;
       }
 
+      // Resumen de notificaciones: "3 de 4 activadas · WhatsApp"
+      const notifForm = document.getElementById('form-account-notif');
+      function updateNotifSummary() {
+        const [topics, channels] = notifForm.querySelectorAll('fieldset');
+        const all = topics.querySelectorAll('input[type="checkbox"]');
+        const on = topics.querySelectorAll('input[type="checkbox"]:checked').length;
+        const via = Array.from(channels.querySelectorAll('label'))
+          .filter(l => l.querySelector('input').checked)
+          .map(l => l.textContent.trim());
+        document.getElementById('sum-notif').textContent =
+          `${on} de ${all.length} activadas · ${via.length ? via.join(' y ') : 'Solo en la app'}`;
+      }
+      notifForm.addEventListener('change', updateNotifSummary);
+
       function render() {
         const user = getCurrentUser();
         loginBox.classList.toggle('hidden', !!user);
@@ -608,15 +644,27 @@
         document.getElementById('acc-last-name').value = rest.join(' ');
         document.getElementById('acc-phone').value = user.phone || '';
 
-        // Estado del teléfono (registro: verificado o "Más tarde")
-        const badge = document.getElementById('account-phone-badge');
+        // Dato actual en cada fila de Configuración
+        const city = document.getElementById('acc-city').value.trim();
+        document.getElementById('sum-datos').textContent = [name, city].filter(Boolean).join(' · ');
+        document.getElementById('sum-email').textContent = user.email || 'Sin correo cargado';
+
+        // Estado del teléfono: es privado, por eso va acá y no en la card pública.
+        // Ámbar y no rojo: no es un error, es algo pendiente (lo piden para adoptar).
+        const sumPhone = document.getElementById('sum-phone');
         if (user.phone && user.phoneVerified) {
-          badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300';
-          badge.textContent = '✓ Teléfono verificado';
+          sumPhone.className = 'block text-xs font-semibold text-emerald-700 dark:text-emerald-400';
+          sumPhone.textContent = `${user.phone} · ✓ Verificado`;
         } else {
-          badge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300';
-          badge.textContent = user.phone ? '⚠️ Teléfono sin verificar' : '⚠️ Sin teléfono cargado';
+          sumPhone.className = 'block text-xs font-semibold text-amber-700 dark:text-amber-400';
+          sumPhone.textContent = user.phone ? `${user.phone} · ⚠️ Sin verificar` : '⚠️ Sin cargar';
         }
+        const phoneNote = document.getElementById('acc-phone-note');
+        phoneNote.classList.toggle('hidden', !!(user.phone && user.phoneVerified));
+        phoneNote.textContent = user.phone
+          ? 'Tu teléfono todavía no está verificado. Verificalo para poder postularte a una adopción.'
+          : 'Todavía no cargaste tu teléfono. Lo necesitás para postularte a una adopción.';
+        updateNotifSummary();
 
         // Contadores de "Mi actividad" (lo guardado en este dispositivo)
         document.getElementById('count-favorites').textContent = plural(getFavorites().length, 'guardado', 'guardados');

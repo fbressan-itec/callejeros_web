@@ -459,13 +459,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = JSON.parse(localStorage.getItem('callejeros_user') || 'null');
 
     if (currentUser) {
-      // Usuario Logueado (UserRegis según Figma)
+      // Usuario Logueado (UserRegis según Figma).
+      // Debajo del nombre va el rol de la cuenta, igual que la badge de mi-cuenta.html.
+      // En el back end: "Staff Callejeros" o "Refugio verificado" solo si el admin asignó
+      // ese rol; las cuentas comunes no muestran nada. Demo: se muestra Staff como ejemplo.
       userStatusContainer.innerHTML = `
         <div class="flex items-center justify-between">
           <div>
             <span class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold block">Cuenta activa</span>
             <p class="font-display font-bold text-lg text-slate-900 dark:text-white">¡Hola, ${escapeHtml(currentUser.name)}!</p>
-            <span class="text-xs text-orange-600 dark:text-orange-400 font-medium">Voluntario Callejeros</span>
+            <span class="text-xs text-violet-700 dark:text-violet-300 font-bold">🛡️ Staff Callejeros</span>
           </div>
           <div class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
             ${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}
@@ -519,6 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // "Alternar Modo Test": QUITAR ESTE BOTÓN (y este listener) EN LA FASE DE DESARROLLO.
+  // Solo sirve para probar la demo con y sin sesión iniciada.
   btnToggleAuth?.addEventListener('click', () => {
     const currentUser = JSON.parse(localStorage.getItem('callejeros_user') || 'null');
     if (currentUser) {
