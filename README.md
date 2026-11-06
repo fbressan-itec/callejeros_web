@@ -16,9 +16,22 @@ Está diseñada **Mobile First** (cada pantalla se pensó y probó primero a 375
 
 ---
 
+## 🤝 Una plataforma comunitaria, no la web de un refugio
+
+Callejeros Río Cuarto **no pertenece a un refugio**: es un espacio comunitario donde todos los que ayudan a los animales de la ciudad trabajan en el mismo lugar.
+
+- **Refugios y particulares** pueden dar animales en adopción. Cada publicación pasa por la revisión de un voluntario antes de aparecer en el catálogo.
+- **Cualquier vecino** puede reportar un animal que está en la calle y hacerle **seguimiento**: ver si sigue ahí, si necesita alimento, atención veterinaria o un tránsito, y coordinar la ayuda con otros vecinos.
+- **Quien perdió a su mascota** puede publicarla, y quien encontró un animal puede avisar para que su familia lo reconozca.
+- Además, todos pueden **colaborar** apadrinando, donando o comprando en la tienda solidaria, y enterarse de las **campañas y eventos**.
+
+No encontramos otra página que junte todo esto en un solo lugar: hoy esa información está repartida entre las webs de cada refugio, grupos de redes sociales y publicaciones sueltas.
+
+---
+
 ## 🏅 Sistema de insignias: nuestro aporte
 
-La ficha de cada mascota abre con una fila de **insignias**: íconos que resumen al animal de un vistazo. En las webs de adopción que conocemos, la conducta y la salud aparecen en párrafos largos o en listas de texto; acá un adoptante sabe en dos segundos si el adecuado para su grupo familiar, o si seguir buscando a su compañero ideal.
+La ficha de cada mascota abre con una fila de **insignias**: íconos que resumen al animal de un vistazo. En las webs de adopción que conocemos, la conducta y la salud aparecen en párrafos largos o en listas de texto; acá un adoptante sabe en dos segundos si es el adecuado para su grupo familiar, o si seguir buscando a su compañero ideal.
 
 - **Siempre visibles:** especie, sexo, edad (Cachorro, Adulto o Senior), sociable o salvaje, convivencia con niños, convivencia con otros animales y castración.
 - **Solo cuando corresponde:** caso urgente y cuidados de salud. Que aparezcan ya es una señal.
@@ -30,6 +43,22 @@ La ficha de cada mascota abre con una fila de **insignias**: íconos que resumen
 Además, las cuentas pueden llevar una **insignia de rol** que asigna solo el administrador: **Staff Callejeros** (el equipo que modera el sitio) o **Refugio verificado** (refugios oficiales).
 
 El detalle y los motivos de cada regla están en la [bitácora de diseño](https://docs.google.com/document/d/1e58WfBZ8FOg2GzsJbNegcXcHNGWRbLk1TxNpnEnkr14/edit), pestaña "2. Decisiones de UI/UX".
+
+---
+
+## 🚨 Alerta Callejeros: el seguimiento de los animales en la calle
+
+El otro aporte original del proyecto. **Alerta Callejeros** es un sistema propio, separado del catálogo de adopción, pensado para los animales que todavía están en la calle. No vimos esta idea en otras páginas.
+
+- **Para qué sirve:** quien ve un animal perdido, desamparado o herido lo publica con foto y ubicación. Otros vecinos pueden reconocerlo si es su mascota perdida, o ayudarlo con alimento, atención veterinaria o un tránsito.
+- **Tres situaciones:** perdido, encontrado y emergencia. No hay etiqueta de "urgente": en la calle todos los casos lo son.
+- **Rápido desde el celular:** el menú de todas las páginas tiene el acceso "Alerta Callejero!" en rojo, hay un botón flotante en el inicio, el catálogo y Quiénes Somos, y el formulario pide lo justo: foto (obligatoria), situación, especie, ubicación, descripción y teléfono.
+- **Seguimiento entre vecinos:** cada alerta tiene su ficha con los datos de contacto y comentarios ("lo vi hace un rato por tal calle", "le dejé agua", "puedo darle tránsito"). Así el caso no queda en un solo aviso, sino que la comunidad lo va siguiendo hasta resolverlo.
+- **Lo más nuevo primero:** el listado va de la alerta más reciente a la más antigua, con filtros por situación.
+
+En el prototipo, los comentarios son simulados y el mapa es una maqueta.
+
+El detalle está en la [bitácora de diseño](https://docs.google.com/document/d/1e58WfBZ8FOg2GzsJbNegcXcHNGWRbLk1TxNpnEnkr14/edit), pestaña "2. Decisiones de UI/UX".
 
 ---
 
@@ -67,6 +96,19 @@ Los dos botones de prueba están marcados en el código para quitarlos en la fas
 - **Tipografías:** Poppins (títulos) e Inter (texto), desde Google Fonts.
 
 Tailwind, las fuentes y las fotos de ejemplo se cargan desde internet, así que el sitio necesita conexión.
+
+---
+
+## 🧭 Por qué varias páginas y no una sola (SPA)
+
+La consigna proponía una web SPA: una sola página que cambia de contenido sin recargar. Empezamos así, pero elegimos dividir el sitio en una página por sección:
+
+- **Más estable:** con todo en un solo archivo, cada arreglo en una sección rompía otras, y algunas rutas dejaban la pantalla en blanco.
+- **Cada pantalla tiene su dirección:** una mascota, una noticia o una solicitud se pueden compartir con un enlace (por ejemplo, `mascota.html#loki`).
+- **El botón "atrás" funciona como se espera,** en el celular y en el navegador, sin programarlo aparte.
+- **Cada sección se trabaja y se prueba por separado,** sin riesgo de afectar a las demás.
+
+Para que la experiencia siga siendo continua, lo común es igual en todas las páginas y se comparte con JavaScript y LocalStorage: el menú, el tema claro u oscuro, la sesión, las notificaciones y los favoritos.
 
 ---
 

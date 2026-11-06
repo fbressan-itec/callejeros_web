@@ -34,7 +34,7 @@ El proceso de desarrollo articula la empatía de diseño de Figma con la precisi
 ## 3. Checklist de Listo (Definition of Done - DoD)
 
 Una sección o pantalla se considera **Done** únicamente si cumple con los 4 pilares:
-- [ ] **Usabilidad UX**: Flujo SPA sin recarga, los 5 estados de componentes implementados y confirmación modal con *overlay*.
+- [ ] **Usabilidad UX**: Navegación multipágina con menú, sesión, tema y notificaciones compartidos; los 5 estados de componentes implementados y confirmación modal con *overlay*.
 - [ ] **Calidad UI**: Aplicación estricta de la paleta semántica, microinteracciones funcionales y modo Dark/Light con alto contraste.
 - [ ] **Responsividad Mobile-First**: Grilla adaptativa (2 cols móvil a 3-4 desktop), touch targets >= 44px y `overflow-x: hidden` activo.
-- [ ] **Funcionalidad Técnica**: Integración operativa con Google Maps API y cero errores en la consola del navegador.
+- [ ] **Funcionalidad Técnica**: Cero errores en la consola del navegador. El mapa de Alerta Callejeros queda maquetado en este proyecto (no se integra Google Maps).

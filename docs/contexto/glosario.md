@@ -13,7 +13,7 @@
 | `news_feed` | **Noticias y Eventos** | Menú Principal | Novedades, colectas y jornadas de castración gratuita. |
 | `e_commerce` | **Tienda Solidaria** | Menú Principal | Catálogo de productos para financiamiento del sitio y refugios. |
 | `create_pet_form` | **Publicar Adopción** | Menú / Área Privada | Formulario para registrar un animal en tránsito o refugio. |
-| `alert_map_view` | **Alerta Callejeros** | Menú Principal / FAB | Mapa interactivo geolocalizado en tiempo real (Google Maps). |
+| `alert_map_view` | **Alerta Callejeros** | Menú Principal / FAB | Seguimiento comunitario de animales en la calle: listado de alertas, ficha con comentarios y mapa de muestra (maquetado). |
 | `auth_portal` | **Mi Cuenta / Iniciar Sesión** | Barra Superior (Header) | Portal de acceso y gestión para vecinos y rescatistas. |
 
 ---

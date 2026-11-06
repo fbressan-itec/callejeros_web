@@ -126,7 +126,7 @@
           <!-- Estado 2: Vista previa de foto cargada -->
           <div id="dropzone-preview" class="hidden w-full relative z-30 space-y-3">
             <div class="relative max-w-sm mx-auto rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700 aspect-video bg-slate-950">
-              <img id="preview-img" src="" alt="Vista previa de la mascota" class="w-full h-full object-cover">
+              <img id="preview-img" alt="Vista previa de la mascota" class="w-full h-full object-cover">
               <button type="button" id="btn-remove-photo" class="absolute top-2 right-2 p-1.5 rounded-full bg-slate-900/80 hover:bg-red-600 text-white transition-colors" title="Eliminar foto">
                 ✕
               </button>
@@ -273,7 +273,7 @@
         e.stopPropagation();
         photoInput.value = '';
         photoData.value = '';
-        previewImg.src = '';
+        previewImg.removeAttribute('src'); // sin src vacío: evita un pedido de más al servidor
         dropzonePreview.classList.add('hidden');
         dropzoneEmpty.classList.remove('hidden');
       });

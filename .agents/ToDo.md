@@ -10,13 +10,6 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 
 ### Front
 - [ ] Revisar las correcciones que encontró el equipo (lista a completar).
-- [ ] Mapa de `alerta.html`: por ahora queda el mapa de muestra. Decidir más adelante si se reemplaza por uno real (Leaflet + OpenStreetMap, sin API key) o si se mantiene como maqueta.
-
-### Revisión general mobile first (2026-11-06)
-- [ ] `<img src="">` vacíos en las fichas (adopciones y alertas) generan un pedido extra al servidor; sacar el `src` hasta que se cargue la foto.
-
-### Falta respecto a Figma
-- [ ] Formulario de adopción: Figma separa **Nombre** y **Apellido** en dos campos; hoy es uno solo ("Nombre Completo"). Opcional.
 
 ### Falta respecto al diagrama de flujo
 - [ ] **Para la fase de desarrollo (con backend), no en este maquetado:** mejorar la información de Adopción Responsable — hero con foto, filtro de contenido por temas (Perros · Gatos · Cachorros · Adultos mayores), checklist interactivo "¿Estás listo para adoptar?" y costos estimados por mes.
@@ -28,31 +21,21 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 
 ### Insignias de la ficha de mascota
 - [ ] **Para la fase de desarrollo (con backend):** el formulario manda solo las respuestas y el servidor calcula las badges con las mismas reglas que `getPetBadges` (`js/mascota.js`). "Caso urgente" queda pendiente hasta que lo valide un voluntario en la revisión. Está explicado en comentarios en `js/data.js` y `js/adopciones.js`.
-- [ ] Thor ahora tiene 9 años (para que haya un Senior de ejemplo), pero su foto es de un cachorro: cambiar la foto por la de un perro mayor.
-- [ ] ADR nuevo: insignias solo con ícono SVG (reemplaza el "Sistema de Badges" con texto del ADR-019), grupos de edad Cachorro / Adulto / Senior y convivencia Sí / No / Sin evaluar.
 
 ### Mi Cuenta
 - [ ] **Para la fase de desarrollo (con backend):** que `mi-cuenta.html` guarde de verdad los cambios (foto, datos, correo, teléfono con verificación por SMS, contraseña, preferencias) y que "Eliminar cuenta" borre la cuenta. Hoy es maquetado.
 - [ ] "Mis alertas" y "Mis solicitudes" llevan al mapa y a las notificaciones: falta una lista propia de cada usuario.
-- [ ] ADR nuevo: sección Mi Cuenta (página propia con desplegables, mismo estilo que la ficha de mascota).
 - [ ] **Para la fase de desarrollo (con backend):** badges de rol "Staff Callejeros" y "Refugio verificado" asignadas solo por el admin, y mostrarlas también donde las ven otros usuarios (comentarios, publicaciones de adopción, alertas). La card de perfil de Mi Cuenta es la que se va a mostrar como perfil público. Hoy el rol se guarda en `user.role` (LocalStorage) y se cambia con "Rol de prueba".
 - [ ] Quitar "Alternar Modo Test" en la fase de desarrollo (está comentado en los 14 HTML y en `js/main.js`).
 - [ ] Quitar el botón "Rol de prueba" de la card de Mi Cuenta en la fase de desarrollo (está comentado en `mi-cuenta.html`).
 
 ### Documentación
-- [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] `docs/contexto/arquitectura.md`: corregir la lista de archivos de `js/` y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html`, `apadrinar.html`, `mascota.html` y `mi-cuenta.html` (y `js/mascota.js`). El README ya está actualizado.
-- [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
-- [ ] ADR-020 dice que el registro usa los textos en inglés de Figma ("Verify", "Send Again"); ahora está en español. Registrar el cambio en un ADR nuevo.
-- [ ] ADR nuevo: la ficha de mascota pasa de modal a página propia (`mascota.html#id`), fiel a Figma; el cuestionario de adopción se muda a esa página. Actualiza ADR-019 (que describía `#modal-detalle-mascota`).
-- [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. Definir cuál queda.
+- [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. A definir con el grupo.
 
 ### Entrega / presentación
 - [ ] Completar la bitácora de diseño en Google Docs ("Callejeros Río Cuarto — Bitácora de diseño: camino y decisiones de UI/UX", https://docs.google.com/document/d/1e58WfBZ8FOg2GzsJbNegcXcHNGWRbLk1TxNpnEnkr14/edit): revisar las notas ✎, sumar los informes y actividades del grupo y anotar cada cambio significativo de UX/UI. Reemplaza a `bitacora de progreso.docx`.
 - [ ] Redactar los "conocimientos implementados" (punto 5 de la Parte 1 de la consigna) en el Documento de Investigación, referenciando la bitácora.
-- [ ] Confirmar con el profe que una web de varias páginas HTML cuenta como "Web SPA" (justificación: ADR-017).
-- [ ] Tailwind y las fotos se cargan desde internet: prever conexión el día de la presentación (o una versión offline).
 
 ## Hecho
 - [x] `</main>` duplicado en `adopcion-responsable.html`.
@@ -103,4 +86,14 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Filtros nuevos: "Sociable con niños" y "Sociable con otros animales" (muestran solo los "Sí").
 - [x] Formulario de publicar: edad con número más "Años / Meses" (antes "5 Meses" quedaba como 5 años); selectores "¿Sociable con niños?" y "¿Con otros animales?" que arrancan en "Sin evaluar"; casilla de salud que habilita un campo obligatorio de 150 caracteres (al desmarcarla se vacía); "Salvaje / Tímido" pasa a "Salvaje". Las badges se calculan solas y no hay vista previa, para que no se acomoden las respuestas para "embellecer" la publicación.
 - [x] Bitácora de Google Docs: sumada la etapa "Mi Cuenta y sistema de insignias" (pestaña 1), las decisiones de insignias de la ficha, Mi Cuenta, insignias de rol y favoritos (pestaña 2) y los pendientes nuevos (pestaña 5). Queda la nota ✎ para sumar capturas de otras webs de adopción.
+- [x] **Registro de decisiones** (`docs/contexto/decisiones.md`): aviso al principio de que varias decisiones cambiaron, nota 🔄 debajo de cada ADR reemplazado (001, 007, 009, 012, 013, 016, 018, 019, 020 y 021) y decisiones nuevas ADR-022 a ADR-033. Se mantiene en el repo, además de la bitácora, para que otro integrante pueda seguir el proyecto con Antigravity con todo el contexto.
+- [x] **Reglas para las IA alineadas con el stack real:** `.agents/rules/antigravity_rules.md` (stack multipágina + Tailwind CDN + JS vanilla + LocalStorage, DoD sin TypeScript y una sección de guardas "lo que NO se cambia sin aprobación") y `.agents/memory/engram_memory.json` (entrada nueva "decisiones_vigentes" para leer primero y datos corregidos). También se aclaró en la skill `dom-interactivity`, en `errores-conocidos.md` y en el DoD que no se integra Google Maps.
+- [x] Thor (Senior de 9 años) tiene ahora la foto de un perro adulto en lugar de la de un cachorro.
+- [x] Sacados los `<img src="">` vacíos (vista previa de publicar, ficha de alerta y vista previa de reportar alerta): ya no generan un pedido de más al servidor. Al quitar la foto se borra el atributo en lugar de dejarlo vacío.
+- [x] `docs/contexto/arquitectura.md`, el DoD (`flujo-de-trabajo.md`) y el glosario actualizados: lista de páginas y archivos de `js/` actual, y el mapa de Alerta Callejeros queda maquetado (sin Google Maps).
+- [x] **Decidido — Mapa de alertas:** en este proyecto queda como maqueta (no se integra Google Maps, Leaflet ni otro servicio).
+- [x] **Decidido — Nombre y Apellido:** el formulario de adopción mantiene un solo campo "Nombre Completo", aunque Figma los separa.
+- [x] **Decidido — Varias páginas en vez de una SPA:** no se consulta con el profesor; la justificación queda en el README ("Por qué varias páginas y no una sola") y en la bitácora (pestaña 1 y "Decisiones de alcance").
+- [x] **Decidido — Presentación con internet:** se presenta por Google Classroom, así que no hace falta una versión offline aunque Tailwind, las fuentes y las fotos se carguen desde la web.
+- [x] README y bitácora: aclarado que es una **plataforma comunitaria y no la web de un refugio** (refugios y particulares dan en adopción, seguimiento de animales en la calle, perdidos y encontrados, y colaborar, todo en un solo lugar), y destacado **Alerta Callejeros** como el otro aporte propio del proyecto junto con las insignias. En la bitácora: sección "Qué es Callejeros Río Cuarto" en la pestaña Inicio y cuatro puntos nuevos en "Alerta Callejeros, un sistema propio" (pestaña 2).
 - [x] README actualizado: descripción, sección "Sistema de insignias: nuestro aporte", funcionalidades, datos de prueba, stack real (sin Lucide), estructura de archivos y páginas actual, URL de clonado y enlace a la bitácora.

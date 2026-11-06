@@ -34,6 +34,7 @@ Guía de soluciones inmediatas a problemas recurrentes de maquetado, contraste y
 ---
 
 ## 4. Gotchas de Google Maps
+> ⚠️ En este proyecto el mapa queda maquetado y **no se integra Google Maps** (ADR-032). Esta sección queda solo como referencia para una fase futura.
 * **Problema: Colapso del Contenedor a 0px de Altura**:
   * Si `<div id="map">` no tiene altura explícita en CSS, la API de Google Maps colapsa el mapa a 0px de alto.
   * **Solución**: Aplicar altura fija o responsiva en Tailwind: `h-80 md:h-[450px] w-full rounded-2xl`.

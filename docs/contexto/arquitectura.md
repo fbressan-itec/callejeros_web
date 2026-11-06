@@ -2,20 +2,26 @@
 
 ## 1. Stack Tecnológico
 * **Marcado y Estilos**: HTML5 semántico + Tailwind CSS v3 (vía CDN con extensión de temas y `dark:` nativo).
-* **Lógica de Cliente**: JavaScript / TypeScript ligero sin dependencias pesadas.
-* **Integración Externa**: Google Maps JavaScript API (100% funcional en MVP para geolocalización de alertas en Río Cuarto).
-* **Persistencia Local**: `LocalStorage` (preferencias de tema, favoritos y reportes simulados) + mocks estructurados en JSON.
+* **Lógica de Cliente**: JavaScript vanilla, sin frameworks ni paso de compilación.
+* **Mapa de Alerta Callejeros**: en este proyecto queda **maquetado** (mapa de muestra con marcadores fijos). No se integra Google Maps ni otro servicio de mapas.
+* **Persistencia Local**: `LocalStorage` (tema, sesión, favoritos, publicaciones, solicitudes, apadrinamientos, notificaciones y alertas) + datos de ejemplo en `js/data.js`.
 
 ---
 
 ## 2. Organización Modular y Enrutamiento Multi-Página
-* **Enfoque**: Arquitectura Multi-Página (MPA) limpia y robusta, donde cada sección principal cuenta con su propio archivo HTML semántico e independiente (`index.html`, `adopciones.html`, `quienes-somos.html`, `alerta.html`, `notificaciones.html`, `login.html`, `registro.html`, `donaciones.html`, `noticias.html`, `adopcion-responsable.html`, `tienda.html`).
-* **Mecanismo de Enlace**: Navegación nativa por hipervínculos directos entre archivos HTML (`.html`), garantizando funcionamiento perfecto tanto al abrir archivos directamente en el navegador (`file:///`) como en cualquier servidor estático.
+* **Enfoque**: Arquitectura Multi-Página (MPA), donde cada sección tiene su propio archivo HTML:
+  * Inicio y adopción: `index.html`, `adopciones.html`, `mascota.html` (ficha, `mascota.html#id`), `solicitud.html` (resultado de la solicitud, `solicitud.html#id`), `adopcion-responsable.html`.
+  * Alertas: `alerta.html`, `reportar-alerta.html`.
+  * Colaborar: `donaciones.html`, `apadrinar.html`, `tienda.html`.
+  * Contenido: `noticias.html`, `noticia.html` (`noticia.html#id`), `quienes-somos.html`, `notificaciones.html`.
+  * Cuenta: `login.html`, `registro.html`, `recuperar.html`, `mi-cuenta.html`.
+* **Mecanismo de Enlace**: Navegación nativa por hipervínculos entre archivos HTML. Las páginas de detalle reciben el id en el hash (`#id`), que se conserva aunque el servidor redirija. Para probar con los datos de LocalStorage conviene usar un servidor estático local.
 * **Lógica Compartida (`js/`)**:
-  * `js/data.js`: Catálogo de mascotas (`samplePets`) y alertas comunitarias (`initialNotifications`).
-  * `js/main.js`: Shell común con persistencia de Tema (Dark/Light), campanita con badge y slider de últimas 5 notificaciones, drawer de menú hamburguesa con estado de usuario (`LocalStorage`) y atenuación de inactividad del botón flotante (FAB).
-  * `js/adopciones.js`: Motor de filtrado rápido y avanzado, favoritos, fichas modales de detalle, cuestionario y confirmación de adopción.
-  * `js/auth.js`: Autenticación simulada del lado del cliente y visibilidad de contraseñas.
+  * `js/data.js`: Datos de ejemplo: mascotas (`samplePets`), notificaciones, noticias, alertas y comentarios simulados.
+  * `js/main.js`: Shell común: tema (Dark/Light), campanita y slider de notificaciones, menú hamburguesa con estado de sesión, botón flotante (FAB), botón "Volver", favoritos, grupos de edad y eventos demo (respuestas simuladas de voluntarios).
+  * `js/adopciones.js`: Catálogo con filtros (especie, edad, sociabilidad, convivencia, castración, sexo, urgentes y favoritos) y formulario para publicar una mascota.
+  * `js/mascota.js`: Ficha de la mascota con carrusel, sistema de insignias e información desplegable, y cuestionario de adopción.
+  * `js/auth.js`: Login, registro con código de verificación y recuperar contraseña (simulados en el cliente).
 * **Shell Global Persistente**:
   * **Navbar fija**: Logo, icono de alertas, toggle Dark/Light y menú hamburguesa (touch target >= 44px).
   * **Botón Flotante (FAB)**: Acceso directo persistente a "Alerta Callejeros" con atenuación por inactividad.

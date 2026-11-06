@@ -159,7 +159,7 @@ const samplePets = [
     conAnimales: 'sin_evaluar', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
     cuidadoEspecial: null, // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 2, // padrinos de ejemplo (apadrinamiento mensual)
-    image: 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80',
     description: 'Un gigante bueno y bonachón. Camina muy bien con correa y adora las siestas al sol. Apto para convivir con niños.',
     salud: {
       estado: 'Excelente estado clínico general',
