@@ -11,21 +11,15 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 ### Front
 - [ ] Revisar las correcciones que encontró el equipo (lista a completar).
 - [ ] Mapa de `alerta.html`: por ahora queda el mapa de muestra. Decidir más adelante si se reemplaza por uno real (Leaflet + OpenStreetMap, sin API key) o si se mantiene como maqueta.
-- [ ] Flujo "¿Olvidaste tu contraseña?" de Figma (`ruta_loguin_mobile.png`): elegir Email/Teléfono → código → nueva contraseña. Hoy el enlace de `login.html` apunta a `#`.
-- [ ] Registro paso 3: el teléfono enmascarado se ve mal (`+54  •••• 456`); toma los primeros 4 caracteres en vez del código de área.
-- [ ] Quiénes Somos: hay una foto de un hámster; reemplazarla por una de un perro o un gato.
-- [ ] Ocultar o mover el link de desarrollo "Alternar Modo Test" del menú antes de la presentación.
 
 ### Revisión general mobile first (2026-11-06)
 - [ ] La ficha de mascota en mobile es un modal con márgenes; la de alertas ocupa toda la pantalla. Unificar (pantalla completa en mobile).
 - [ ] Botones sin acción: "Consultar por WhatsApp" (tienda), "Google" y "Facebook" (login y registro), "Recordarme" (login).
-- [ ] Registro: el paso 3 agrega los listeners del código cada vez que se entra, y quedan duplicados si se vuelve atrás y se avanza de nuevo.
 - [ ] `<img src="">` vacíos en las fichas (adopciones y alertas) generan un pedido extra al servidor; sacar el `src` hasta que se cargue la foto.
 - [ ] Formularios: los botones de envío no se ven deshabilitados cuando faltan datos (estado "Disabled" de la convención de 5 estados).
 
 ### Falta respecto a Figma
-- [ ] Flujo "¿Olvidaste tu contraseña?" (ya listado arriba).
-- [ ] Formulario de adopción: Figma pide Nombre y Apellido por separado, **Edad** y **Dirección y localidad**; hoy no están (en cambio hay vivienda, otros animales y compromiso).
+- [ ] Formulario de adopción: Figma separa **Nombre** y **Apellido** en dos campos; hoy es uno solo ("Nombre Completo"). Opcional.
 - [ ] Catálogo de adopciones: Figma muestra "¿Qué preferís adoptar?" con dos botones grandes Perro / Gato y el texto "Encontrá a tu próximo compañero de vida"; hoy son pestañas chicas Todos/Perros/Gatos.
 
 ### Falta respecto al diagrama de flujo
@@ -45,7 +39,7 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 
 ### Documentación
 - [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen) y la URL de clonado.
+- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html` y `recuperar.html` (también en `docs/contexto/arquitectura.md`).
 - [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
 - [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. Definir cuál queda.
@@ -71,4 +65,8 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Mobile first: todos los botones y enlaces táctiles miden al menos 44px (pestañas, filtros, favoritos, Adoptar, Llamar/Copiar, ojito de contraseña, CTA de la home y del carrusel, cerrar de modales, botones del menú). Solo queda chico "Alternar Modo Test", que se va a ocultar.
 - [x] Menú hamburguesa unificado: el de la home (completo y fiel a Figma) está en las 10 páginas que tienen menú, con chips de 44px. Resalta la sección actual y, cerrado, queda fuera del alcance del teclado (`inert`).
 - [x] El botón flotante de alerta se oculta mientras el menú está abierto.
+- [x] Quiénes Somos: la foto de los cuises ("Sobre la Iniciativa") se reemplazó por la de un gato.
+- [x] Flujo "¿Olvidaste tu contraseña?" de Figma en `recuperar.html`: elegir Email o Teléfono → código de 4 dígitos (demo: `7098`, temporizador 02:30) → nueva contraseña → éxito. Enlazado desde "¿Olvidaste tu clave?" del login.
+- [x] Formulario de adopción: se agregaron **Edad** (mínimo 18 años), **Dirección** y **Localidad**, como en Figma.
+- [x] Decidido (versión demo): queda visible "Alternar Modo Test", y no se corrigen el teléfono enmascarado del registro ni los listeners duplicados del código.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.

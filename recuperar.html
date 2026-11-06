@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Contraseña — Callejeros Río Cuarto</title>
+  
+  <meta name="description" content="Recuperá el acceso a tu cuenta de Callejeros Río Cuarto con un código de verificación.">
+  <meta name="theme-color" content="#ea580c">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#ea580c',
+              'orange-light': '#ff7849',
+              'orange-dark': '#c2410c',
+              green: '#10b981',
+              red: '#ef4444',
+            },
+            slate: {
+              750: '#293548',
+              850: '#151e2e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'soft-dark': '0 4px 20px -2px rgba(0, 0, 0, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- NAVBAR SIMPLIFICADO -->
+  <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors duration-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl p-1" aria-label="Ir al inicio">
+        <img src="public/images/logo_callejeros.jpg" alt="Logo Callejeros" class="h-11 sm:h-12 w-auto object-contain rounded-lg shadow-sm">
+      </a>
+
+      <div class="flex items-center gap-3">
+        <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
+          <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="w-6 h-6 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO: RECUPERAR CONTRASEÑA (Fiel a ruta_loguin_mobile.png: "Olvidaste tu contraseña?" → código → nueva contraseña) -->
+  <main class="flex-grow flex items-center justify-center p-4 sm:p-6 my-4">
+    <div class="w-full max-w-md bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-soft dark:shadow-soft-dark p-6 sm:p-8">
+
+      <!-- =================================================================== -->
+      <!-- PASO 1: ELEGIR MÉTODO (Email o Teléfono)                            -->
+      <!-- =================================================================== -->
+      <div id="recover-step-method" class="space-y-6">
+        <!-- Botón Volver (estilo Figma "<") -->
+        <a href="login.html" data-back class="inline-flex items-center gap-1.5 min-w-[44px] min-h-[44px] px-3 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800 transition-all" aria-label="Volver a la pantalla anterior">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+          <span class="hidden sm:inline text-sm font-semibold">Volver</span>
+        </a>
+
+        <div class="space-y-2">
+          <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600 dark:text-orange-400">Paso 1 de 3</span>
+          <h1 class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">¿Olvidaste tu contraseña?</h1>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Seleccioná el método para recuperar tu cuenta.</p>
+        </div>
+
+        <form id="form-recover-method" class="space-y-5">
+          <!-- Métodos (tarjetas seleccionables) -->
+          <fieldset class="space-y-3">
+            <legend class="sr-only">Método de recuperación</legend>
+            <label class="flex items-center gap-4 min-h-[64px] p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 cursor-pointer hover:border-orange-400 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 dark:has-[:checked]:bg-orange-950/30 transition-colors">
+              <input type="radio" name="recover-method" value="email" checked class="sr-only">
+              <span class="w-11 h-11 flex-shrink-0 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-xl" aria-hidden="true">✉️</span>
+              <span>
+                <span class="block font-bold text-sm text-slate-900 dark:text-white">Email</span>
+                <span class="block text-xs text-slate-500 dark:text-slate-400">Te enviamos un código a tu correo</span>
+              </span>
+            </label>
+            <label class="flex items-center gap-4 min-h-[64px] p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 cursor-pointer hover:border-orange-400 has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 dark:has-[:checked]:bg-orange-950/30 transition-colors">
+              <input type="radio" name="recover-method" value="phone" class="sr-only">
+              <span class="w-11 h-11 flex-shrink-0 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-xl" aria-hidden="true">📱</span>
+              <span>
+                <span class="block font-bold text-sm text-slate-900 dark:text-white">Teléfono</span>
+                <span class="block text-xs text-slate-500 dark:text-slate-400">Te enviamos un código por SMS</span>
+              </span>
+            </label>
+          </fieldset>
+
+          <!-- Dato de contacto (cambia según el método elegido) -->
+          <div>
+            <label id="recover-contact-label" for="recover-contact" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Correo electrónico</label>
+            <input type="email" id="recover-contact" required autocomplete="email" placeholder="tu@correo.com" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+          </div>
+
+          <button type="submit" class="w-full min-h-[44px] py-3.5 rounded-xl font-display font-bold text-sm text-white bg-slate-950 hover:bg-slate-800 dark:bg-orange-500 dark:hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+            Siguiente
+          </button>
+        </form>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- PASO 2: VERIFICAR CÓDIGO                                            -->
+      <!-- =================================================================== -->
+      <div id="recover-step-code" class="hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <button type="button" id="btn-recover-back-1" class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95 transition-all" aria-label="Cambiar método de recuperación">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600 dark:text-orange-400">Paso 2 de 3</span>
+          <div class="w-11"></div>
+        </div>
+
+        <div class="text-center space-y-2">
+          <h2 id="recover-code-title" class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">Verificá tu email</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Te enviamos un código de 4 dígitos a</p>
+          <div class="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-mono font-bold text-slate-800 dark:text-slate-200">
+            <span id="recover-contact-masked"></span>
+          </div>
+        </div>
+
+        <!-- Banner con código de demostración (versión demo, sin envíos reales) -->
+        <div class="p-3 rounded-2xl bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 text-center">
+          <p class="text-xs text-orange-700 dark:text-orange-300 font-semibold">
+            Código de demostración: <strong class="text-sm font-mono tracking-widest bg-white dark:bg-slate-900 px-2 py-0.5 rounded-lg border border-orange-300 dark:border-orange-700">7098</strong>
+          </p>
+        </div>
+
+        <form id="form-recover-code" class="space-y-6">
+          <!-- 4 casilleros (Figma: [ 7 ] [ 0 ] [ 9 ] [ 8 ]) -->
+          <div class="flex justify-center items-center gap-2.5 sm:gap-3" role="group" aria-label="Código de verificación">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 1" class="recover-otp w-12 sm:w-14 h-14 sm:h-16 rounded-2xl border-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-center font-mono font-extrabold text-2xl text-slate-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-sm">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 2" class="recover-otp w-12 sm:w-14 h-14 sm:h-16 rounded-2xl border-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-center font-mono font-extrabold text-2xl text-slate-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-sm">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 3" class="recover-otp w-12 sm:w-14 h-14 sm:h-16 rounded-2xl border-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-center font-mono font-extrabold text-2xl text-slate-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-sm">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="Dígito 4" class="recover-otp w-12 sm:w-14 h-14 sm:h-16 rounded-2xl border-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-center font-mono font-extrabold text-2xl text-slate-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all shadow-sm">
+          </div>
+
+          <!-- Temporizador (Figma: "(02:30)") y mensaje de error -->
+          <div class="text-center space-y-1">
+            <span id="recover-timer" class="text-xs font-mono text-slate-500 dark:text-slate-400">⏱️ (02:30)</span>
+            <p id="recover-code-error" class="hidden text-xs font-semibold text-red-600 dark:text-red-400" role="alert"></p>
+          </div>
+
+          <div class="space-y-2">
+            <button type="submit" class="w-full min-h-[44px] py-3.5 rounded-xl font-display font-bold text-sm text-white bg-slate-950 hover:bg-slate-800 dark:bg-orange-500 dark:hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+              Verificar
+            </button>
+            <button type="button" id="btn-recover-resend" class="w-full min-h-[44px] rounded-xl text-sm font-bold text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-slate-700 transition-colors">
+              Reenviar código
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- PASO 3: NUEVA CONTRASEÑA                                            -->
+      <!-- =================================================================== -->
+      <div id="recover-step-password" class="hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <button type="button" id="btn-recover-back-2" class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95 transition-all" aria-label="Volver al código">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <span class="text-xs uppercase font-extrabold tracking-wider text-orange-600 dark:text-orange-400">Paso 3 de 3</span>
+          <div class="w-11"></div>
+        </div>
+
+        <div class="space-y-2">
+          <h2 class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">Introducí tu nueva contraseña</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Usá al menos 6 caracteres.</p>
+        </div>
+
+        <form id="form-recover-password" class="space-y-4">
+          <div>
+            <label for="recover-pass-1" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Nueva contraseña</label>
+            <div class="relative">
+              <input type="password" id="recover-pass-1" required minlength="6" autocomplete="new-password" placeholder="••••••••" class="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+              <button type="button" class="toggle-password-btn absolute right-0 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200" aria-label="Mostrar u ocultar contraseña">👁️</button>
+            </div>
+          </div>
+          <div>
+            <label for="recover-pass-2" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Repetí la contraseña</label>
+            <div class="relative">
+              <input type="password" id="recover-pass-2" required minlength="6" autocomplete="new-password" placeholder="••••••••" class="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+              <button type="button" class="toggle-password-btn absolute right-0 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-slate-200" aria-label="Mostrar u ocultar contraseña">👁️</button>
+            </div>
+          </div>
+          <p id="recover-pass-error" class="hidden text-xs font-semibold text-red-600 dark:text-red-400" role="alert"></p>
+
+          <button type="submit" class="w-full min-h-[44px] py-3.5 rounded-xl font-display font-bold text-sm text-white bg-slate-950 hover:bg-slate-800 dark:bg-orange-500 dark:hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+            Restablecer contraseña
+          </button>
+        </form>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- ÉXITO                                                               -->
+      <!-- =================================================================== -->
+      <div id="recover-step-success" class="hidden py-6 text-center space-y-4">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl font-bold mx-auto">✓</div>
+        <div class="space-y-1">
+          <h2 class="font-display font-extrabold text-2xl text-slate-900 dark:text-white">¡Contraseña actualizada!</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Ya podés iniciar sesión con tu nueva contraseña.</p>
+        </div>
+        <a href="login.html" class="flex items-center justify-center w-full min-h-[44px] py-3.5 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+          Iniciar sesión
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-600 dark:text-slate-300">
+    <p>© 2026 Callejeros Río Cuarto. Acceso seguro.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

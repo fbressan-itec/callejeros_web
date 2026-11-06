@@ -244,4 +244,158 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // =======================================================================
+  // RECUPERAR CONTRASEÑA (recuperar.html, fiel a Figma ruta_loguin_mobile.png)
+  // Paso 1: método (email / teléfono) → Paso 2: código → Paso 3: nueva contraseña.
+  // Versión demo: no se envían mensajes reales; el código válido es 7098.
+  // =======================================================================
+  const formRecoverMethod = document.getElementById('form-recover-method');
+  if (formRecoverMethod) {
+    const RECOVER_CODE = '7098';
+    const steps = {
+      method: document.getElementById('recover-step-method'),
+      code: document.getElementById('recover-step-code'),
+      password: document.getElementById('recover-step-password'),
+      success: document.getElementById('recover-step-success')
+    };
+    const contactInput = document.getElementById('recover-contact');
+    const contactLabel = document.getElementById('recover-contact-label');
+    const recoverOtp = document.querySelectorAll('.recover-otp');
+    const recoverTimer = document.getElementById('recover-timer');
+    const codeError = document.getElementById('recover-code-error');
+    const passError = document.getElementById('recover-pass-error');
+    let recoverInterval = null;
+    let recoverExpired = false;
+
+    function showRecoverStep(name) {
+      Object.entries(steps).forEach(([key, el]) => el?.classList.toggle('hidden', key !== name));
+      window.scrollTo(0, 0);
+    }
+
+    function showError(el, msg) {
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.toggle('hidden', !msg);
+    }
+
+    // El campo de contacto cambia según el método elegido
+    document.querySelectorAll('input[name="recover-method"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const isPhone = radio.value === 'phone' && radio.checked;
+        contactInput.value = '';
+        contactInput.type = isPhone ? 'tel' : 'email';
+        contactInput.autocomplete = isPhone ? 'tel' : 'email';
+        contactInput.inputMode = isPhone ? 'tel' : 'email';
+        contactInput.placeholder = isPhone ? '358 4123456' : 'tu@correo.com';
+        contactLabel.textContent = isPhone ? 'Número de teléfono' : 'Correo electrónico';
+      });
+    });
+
+    function maskContact(value, isPhone) {
+      if (isPhone) {
+        const digits = value.replace(/\D/g, '');
+        return digits.length > 3 ? `•••• •••• ${digits.slice(-3)}` : value;
+      }
+      const [user, domain] = value.split('@');
+      if (!domain) return value;
+      return `${user.slice(0, 2)}•••@${domain}`;
+    }
+
+    function startRecoverTimer(seconds) {
+      clearInterval(recoverInterval);
+      recoverExpired = false;
+      let remaining = seconds;
+      const tick = () => {
+        const mm = String(Math.floor(remaining / 60)).padStart(2, '0');
+        const ss = String(remaining % 60).padStart(2, '0');
+        recoverTimer.textContent = remaining > 0 ? `⏱️ (${mm}:${ss})` : '⏱️ (00:00) Código expirado';
+        if (remaining <= 0) {
+          recoverExpired = true;
+          clearInterval(recoverInterval);
+        }
+        remaining--;
+      };
+      tick();
+      recoverInterval = setInterval(tick, 1000);
+    }
+
+    // Casilleros del código: avanzar, retroceder y pegar el código completo
+    recoverOtp.forEach((input, i) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, 1);
+        if (input.value && i < recoverOtp.length - 1) recoverOtp[i + 1].focus();
+        showError(codeError, '');
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && i > 0) recoverOtp[i - 1].focus();
+      });
+      input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const digits = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 4);
+        recoverOtp.forEach((box, j) => { box.value = digits[j] || ''; });
+        recoverOtp[Math.min(digits.length, 4) - 1]?.focus();
+      });
+    });
+
+    // Paso 1 → Paso 2
+    formRecoverMethod.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const isPhone = document.querySelector('input[name="recover-method"]:checked')?.value === 'phone';
+      const value = contactInput.value.trim();
+      if (isPhone && value.replace(/\D/g, '').length < 7) {
+        contactInput.setCustomValidity('Ingresá un número de teléfono válido.');
+        contactInput.reportValidity();
+        contactInput.setCustomValidity('');
+        return;
+      }
+      document.getElementById('recover-code-title').textContent = isPhone ? 'Verificá tu teléfono' : 'Verificá tu email';
+      document.getElementById('recover-contact-masked').textContent = maskContact(value, isPhone);
+      recoverOtp.forEach(box => { box.value = ''; });
+      showError(codeError, '');
+      showRecoverStep('code');
+      startRecoverTimer(150); // 02:30 según Figma
+      recoverOtp[0]?.focus();
+    });
+
+    document.getElementById('btn-recover-back-1')?.addEventListener('click', () => {
+      clearInterval(recoverInterval);
+      showRecoverStep('method');
+    });
+
+    document.getElementById('btn-recover-resend')?.addEventListener('click', () => {
+      recoverOtp.forEach(box => { box.value = ''; });
+      showError(codeError, '');
+      startRecoverTimer(150);
+      recoverOtp[0]?.focus();
+    });
+
+    // Paso 2 → Paso 3
+    document.getElementById('form-recover-code')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = Array.from(recoverOtp).map(box => box.value).join('');
+      if (code.length < 4) return showError(codeError, 'Ingresá los 4 dígitos del código.');
+      if (recoverExpired) return showError(codeError, 'El código expiró. Tocá "Reenviar código".');
+      if (code !== RECOVER_CODE) return showError(codeError, 'Código incorrecto. Probá con el código de demostración 7098.');
+      clearInterval(recoverInterval);
+      showRecoverStep('password');
+      document.getElementById('recover-pass-1')?.focus();
+    });
+
+    document.getElementById('btn-recover-back-2')?.addEventListener('click', () => {
+      showRecoverStep('code');
+      startRecoverTimer(150);
+    });
+
+    // Paso 3 → Éxito
+    document.getElementById('form-recover-password')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const p1 = document.getElementById('recover-pass-1').value;
+      const p2 = document.getElementById('recover-pass-2').value;
+      if (p1.length < 6) return showError(passError, 'La contraseña debe tener al menos 6 caracteres.');
+      if (p1 !== p2) return showError(passError, 'Las contraseñas no coinciden.');
+      showError(passError, '');
+      showRecoverStep('success');
+    });
+  }
+
 });

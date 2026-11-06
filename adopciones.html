@@ -687,6 +687,12 @@
             <label for="adopt-name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Nombre Completo *</label>
             <input type="text" id="adopt-name" required placeholder="Tu nombre y apellido" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-orange-500">
           </div>
+          <!-- Edad (Figma: formulario de adopción) -->
+          <div>
+            <label for="adopt-age" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Edad *</label>
+            <input type="number" id="adopt-age" required min="18" max="120" inputmode="numeric" placeholder="Ej: 32" aria-describedby="adopt-age-help" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <p id="adopt-age-help" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Para adoptar tenés que ser mayor de 18 años.</p>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label for="adopt-phone" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">WhatsApp / Teléfono *</label>
@@ -695,6 +701,17 @@
             <div>
               <label for="adopt-email" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Correo Electrónico *</label>
               <input type="email" id="adopt-email" required placeholder="ejemplo@correo.com" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+          </div>
+          <!-- Dirección y localidad (Figma: formulario de adopción) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="adopt-address" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Dirección *</label>
+              <input type="text" id="adopt-address" required autocomplete="street-address" placeholder="Calle y número" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+              <label for="adopt-city" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Localidad *</label>
+              <input type="text" id="adopt-city" required autocomplete="address-level2" placeholder="Ej: Río Cuarto" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:outline-none focus:ring-2 focus:ring-orange-500">
             </div>
           </div>
         </div>
