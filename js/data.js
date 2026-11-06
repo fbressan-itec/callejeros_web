@@ -3,6 +3,17 @@
 // Centralización de datos para que todas las páginas compartan la misma información.
 // =========================================================================
 
+// INSIGNIAS (BADGES) DE LA FICHA — cómo funcionan
+// Las badges NO se eligen a mano: se calculan a partir de estos datos
+// (getPetBadges en js/mascota.js). Quien publica solo responde el formulario
+// (especie, sexo, edad, sociable/salvaje, con niños, con animales, castración,
+// caso urgente y cuidado de salud) y nunca elige una insignia, así la ficha no
+// puede contradecir los datos ni "embellecerse".
+// Para el back end: el formulario manda solo las respuestas; el servidor guarda
+// estos campos y devuelve la mascota con las badges ya calculadas con las mismas
+// reglas (edad: Cachorro < 1 año, Adulto 1 a 7, Senior > 7). "urgent" queda
+// pendiente hasta que un voluntario lo valide en la revisión de la publicación.
+// Hoy (maquetado, sin back end) las mascotas de ejemplo tienen los datos fijos acá.
 const samplePets = [
   {
     id: 'loki',
@@ -14,6 +25,9 @@ const samplePets = [
     sociable: true,
     castrado: true,
     urgent: false,
+    conNinos: 'si', // sociable con niños: 'si' | 'no' | 'sin_evaluar'
+    conAnimales: 'si', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
+    cuidadoEspecial: null, // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 3, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80',
     // Galería de la ficha (ejemplo: Loki tiene 2 fotos; el resto usa solo "image")
@@ -41,6 +55,9 @@ const samplePets = [
     sociable: true,
     castrado: true,
     urgent: false,
+    conNinos: 'si', // sociable con niños: 'si' | 'no' | 'sin_evaluar'
+    conAnimales: 'sin_evaluar', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
+    cuidadoEspecial: null, // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 2, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80',
     description: 'Gatita muy dulce y tranquila. Utiliza piedritas sanitarias a la perfección, ideal para departamento o casa cerrada.',
@@ -63,6 +80,9 @@ const samplePets = [
     sociable: false,
     castrado: true,
     urgent: true,
+    conNinos: 'no', // sociable con niños: 'si' | 'no' | 'sin_evaluar'
+    conAnimales: 'no', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
+    cuidadoEspecial: 'Dermatitis alérgica controlada y recuperación motriz leve', // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 5, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80',
     description: 'Perro leal y protector. Su hogar de tránsito vence en pocos días. Necesita una familia sin otros animales que le brinde paciencia y afecto.',
@@ -85,6 +105,9 @@ const samplePets = [
     sociable: true,
     castrado: false,
     urgent: false,
+    conNinos: 'sin_evaluar', // sociable con niños: 'si' | 'no' | 'sin_evaluar'
+    conAnimales: 'si', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
+    cuidadoEspecial: null, // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 1, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=80',
     description: 'Curiosa y ronroneadora. Se entrega con compromiso formal de castración gratuita por parte de la red de voluntarios.',
@@ -107,6 +130,9 @@ const samplePets = [
     sociable: true,
     castrado: false,
     urgent: true,
+    conNinos: 'si', // sociable con niños: 'si' | 'no' | 'sin_evaluar'
+    conAnimales: 'si', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
+    cuidadoEspecial: null, // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 4, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1591160690555-5debfba289f0?auto=format&fit=crop&w=600&q=80',
     description: 'Cachorrita mestiza de tamaño mediano encontrada en Banda Norte. Muy juguetona, desparasitada y con primera vacuna aplicada.',
@@ -124,11 +150,14 @@ const samplePets = [
     name: 'Thor',
     specie: 'perro',
     sex: 'macho',
-    age: '5 Años',
-    ageYears: 5,
+    age: '9 Años',
+    ageYears: 9,
     sociable: true,
     castrado: true,
     urgent: false,
+    conNinos: 'si', // sociable con niños: 'si' | 'no' | 'sin_evaluar'
+    conAnimales: 'sin_evaluar', // sociable con otros animales: 'si' | 'no' | 'sin_evaluar'
+    cuidadoEspecial: null, // problema de salud o cuidado especial (texto), o null si no tiene
     padrinos: 2, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=600&q=80',
     description: 'Un gigante bueno y bonachón. Camina muy bien con correa y adora las siestas al sol. Apto para convivir con niños.',

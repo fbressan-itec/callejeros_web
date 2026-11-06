@@ -79,6 +79,23 @@ function getPadrinosCount(pet) {
   return (pet.padrinos || 0) + mine;
 }
 
+// Grupos de edad: las badges de la ficha y los filtros del catálogo usan los mismos cortes
+const AGE_GROUPS = { cachorro: 'Cachorro', adulto: 'Adulto', senior: 'Senior' };
+
+// Edad en años (las publicaciones viejas guardadas en el dispositivo pueden no tener ageYears)
+function getPetYears(pet) {
+  if (typeof pet.ageYears === 'number') return pet.ageYears;
+  const n = parseInt(pet.age, 10) || 1;
+  return /mes/i.test(String(pet.age)) ? n / 12 : n;
+}
+
+// Cachorro: menos de 1 año · Adulto: de 1 a 7 años · Senior: más de 7 años
+function getAgeGroup(years) {
+  if (years < 1) return 'cachorro';
+  if (years <= 7) return 'adulto';
+  return 'senior';
+}
+
 function getCurrentUser() {
   return JSON.parse(localStorage.getItem('callejeros_user') || 'null');
 }

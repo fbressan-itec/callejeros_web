@@ -204,7 +204,7 @@
       <!-- usuarios (perfil público). Por eso no lleva datos privados:     -->
       <!-- teléfono, dirección y su estado van solo en Configuración.      -->
       <!-- =============================================================== -->
-      <section class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft dark:shadow-soft-dark text-center space-y-4" aria-labelledby="account-name">
+      <section class="relative p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft dark:shadow-soft-dark text-center space-y-4" aria-labelledby="account-name">
         <div class="relative w-28 h-28 mx-auto">
           <!-- Sin src hasta que se elija una foto (evita un pedido vacío al servidor) -->
           <img id="account-avatar-img" alt="Tu foto de perfil" class="hidden w-28 h-28 rounded-full object-cover ring-4 ring-orange-200 dark:ring-orange-900">
@@ -229,8 +229,10 @@
 
         <!-- Botón "Rol de prueba": QUITAR ESTE BOTÓN EN LA FASE DE DESARROLLO.
              Solo sirve para mostrar en la demo las tres badges (Miembro → Staff → Refugio verificado).
-             En el back end el rol lo asigna el admin y no se puede cambiar desde acá. -->
-        <button type="button" id="btn-demo-role" class="min-h-[44px] px-3 text-[11px] text-slate-600 dark:text-slate-300 underline underline-offset-4 hover:text-slate-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-lg transition-colors"></button>
+             En el back end el rol lo asigna el admin y no se puede cambiar desde acá.
+             Va en la esquina superior derecha para no agrandar la card ni correr la badge;
+             el texto es chico pero el área táctil sigue siendo de 44px. -->
+        <button type="button" id="btn-demo-role" class="absolute top-1 right-1 !mt-0 min-w-[44px] min-h-[44px] px-2 text-[10px] text-slate-500 dark:text-slate-400 underline underline-offset-2 hover:text-slate-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl transition-colors">Cambiar rol</button>
 
         <button type="button" id="btn-remove-photo" class="hidden min-h-[44px] px-4 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 transition-colors">
           Quitar foto
@@ -660,7 +662,8 @@
 
         const role = ROLE_ORDER.includes(user.role) ? user.role : 'miembro';
         document.getElementById('account-badges').innerHTML = ROLE_BADGES[role];
-        document.getElementById('btn-demo-role').textContent = `Rol de prueba: ${ROLE_LABELS[role]} (tocá para cambiar)`;
+        // El texto visible es solo "Cambiar rol"; el rol actual se anuncia para lectores de pantalla
+        document.getElementById('btn-demo-role').setAttribute('aria-label', `Cambiar rol de prueba. Rol actual: ${ROLE_LABELS[role]}`);
 
         const name = String(user.name || '').trim();
         const [first, ...rest] = name.split(/\s+/);

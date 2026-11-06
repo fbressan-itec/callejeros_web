@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeFilterSex = 'all';
   let activeFilterOnlyFavs = false;
   let activeFilterOnlyUrgent = false;
+  let activeFilterWithKids = false;
+  let activeFilterWithAnimals = false;
 
   // Obtener todas las mascotas (muestras + publicadas por usuarios en localStorage)
   function getAllPets() {
@@ -36,17 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
       }
 
-      // 3. Rango de edad numérico (Fiel a Figma: "De 0 a 3 Años", "De 3 a 7 Años", "Más de 7 Años")
-      if (activeFilterAges.length > 0) {
-        const years = pet.ageYears !== undefined ? pet.ageYears : (parseInt(pet.age) || (pet.age.includes('Meses') ? 0.5 : 2));
-        const matchesAge = activeFilterAges.some(range => {
-          if (range === '0-3') return years <= 3;
-          if (range === '3-7') return years > 3 && years <= 7;
-          if (range === '7+') return years > 7;
-          return true;
-        });
-        if (!matchesAge) return false;
+      // 3. Grupo de edad: Cachorro / Adulto / Senior (los mismos cortes que la badge de la ficha)
+      if (activeFilterAges.length > 0 && !activeFilterAges.includes(getAgeGroup(getPetYears(pet)))) {
+        return false;
       }
+
+      // 3.b Convivencia: solo los que tienen "Sí"
+      if (activeFilterWithKids && pet.conNinos !== 'si') return false;
+      if (activeFilterWithAnimals && pet.conAnimales !== 'si') return false;
 
       // 4. Sociabilidad
       if (activeFilterSociable === 'sociable' && !pet.sociable) return false;
@@ -202,6 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterSearchInput = document.getElementById('filter-search-input');
   const filterOnlyFavs = document.getElementById('filter-only-favs');
   const filterOnlyUrgent = document.getElementById('filter-only-urgent');
+  const filterWithKids = document.getElementById('filter-with-kids');
+  const filterWithAnimals = document.getElementById('filter-with-animals');
 
   btnOpenFilters?.addEventListener('click', () => {
     modalFiltros?.classList.remove('hidden');
@@ -223,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
     activeFilterSex = document.querySelector('input[name="filter-sex"]:checked')?.value || 'all';
     activeFilterOnlyFavs = filterOnlyFavs?.checked || false;
     activeFilterOnlyUrgent = filterOnlyUrgent?.checked || false;
+    activeFilterWithKids = filterWithKids?.checked || false;
+    activeFilterWithAnimals = filterWithAnimals?.checked || false;
     if (!activeFilterOnlyFavs) clearFavoritesHash();
 
     closeFiltersModal();
@@ -240,6 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (radioSex) radioSex.checked = true;
     if (filterOnlyFavs) filterOnlyFavs.checked = false;
     if (filterOnlyUrgent) filterOnlyUrgent.checked = false;
+    if (filterWithKids) filterWithKids.checked = false;
+    if (filterWithAnimals) filterWithAnimals.checked = false;
 
     activeFilterSearch = '';
     activeFilterAges = [];
@@ -248,6 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
     activeFilterSex = 'all';
     activeFilterOnlyFavs = false;
     activeFilterOnlyUrgent = false;
+    activeFilterWithKids = false;
+    activeFilterWithAnimals = false;
     clearFavoritesHash();
 
     renderPets();
@@ -337,6 +344,35 @@ document.addEventListener('DOMContentLoaded', () => {
   pubDesc?.addEventListener('input', updateDescCount);
   formPublicarPet?.addEventListener('reset', () => setTimeout(updateDescCount, 0));
 
+  // Salud: el campo de texto solo se habilita (y es obligatorio) si se marca la casilla.
+  // Al desmarcarla se vacía, para no guardar un texto viejo sin querer.
+  const pubHealthCheck = document.getElementById('pub-health-check');
+  const pubHealthText = document.getElementById('pub-health-text');
+  const pubHealthCount = document.getElementById('pub-health-count');
+  function updateHealthCount() {
+    if (pubHealthCount) pubHealthCount.textContent = `${pubHealthText.value.length} / 150`;
+  }
+  function syncHealthField() {
+    const on = pubHealthCheck.checked;
+    pubHealthText.disabled = !on;
+    pubHealthText.required = on;
+    pubHealthText.placeholder = on ? 'Contá qué tiene o qué cuidados necesita' : 'Marcá la casilla para completar este campo';
+    if (on) {
+      pubHealthText.focus();
+    } else {
+      pubHealthText.value = '';
+    }
+    updateHealthCount();
+  }
+  pubHealthCheck?.addEventListener('change', syncHealthField);
+  pubHealthText?.addEventListener('input', updateHealthCount);
+  formPublicarPet?.addEventListener('reset', () => setTimeout(() => {
+    pubHealthText.disabled = true;
+    pubHealthText.required = false;
+    pubHealthText.placeholder = 'Marcá la casilla para completar este campo';
+    updateHealthCount();
+  }, 0));
+
   pubPhotoFile?.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -357,7 +393,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = document.getElementById('pub-name').value.trim();
     const specie = document.getElementById('pub-specie').value;
     const sex = document.getElementById('pub-sex').value;
-    const age = document.getElementById('pub-age').value.trim();
+    // Edad: número + unidad → texto para mostrar ("5 Meses") y años para el grupo de edad
+    const ageNum = parseInt(document.getElementById('pub-age').value, 10) || 1;
+    const inMonths = document.getElementById('pub-age-unit').value === 'meses';
+    const age = inMonths
+      ? `${ageNum} ${ageNum === 1 ? 'Mes' : 'Meses'}`
+      : `${ageNum} ${ageNum === 1 ? 'Año' : 'Años'}`;
+    const ageYears = inMonths ? ageNum / 12 : ageNum;
+    const conNinos = document.getElementById('pub-with-kids').value;
+    const conAnimales = document.getElementById('pub-with-animals').value;
+    const cuidadoEspecial = pubHealthCheck?.checked ? pubHealthText.value.trim() : null;
     const isCastrado = document.querySelector('input[name="pub-castrado"]:checked')?.value === 'true';
     const isSociable = document.querySelector('input[name="pub-sociable"]:checked')?.value === 'true';
     // Badge seleccionable "Casos Urgentes"
@@ -371,9 +416,12 @@ document.addEventListener('DOMContentLoaded', () => {
       specie,
       sex,
       age,
-      ageYears: parseInt(age) || 1,
+      ageYears,
       castrado: isCastrado,
       sociable: isSociable,
+      conNinos,
+      conAnimales,
+      cuidadoEspecial,
       urgent: isUrgent,
       image,
       description: desc,
@@ -392,6 +440,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // El teléfono queda para los voluntarios; no se muestra en el catálogo
     newPet.contact = document.getElementById('pub-contact').value.trim();
 
+    // Las badges de la ficha NO se eligen en el formulario: se calculan solas a partir de
+    // estas respuestas (getPetBadges en js/mascota.js). Para el back end: enviar solo estos
+    // datos; el servidor calcula las badges y deja "urgent" pendiente de validación por un
+    // voluntario en la revisión. No hay vista previa de insignias en el formulario, para que
+    // no se acomoden las respuestas buscando "embellecer" la publicación.
     // No se publica directo: queda pendiente y un voluntario la aprueba a los segundos (demo)
     scheduleDemoEvent({ type: 'publicacion', pet: newPet });
     pushNotification({

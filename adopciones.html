@@ -276,29 +276,30 @@
         </div>
         
         <div class="divide-y divide-slate-100 dark:divide-slate-800 p-2 space-y-1">
-          <!-- De 0 a 3 Años -->
+          <!-- Mismos grupos que la badge de edad de la ficha (getAgeGroup en js/main.js) -->
+          <!-- Cachorro: menos de 1 año -->
           <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
-            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">De 0 a 3 Años</span>
+            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">Cachorro <span class="font-normal text-slate-500 dark:text-slate-400">(menos de 1 año)</span></span>
             <div class="relative inline-flex items-center">
-              <input type="checkbox" name="filter-age-num" value="0-3" class="sr-only peer">
+              <input type="checkbox" name="filter-age-num" value="cachorro" class="sr-only peer">
               <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
             </div>
           </label>
 
-          <!-- De 3 a 7 Años -->
+          <!-- Adulto: de 1 a 7 años -->
           <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
-            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">De 3 a 7 Años</span>
+            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">Adulto <span class="font-normal text-slate-500 dark:text-slate-400">(de 1 a 7 años)</span></span>
             <div class="relative inline-flex items-center">
-              <input type="checkbox" name="filter-age-num" value="3-7" class="sr-only peer">
+              <input type="checkbox" name="filter-age-num" value="adulto" class="sr-only peer">
               <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
             </div>
           </label>
 
-          <!-- Más de 7 Años -->
+          <!-- Senior: más de 7 años -->
           <label class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
-            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">Más de 7 Años</span>
+            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">Senior <span class="font-normal text-slate-500 dark:text-slate-400">(más de 7 años)</span></span>
             <div class="relative inline-flex items-center">
-              <input type="checkbox" name="filter-age-num" value="7+" class="sr-only peer">
+              <input type="checkbox" name="filter-age-num" value="senior" class="sr-only peer">
               <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500"></div>
             </div>
           </label>
@@ -325,6 +326,24 @@
             <span class="peer-checked:font-bold peer-checked:text-red-600 dark:peer-checked:text-red-400">Salvaje</span>
           </label>
         </div>
+      </div>
+
+      <!-- Convivencia: muestran solo los que tienen "Sí" (no "No" ni "Sin evaluar") -->
+      <div class="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-50 dark:bg-slate-850 divide-y divide-slate-200 dark:divide-slate-800">
+        <label class="flex items-center justify-between gap-3 min-h-[52px] px-4 py-2 cursor-pointer">
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sociable con niños</span>
+          <span class="relative inline-flex items-center flex-shrink-0">
+            <input type="checkbox" id="filter-with-kids" class="sr-only peer">
+            <span class="block w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500 peer-focus-visible:ring-2 peer-focus-visible:ring-orange-500"></span>
+          </span>
+        </label>
+        <label class="flex items-center justify-between gap-3 min-h-[52px] px-4 py-2 cursor-pointer">
+          <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800 dark:text-slate-200">Sociable con otros animales</span>
+          <span class="relative inline-flex items-center flex-shrink-0">
+            <input type="checkbox" id="filter-with-animals" class="sr-only peer">
+            <span class="block w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-900 dark:peer-checked:bg-orange-500 peer-focus-visible:ring-2 peer-focus-visible:ring-orange-500"></span>
+          </span>
+        </label>
       </div>
 
       <!-- Castración: Dividida en Castrados y No Castrados -->
@@ -483,9 +502,16 @@
               <option value="hembra">Hembra ♀</option>
             </select>
           </div>
+          <!-- Edad: número + unidad, así se calcula bien el grupo (Cachorro / Adulto / Senior) -->
           <div>
             <label for="pub-age" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Edad aproximada *</label>
-            <input type="text" id="pub-age" required placeholder="Ej: 1 Año o 5 Meses" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:ring-2 focus:ring-orange-500">
+            <div class="flex gap-2">
+              <input type="number" id="pub-age" required min="1" max="30" inputmode="numeric" placeholder="Ej: 2" class="w-24 px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base focus:ring-2 focus:ring-orange-500">
+              <select id="pub-age-unit" aria-label="Unidad de la edad" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base focus:ring-2 focus:ring-orange-500">
+                <option value="anios">Años</option>
+                <option value="meses">Meses</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -513,9 +539,29 @@
               </label>
               <label class="flex-1 p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center gap-2 text-xs font-semibold cursor-pointer">
                 <input type="radio" name="pub-sociable" value="false" class="text-orange-500">
-                <span>Salvaje / Tímido</span>
+                <span>Salvaje</span>
               </label>
             </div>
+          </div>
+        </div>
+
+        <!-- Convivencia: arranca en "Sin evaluar" para que el "Sí" se elija a propósito -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="pub-with-kids" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">¿Sociable con niños? *</label>
+            <select id="pub-with-kids" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base focus:ring-2 focus:ring-orange-500">
+              <option value="sin_evaluar">Sin evaluar</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div>
+            <label for="pub-with-animals" class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">¿Con otros animales? *</label>
+            <select id="pub-with-animals" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-base focus:ring-2 focus:ring-orange-500">
+              <option value="sin_evaluar">Sin evaluar</option>
+              <option value="si">Sí</option>
+              <option value="no">No</option>
+            </select>
           </div>
         </div>
 
@@ -533,6 +579,20 @@
             </div>
             <input type="checkbox" id="pub-pet-urgent" class="w-5 h-5 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
           </label>
+        </div>
+
+        <!-- Salud: el campo se habilita solo si se marca la casilla (badge de salud en la ficha) -->
+        <div class="p-3.5 rounded-2xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 space-y-2">
+          <label class="flex items-start justify-between gap-3 cursor-pointer">
+            <span>
+              <span class="block text-xs font-bold text-slate-900 dark:text-white">Tiene un problema de salud o necesita cuidados especiales</span>
+              <span class="block text-[11px] text-slate-500 dark:text-slate-400">Ej: medicación diaria, dieta especial, recuperación de una cirugía</span>
+            </span>
+            <input type="checkbox" id="pub-health-check" aria-controls="pub-health-text" class="mt-0.5 w-5 h-5 flex-shrink-0 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+          </label>
+          <label for="pub-health-text" class="sr-only">Contá qué problema de salud tiene o qué cuidados necesita</label>
+          <textarea id="pub-health-text" rows="2" maxlength="150" disabled aria-describedby="pub-health-count" placeholder="Marcá la casilla para completar este campo" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-base focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-100 dark:disabled:bg-slate-850"></textarea>
+          <p id="pub-health-count" class="text-[11px] text-right text-slate-500 dark:text-slate-400" aria-live="polite">0 / 150</p>
         </div>
 
         <!-- Foto de la Mascota -->

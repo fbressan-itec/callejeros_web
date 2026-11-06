@@ -20,14 +20,126 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------------------------------------------------------------------
   // Piezas de la ficha
   // ---------------------------------------------------------------------
-  function badgeCard(icon, label, value, extra = '') {
+  // ---------------------------------------------------------------------
+  // INSIGNIAS (badges): solo ícono SVG, de un vistazo. El significado aparece
+  // al pasar el mouse (title), al tocar o al llegar con el teclado, en la línea
+  // de abajo de la caja (no en un globito flotante, que en el celular se corta
+  // en los bordes de la pantalla). Se usan SVG y no emojis porque el mismo
+  // ícono cambia de color según el dato (los emojis no se pueden pintar).
+  // Las badges se calculan desde los datos de la mascota: nadie las elige a
+  // mano (ver comentario en js/data.js para el back end).
+  // ---------------------------------------------------------------------
+  const TONES = {
+    neutral: 'bg-white border-slate-300 text-slate-700 dark:bg-slate-700 dark:border-slate-500 dark:text-slate-100',
+    sky: 'bg-sky-100 border-sky-300 text-sky-700 dark:bg-sky-950/60 dark:border-sky-800 dark:text-sky-300',
+    pink: 'bg-pink-100 border-pink-300 text-pink-700 dark:bg-pink-950/60 dark:border-pink-800 dark:text-pink-300',
+    orange: 'bg-orange-100 border-orange-300 text-orange-700 dark:bg-orange-950/60 dark:border-orange-800 dark:text-orange-300',
+    green: 'bg-emerald-100 border-emerald-300 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300',
+    amber: 'bg-amber-100 border-amber-300 text-amber-700 dark:bg-amber-950/60 dark:border-amber-800 dark:text-amber-300',
+    gray: 'bg-slate-200 border-slate-300 text-slate-500 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-400',
+    blue: 'bg-blue-100 border-blue-300 text-blue-700 dark:bg-blue-950/60 dark:border-blue-800 dark:text-blue-300',
+    urgent: 'bg-rose-600 border-rose-700 text-white dark:border-rose-400'
+  };
+
+  // Íconos de línea (24x24, trazo 2), dibujados a mano para no depender de librerías
+  const ICONS = {
+    perro: '<path d="M8 6.5a4 4 0 0 1 8 0V12a4 4 0 0 1-8 0z"/><path d="M8 7 4.5 5.5v6L8 13M16 7l3.5-1.5v6L16 13"/><path d="M11 13.5h2l-1 1.2z"/><path d="M10 10h.01M14 10h.01"/>',
+    gato: '<path d="M5 10V4l4 3h6l4-3v6a7 7 0 1 1-14 0z"/><path d="M9.5 12h.01M14.5 12h.01"/><path d="M11 15h2l-1 1z"/>',
+    macho: '<circle cx="10" cy="14" r="5"/><path d="M13.5 10.5 19 5M15 5h4v4"/>',
+    hembra: '<circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/>',
+    sociable: '<circle cx="12" cy="12" r="9"/><path d="M8.5 14a4 4 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/>',
+    salvaje: '<circle cx="12" cy="12" r="9"/><path d="M8.5 15.5h7"/><path d="m7.5 8 3 1.5M16.5 8l-3 1.5"/>',
+    ninos: '<circle cx="9" cy="7" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1"/><circle cx="17.5" cy="11" r="2"/><path d="M14.5 20v-.5a3 3 0 0 1 6 0v.5"/>',
+    animales: '<ellipse cx="12" cy="16" rx="4" ry="3.5"/><circle cx="6.5" cy="10.5" r="1.7"/><circle cx="10" cy="6.5" r="1.7"/><circle cx="14" cy="6.5" r="1.7"/><circle cx="17.5" cy="10.5" r="1.7"/>',
+    castrado: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20M8.1 15.9 20 4"/>',
+    sinCastrar: '<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20M8.1 15.9 20 4"/><path d="M3 21 21 3" stroke-width="2.5"/>',
+    urgente: '<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>',
+    salud: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>'
+  };
+
+  // Edad: barras de nivel (1 = cachorro, 2 = adulto, 3 = senior)
+  function ageIcon(group) {
+    const filled = { cachorro: 1, adulto: 2, senior: 3 }[group];
+    const bars = [[4, 14, 6], [10, 10, 10], [16, 5, 15]];
+    return bars.map(([x, y, h], i) =>
+      `<rect x="${x}" y="${y}" width="4" height="${h}" rx="1" ${i < filled ? 'fill="currentColor"' : ''}/>`
+    ).join('');
+  }
+
+  const COEXIST = { si: 'green', no: 'amber', sin_evaluar: 'gray' };
+
+  function getPetBadges(p) {
+    const hembra = p.sex === 'hembra';
+    const group = getAgeGroup(getPetYears(p));
+    const ninos = p.conNinos || 'sin_evaluar';
+    const animales = p.conAnimales || 'sin_evaluar';
+    const coexistText = (value, who, si, no) => value === 'si' ? si
+      : value === 'no' ? no
+      : `Con ${who}: sin evaluar todavía. Consultá con el rescatista.`;
+    const ageRanges = { cachorro: 'menos de 1 año', adulto: 'de 1 a 7 años', senior: 'más de 7 años' };
+
+    const badges = [];
+    // Urgente y salud: solo si corresponde
+    if (p.urgent) badges.push({ tone: 'urgent', icon: ICONS.urgente, text: 'Caso urgente: su tránsito vence pronto o necesita atención prioritaria.' });
+    badges.push(
+      { tone: 'neutral', icon: p.specie === 'gato' ? ICONS.gato : ICONS.perro, text: p.specie === 'gato' ? 'Gato' : 'Perro' },
+      { tone: hembra ? 'pink' : 'sky', icon: hembra ? ICONS.hembra : ICONS.macho, text: hembra ? 'Hembra' : 'Macho' },
+      { tone: 'orange', icon: ageIcon(group), text: `${AGE_GROUPS[group]} (${ageRanges[group]}): ${p.age}` },
+      p.sociable
+        ? { tone: 'green', icon: ICONS.sociable, text: 'Sociable: se lleva bien con las personas.' }
+        : { tone: 'amber', icon: ICONS.salvaje, text: 'Salvaje: necesita un acercamiento cuidadoso y paciencia. Consultá con el rescatista.' },
+      // Con niños y con animales: mismo ícono, el color dice el dato (verde sí · ámbar no · gris sin evaluar)
+      { tone: COEXIST[ninos], icon: ICONS.ninos, text: coexistText(ninos, 'niños', 'Sociable con niños.', 'No es sociable con niños: mejor un hogar sin chicos.') },
+      { tone: COEXIST[animales], icon: ICONS.animales, text: coexistText(animales, 'otros animales', 'Sociable con otros animales.', 'No es sociable con otros animales: mejor un hogar donde sea el único.') },
+      p.castrado
+        ? { tone: 'green', icon: ICONS.castrado, text: hembra ? 'Castrada' : 'Castrado' }
+        : { tone: 'amber', icon: ICONS.sinCastrar, text: 'Sin castrar: se entrega con compromiso de castración.' }
+    );
+    if (p.cuidadoEspecial) badges.push({ tone: 'blue', icon: ICONS.salud, text: `Necesita cuidados de salud: ${p.cuidadoEspecial}` });
+    return badges;
+  }
+
+  function badgesSection(p) {
+    const items = getPetBadges(p).map(b => `
+      <li>
+        <button type="button" class="pet-badge w-12 h-12 rounded-full border-2 flex items-center justify-center ${TONES[b.tone]} active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800" title="${escapeHtml(b.text)}" aria-label="${escapeHtml(b.text)}" data-text="${escapeHtml(b.text)}">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">${b.icon}</svg>
+        </button>
+      </li>`).join('');
+    // Caja gris sin título (en Figma "Sistema de Badges" era solo una guía)
     return `
-      <div class="p-2.5 rounded-xl border ${extra || 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'} flex items-center gap-2">
-        <span class="text-base" aria-hidden="true">${icon}</span>
-        <div class="min-w-0">
-          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">${label}</span>
-          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 capitalize">${value}</span>
-        </div>
+      <section class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700" aria-label="Resumen de ${escapeHtml(p.name)}">
+        <ul class="flex flex-wrap justify-center gap-2">${items}</ul>
+        <p id="pet-badge-caption" class="mt-2 min-h-[2.5rem] flex items-center justify-center text-center text-xs font-semibold text-slate-600 dark:text-slate-300" aria-live="polite">Tocá una insignia para ver qué significa</p>
+      </section>`;
+  }
+
+  function setupBadges() {
+    const caption = document.getElementById('pet-badge-caption');
+    const all = document.querySelectorAll('.pet-badge');
+    all.forEach(btn => {
+      const show = () => {
+        caption.textContent = btn.dataset.text;
+        all.forEach(b => b.classList.toggle('ring-2', b === btn));
+        all.forEach(b => b.classList.toggle('ring-orange-500', b === btn));
+      };
+      btn.addEventListener('click', show);
+      btn.addEventListener('mouseenter', show);
+      btn.addEventListener('focus', show);
+    });
+  }
+
+  // Fila de convivencia en "Descripción": Sí / No / Sin evaluar con el mismo color que la badge
+  function coexistRow(label, value) {
+    const pills = {
+      si: '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">✓ Sí</span>',
+      no: '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">✗ No</span>',
+      sin_evaluar: '<span class="px-2 py-0.5 rounded-md text-xs font-bold bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">? Sin evaluar</span>'
+    };
+    return `
+      <div class="flex justify-between items-center gap-3 py-1 border-b border-slate-100 dark:border-slate-700/60 last:border-0">
+        <span class="text-slate-500 dark:text-slate-400">${label}</span>
+        ${pills[value] || pills.sin_evaluar}
       </div>`;
   }
 
@@ -134,22 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       ` : ''}
 
-      <!-- SISTEMA DE BADGES (Figma) -->
-      <section class="space-y-2" aria-labelledby="badges-title">
-        <div class="flex items-center justify-between">
-          <h2 id="badges-title" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Sistema de Badges</h2>
-          <span class="text-[11px] text-slate-500 dark:text-slate-400">Ficha oficial R4</span>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          ${badgeCard(pet.sociable ? '🟢' : '🔴', 'Sociabilidad', pet.sociable ? 'Sociable' : 'Salvaje / Tímido')}
-          ${badgeCard(pet.castrado ? '✂️' : '⏳', 'Castración', pet.castrado ? 'Castrado' : 'No castrado')}
-          ${badgeCard(pet.urgent ? '🚨' : '🟢', 'Prioridad', pet.urgent ? 'Caso urgente' : 'Estándar',
-            pet.urgent ? 'border-rose-300 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/30' : '')}
-          ${badgeCard(pet.sex === 'hembra' ? '♀' : '♂', 'Sexo', sexLabel)}
-          ${badgeCard('🎂', 'Edad', escapeHtml(pet.age))}
-          ${badgeCard(pet.specie === 'gato' ? '🐱' : '🐶', 'Especie', pet.specie === 'gato' ? 'Gato' : 'Perro')}
-        </div>
-      </section>
+      <!-- INSIGNIAS (Figma: "Sistema de Badges") -->
+      ${badgesSection(pet)}
 
       <!-- Menciones a padrinos (diagrama de flujo) -->
       <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/60">
@@ -163,10 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
       <section class="space-y-3" aria-label="Información de ${escapeHtml(pet.name)}">
         ${accordion('Descripción', '📖', `
           <p class="leading-relaxed pb-2">${escapeHtml(pet.description)}</p>
-          ${row('Edad', pet.age)}
+          ${row('Edad', `${pet.age} · ${AGE_GROUPS[getAgeGroup(getPetYears(pet))]}`)}
           ${row('Sexo', sexLabel)}
           ${row('Castración', pet.castrado ? 'Castrado' : 'No castrado')}
-          ${row('Sociabilidad', pet.sociable ? 'Sociable' : 'Salvaje / Tímido')}
+          ${row('Sociabilidad', pet.sociable ? 'Sociable' : 'Salvaje')}
+          ${coexistRow('Con niños', pet.conNinos)}
+          ${coexistRow('Con otros animales', pet.conAnimales)}
         `)}
         ${accordion('Estado de salud', '🩺', `
           ${row('Estado clínico', salud.estado)}
@@ -174,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${row('Parásitos', salud.parasitos)}
           ${row('Pulgas / garrapatas', salud.pulgas)}
           ${row('Otros', salud.otros)}
+          ${pet.cuidadoEspecial ? row('Cuidado especial', pet.cuidadoEspecial) : ''}
         `)}
         ${accordion('Notas', '📝', `
           <p class="leading-relaxed">${escapeHtml(pet.notas || 'Animalito muy dócil que requiere cariño, seguimiento de vacunas y compromiso de tenencia responsable.')}</p>
@@ -196,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setupGallery(photos.length);
     setupSeeMore();
+    setupBadges();
     document.getElementById('btn-pet-adopt').addEventListener('click', onAdopt);
     document.getElementById('btn-pet-share').addEventListener('click', onShare);
   }
