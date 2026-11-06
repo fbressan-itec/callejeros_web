@@ -234,6 +234,29 @@
         </a>
       </div>
 
+      <!-- =================================================================== -->
+      <!-- COMPARTIR EN REDES (diagrama de flujo)                              -->
+      <!-- =================================================================== -->
+      <section class="p-6 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-4" aria-labelledby="share-title">
+        <div class="space-y-1">
+          <h2 id="share-title" class="font-display font-bold text-lg text-slate-900 dark:text-white">Compartí esta guía</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Una adopción responsable empieza informándose. Ayudanos a que llegue a más familias.</p>
+        </div>
+
+        <!-- Menú nativo de compartir del celular (solo si el navegador lo soporta) -->
+        <button type="button" id="btn-share-native" class="hidden w-full min-h-[44px] rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-md transition-all">
+          📤 Compartir
+        </button>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <a id="share-whatsapp" href="#" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 min-h-[44px] rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 transition-all">WhatsApp</a>
+          <a id="share-facebook" href="#" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 min-h-[44px] rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all">Facebook</a>
+          <a id="share-x" href="#" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 min-h-[44px] rounded-xl font-bold text-sm text-white bg-slate-900 dark:bg-slate-950 hover:bg-slate-700 active:scale-95 transition-all">X (Twitter)</a>
+          <button type="button" id="share-copy" class="flex items-center justify-center gap-2 min-h-[44px] rounded-xl font-bold text-sm text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95 transition-all">🔗 Copiar enlace</button>
+        </div>
+        <p id="share-copied" class="hidden text-xs font-semibold text-emerald-600 dark:text-emerald-400" role="status">¡Enlace copiado!</p>
+      </section>
+
     </div>
   </main>
 
@@ -243,5 +266,32 @@
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    // Compartir la guía: menú nativo en celulares + enlaces directos a cada red
+    document.addEventListener('DOMContentLoaded', () => {
+      const url = window.location.href.split('#')[0];
+      const text = 'Antes de adoptar, leé esta guía de Adopción Responsable de Callejeros Río Cuarto 🐾';
+      const enc = encodeURIComponent;
+
+      document.getElementById('share-whatsapp').href = `https://wa.me/?text=${enc(text + ' ' + url)}`;
+      document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`;
+      document.getElementById('share-x').href = `https://twitter.com/intent/tweet?text=${enc(text)}&url=${enc(url)}`;
+
+      const nativeBtn = document.getElementById('btn-share-native');
+      if (navigator.share) {
+        nativeBtn.classList.remove('hidden');
+        nativeBtn.addEventListener('click', () => {
+          navigator.share({ title: 'Adopción Responsable — Callejeros Río Cuarto', text, url }).catch(() => {});
+        });
+      }
+
+      document.getElementById('share-copy').addEventListener('click', () => {
+        navigator.clipboard?.writeText(url).catch(() => {});
+        const msg = document.getElementById('share-copied');
+        msg.classList.remove('hidden');
+        setTimeout(() => msg.classList.add('hidden'), 2500);
+      });
+    });
+  </script>
 </body>
 </html>

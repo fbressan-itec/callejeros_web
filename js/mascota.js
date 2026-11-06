@@ -1,0 +1,326 @@
+// =========================================================================
+// FICHA DE MASCOTA — CALLEJEROS RÍO CUARTO (mascota.html#id)
+// Página completa fiel a Figma ("Detalle de mascota" + "Info desplegable"):
+// carrusel de fotos con degradado y resumen, sistema de badges, padrinos,
+// info desplegable (Descripción / Estado de salud / Notas), ¡Adoptame! con
+// validación de sesión y cuestionario de adopción.
+// =========================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const content = document.getElementById('pet-content');
+  const nameEl = document.getElementById('pet-name');
+  const favBtn = document.getElementById('btn-pet-fav');
+  const favIcon = document.getElementById('pet-fav-icon');
+  let pet = null;
+
+  function getAllPets() {
+    return [...getStoredList('callejeros_custom_pets'), ...samplePets];
+  }
+
+  // ---------------------------------------------------------------------
+  // Piezas de la ficha
+  // ---------------------------------------------------------------------
+  function badgeCard(icon, label, value, extra = '') {
+    return `
+      <div class="p-2.5 rounded-xl border ${extra || 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'} flex items-center gap-2">
+        <span class="text-base" aria-hidden="true">${icon}</span>
+        <div class="min-w-0">
+          <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">${label}</span>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 capitalize">${value}</span>
+        </div>
+      </div>`;
+  }
+
+  // Desplegable cerrado por defecto (Figma "Info desplegable")
+  function accordion(title, icon, inner) {
+    return `
+      <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+        <summary class="flex items-center justify-between gap-3 min-h-[56px] px-4 py-3 cursor-pointer list-none font-display font-bold text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+          <span class="flex items-center gap-2"><span aria-hidden="true">${icon}</span>${title}</span>
+          <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </summary>
+        <div class="px-4 pb-4 text-sm text-slate-700 dark:text-slate-200 space-y-1">${inner}</div>
+      </details>`;
+  }
+
+  function row(label, value) {
+    return `
+      <div class="flex justify-between gap-3 py-1 border-b border-slate-100 dark:border-slate-700/60 last:border-0">
+        <span class="text-slate-500 dark:text-slate-400">${label}</span>
+        <span class="font-bold text-right text-slate-900 dark:text-white">${escapeHtml(value)}</span>
+      </div>`;
+  }
+
+  function updateFavIcon() {
+    const isFav = getFavorites().includes(pet.id);
+    favIcon.classList.toggle('fill-red-500', isFav);
+    favIcon.classList.toggle('text-red-500', isFav);
+    favIcon.classList.toggle('fill-none', !isFav);
+    favBtn.setAttribute('aria-pressed', String(isFav));
+    favBtn.setAttribute('aria-label', isFav ? `Quitar a ${pet.name} de favoritos` : `Guardar a ${pet.name} en favoritos`);
+  }
+
+  // ---------------------------------------------------------------------
+  // Render de la ficha
+  // ---------------------------------------------------------------------
+  function render() {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    pet = getAllPets().find(p => p.id === id) || null;
+
+    if (!pet) {
+      nameEl.textContent = 'Mascota';
+      favBtn.classList.add('hidden');
+      content.innerHTML = `
+        <div class="py-16 text-center space-y-3">
+          <span class="text-4xl block" aria-hidden="true">🐾</span>
+          <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white">No encontramos esta mascota</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Puede que ya haya sido adoptada. ¡Hay muchos más esperando!</p>
+          <a href="adopciones.html" class="inline-flex items-center justify-center min-h-[44px] px-5 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 transition-all">Ver el catálogo</a>
+        </div>`;
+      return;
+    }
+
+    document.title = `${pet.name} — Adoptá un Callejero — Callejeros Río Cuarto`;
+    nameEl.textContent = pet.name;
+    favBtn.classList.remove('hidden');
+    updateFavIcon();
+
+    const photos = (pet.images && pet.images.length ? pet.images : [pet.image]);
+    const multi = photos.length > 1;
+    const salud = pet.salud || {
+      estado: 'Sano y bajo control veterinario', vacunas: 'Plan de vacunación iniciado',
+      parasitos: 'Desparasitado', pulgas: 'Pipeta al día', otros: 'Sin complicaciones detectadas'
+    };
+    const padrinos = getPadrinosCount(pet);
+    const sexLabel = pet.sex === 'hembra' ? 'Hembra' : 'Macho';
+
+    content.innerHTML = `
+      <!-- CARRUSEL DE FOTOS: se desliza con el dedo; degradado fijo con resumen siempre legible -->
+      <section class="relative rounded-3xl overflow-hidden bg-slate-200 dark:bg-slate-800 shadow-soft h-[380px] sm:h-[460px]" aria-roledescription="carrusel" aria-label="Fotos de ${escapeHtml(pet.name)}">
+        <div id="pet-gallery" class="flex h-full overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+          ${photos.map((src, i) => `
+            <img src="${escapeHtml(src)}" alt="Foto ${i + 1} de ${photos.length} de ${escapeHtml(pet.name)}" class="w-full h-full flex-shrink-0 snap-center object-cover" ${i > 0 ? 'loading="lazy"' : ''}>
+          `).join('')}
+        </div>
+
+        ${multi ? `
+          <span id="pet-photo-counter" class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-bold text-white bg-slate-950/70 backdrop-blur-sm pointer-events-none">1 / ${photos.length}</span>
+          <button type="button" id="pet-photo-prev" class="hidden sm:flex absolute left-3 top-1/3 min-w-[44px] min-h-[44px] items-center justify-center rounded-full bg-slate-950/60 hover:bg-slate-950/80 text-white backdrop-blur-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" aria-label="Foto anterior">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button type="button" id="pet-photo-next" class="hidden sm:flex absolute right-3 top-1/3 min-w-[44px] min-h-[44px] items-center justify-center rounded-full bg-slate-950/60 hover:bg-slate-950/80 text-white backdrop-blur-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" aria-label="Foto siguiente">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        ` : ''}
+
+        <!-- Degradado fijo (opción A): siempre legible, no tapa la cara del animal -->
+        <div class="absolute inset-x-0 bottom-0 pt-24 p-5 bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-transparent pointer-events-none space-y-2">
+          <div class="flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${pet.sociable ? 'bg-emerald-600' : 'bg-red-500'}">${pet.sociable ? 'Sociable' : 'Salvaje / Tímido'}</span>
+            ${pet.urgent ? '<span class="px-2.5 py-1 rounded-md text-xs font-extrabold text-white bg-rose-600 shadow-md">🚨 Caso Urgente</span>' : ''}
+            <span class="px-2.5 py-1 rounded-md text-xs font-bold text-white bg-slate-950/60 backdrop-blur-sm">${escapeHtml(pet.age)} · ${sexLabel}</span>
+          </div>
+          <p class="text-sm text-white leading-relaxed line-clamp-2">${escapeHtml(pet.description)}</p>
+        </div>
+      </section>
+
+      ${multi ? `
+        <!-- Puntitos del carrusel (botones táctiles de 44px) -->
+        <div class="flex justify-center -mt-2" role="group" aria-label="Elegir foto">
+          ${photos.map((_, i) => `
+            <button type="button" class="pet-dot min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-full" data-index="${i}" aria-label="Ver foto ${i + 1}">
+              <span class="block h-2.5 rounded-full transition-all ${i === 0 ? 'w-8 bg-orange-500' : 'w-2.5 bg-slate-300 dark:bg-slate-600'}"></span>
+            </button>`).join('')}
+        </div>
+      ` : ''}
+
+      <!-- SISTEMA DE BADGES (Figma) -->
+      <section class="space-y-2" aria-labelledby="badges-title">
+        <div class="flex items-center justify-between">
+          <h2 id="badges-title" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Sistema de Badges</h2>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400">Ficha oficial R4</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          ${badgeCard(pet.sociable ? '🟢' : '🔴', 'Sociabilidad', pet.sociable ? 'Sociable' : 'Salvaje / Tímido')}
+          ${badgeCard(pet.castrado ? '✂️' : '⏳', 'Castración', pet.castrado ? 'Castrado' : 'No castrado')}
+          ${badgeCard(pet.urgent ? '🚨' : '🟢', 'Prioridad', pet.urgent ? 'Caso urgente' : 'Estándar',
+            pet.urgent ? 'border-rose-300 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/30' : '')}
+          ${badgeCard(pet.sex === 'hembra' ? '♀' : '♂', 'Sexo', sexLabel)}
+          ${badgeCard('🎂', 'Edad', escapeHtml(pet.age))}
+          ${badgeCard(pet.specie === 'gato' ? '🐱' : '🐶', 'Especie', pet.specie === 'gato' ? 'Gato' : 'Perro')}
+        </div>
+      </section>
+
+      <!-- Menciones a padrinos (diagrama de flujo) -->
+      <div class="flex items-center gap-3 p-3.5 rounded-2xl bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/60">
+        <span class="text-2xl" aria-hidden="true">💛</span>
+        <p class="flex-1 text-sm text-slate-700 dark:text-slate-200">${padrinos > 0
+          ? `${escapeHtml(pet.name)} tiene ${padrinos} padrino${padrinos === 1 ? '' : 's'} que cubren su alimento y cuidados.`
+          : `${escapeHtml(pet.name)} todavía no tiene padrinos. ¡Podés ser el primero!`}</p>
+      </div>
+
+      <!-- INFO DESPLEGABLE (Figma): cerrados, se abren de a uno -->
+      <section class="space-y-3" aria-label="Información de ${escapeHtml(pet.name)}">
+        ${accordion('Descripción', '📖', `
+          <p class="leading-relaxed pb-2">${escapeHtml(pet.description)}</p>
+          ${row('Edad', pet.age)}
+          ${row('Sexo', sexLabel)}
+          ${row('Castración', pet.castrado ? 'Castrado' : 'No castrado')}
+          ${row('Sociabilidad', pet.sociable ? 'Sociable' : 'Salvaje / Tímido')}
+        `)}
+        ${accordion('Estado de salud', '🩺', `
+          ${row('Estado clínico', salud.estado)}
+          ${row('Vacunas', salud.vacunas)}
+          ${row('Parásitos', salud.parasitos)}
+          ${row('Pulgas / garrapatas', salud.pulgas)}
+          ${row('Otros', salud.otros)}
+        `)}
+        ${accordion('Notas', '📝', `
+          <p class="leading-relaxed">${escapeHtml(pet.notas || 'Animalito muy dócil que requiere cariño, seguimiento de vacunas y compromiso de tenencia responsable.')}</p>
+        `)}
+      </section>
+
+      <!-- ACCIONES (Figma: "¡Adoptame!" + "Donaciones y Apadrinamiento") -->
+      <div class="space-y-2 pt-1">
+        <button type="button" id="btn-pet-adopt" class="w-full min-h-[52px] rounded-2xl font-display font-bold text-base text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-lg shadow-orange-500/30 transition-all">
+          ¡Adoptame!
+        </button>
+        <a href="apadrinar.html#${encodeURIComponent(pet.id)}" class="flex items-center justify-center w-full min-h-[44px] rounded-2xl font-bold text-sm text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all">
+          Donaciones y Apadrinamiento
+        </a>
+        <button type="button" id="btn-pet-share" class="flex items-center justify-center gap-2 w-full min-h-[44px] rounded-2xl font-bold text-sm text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-slate-800 transition-colors">
+          📤 Compartir a ${escapeHtml(pet.name)}
+        </button>
+      </div>
+    `;
+
+    setupGallery(photos.length);
+    document.getElementById('btn-pet-adopt').addEventListener('click', onAdopt);
+    document.getElementById('btn-pet-share').addEventListener('click', onShare);
+  }
+
+  // ---------------------------------------------------------------------
+  // Carrusel: deslizar (scroll-snap nativo), puntitos, contador y flechas en desktop
+  // ---------------------------------------------------------------------
+  function setupGallery(count) {
+    if (count < 2) return;
+    const gallery = document.getElementById('pet-gallery');
+    const counter = document.getElementById('pet-photo-counter');
+    const dots = document.querySelectorAll('.pet-dot');
+    const goTo = i => gallery.scrollTo({ left: i * gallery.clientWidth, behavior: 'smooth' });
+    const current = () => Math.round(gallery.scrollLeft / gallery.clientWidth);
+
+    gallery.addEventListener('scroll', () => {
+      const i = current();
+      if (counter) counter.textContent = `${i + 1} / ${count}`;
+      dots.forEach((dot, d) => {
+        const bar = dot.firstElementChild;
+        bar.classList.toggle('w-8', d === i);
+        bar.classList.toggle('bg-orange-500', d === i);
+        bar.classList.toggle('w-2.5', d !== i);
+        bar.classList.toggle('bg-slate-300', d !== i);
+        bar.classList.toggle('dark:bg-slate-600', d !== i);
+        dot.setAttribute('aria-current', d === i ? 'true' : 'false');
+      });
+    }, { passive: true });
+
+    dots.forEach(dot => dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index, 10))));
+    document.getElementById('pet-photo-prev')?.addEventListener('click', () => goTo(Math.max(0, current() - 1)));
+    document.getElementById('pet-photo-next')?.addEventListener('click', () => goTo(Math.min(count - 1, current() + 1)));
+  }
+
+  // ---------------------------------------------------------------------
+  // Favorito, compartir y ¡Adoptame!
+  // ---------------------------------------------------------------------
+  favBtn.addEventListener('click', () => {
+    if (!pet) return;
+    toggleFavorite(pet.id);
+    updateFavIcon();
+  });
+
+  function onShare() {
+    const url = window.location.href;
+    const text = `Conocé a ${pet.name}, busca una familia en Río Cuarto 🐾`;
+    if (navigator.share) {
+      navigator.share({ title: `${pet.name} — Callejeros Río Cuarto`, text, url }).catch(() => {});
+    } else {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank', 'noopener');
+    }
+  }
+
+  // Validación de sesión obligatoria antes del cuestionario (ADR-019)
+  function onAdopt() {
+    if (!getCurrentUser()) {
+      openAuthRequiredModal({
+        text: `Para postularte a la adopción responsable de ${pet.name} es obligatorio ingresar con tu cuenta. Así podremos ponernos en contacto para coordinar la entrevista y el seguimiento.`,
+        redirect: `mascota.html#${pet.id}`
+      });
+      return;
+    }
+    openAdopcionModal();
+  }
+
+  // ---------------------------------------------------------------------
+  // Cuestionario de adopción y respuesta simulada
+  // ---------------------------------------------------------------------
+  const modalAdopcion = document.getElementById('modal-adopcion');
+  const formAdopcion = document.getElementById('form-adopcion-responsable');
+
+  function openAdopcionModal() {
+    document.getElementById('modal-adopcion-pet-title').textContent = `Adoptar a ${pet.name}`;
+    const user = getCurrentUser();
+    const nameInput = document.getElementById('adopt-name');
+    const emailInput = document.getElementById('adopt-email');
+    if (user && nameInput && !nameInput.value) nameInput.value = user.name || '';
+    if (user && emailInput && !emailInput.value) emailInput.value = user.email || '';
+    modalAdopcion?.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeAdopcionModal() {
+    modalAdopcion?.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  document.getElementById('btn-close-adopcion')?.addEventListener('click', closeAdopcionModal);
+
+  // Se guarda la solicitud y un voluntario "responde" a los segundos (js/main.js).
+  // Regla de la demo: casa abierta sin patio → desaprobada; el resto → aprobada.
+  formAdopcion?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const housing = document.getElementById('adopt-housing').value;
+    const solicitud = {
+      id: 'sol-' + Date.now(),
+      petId: pet.id,
+      petName: pet.name,
+      petImage: pet.image,
+      specie: pet.specie,
+      applicant: document.getElementById('adopt-name').value.trim(),
+      housing,
+      createdAt: Date.now(),
+      status: 'pendiente'
+    };
+    const solicitudes = getStoredList('callejeros_solicitudes');
+    solicitudes.unshift(solicitud);
+    saveStoredList('callejeros_solicitudes', solicitudes);
+
+    scheduleDemoEvent({
+      type: 'solicitud',
+      solicitudId: solicitud.id,
+      result: housing === 'casa_sin_patio' ? 'desaprobada' : 'aprobada'
+    });
+    pushNotification({
+      title: `Recibimos tu solicitud para adoptar a ${pet.name}`,
+      text: 'Un voluntario está revisando tu cuestionario. Te avisamos acá cuando haya respuesta.',
+      tag: 'Adopción',
+      link: `solicitud.html#${solicitud.id}`
+    });
+
+    closeAdopcionModal();
+    formAdopcion.reset();
+    openSuccessModal('¡Datos enviados correctamente!', `Te avisaremos en tus notificaciones si la solicitud para adoptar a ${pet.name} es aceptada.`);
+  });
+
+  render();
+  window.addEventListener('hashchange', render);
+});

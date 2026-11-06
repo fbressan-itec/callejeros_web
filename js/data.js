@@ -16,6 +16,11 @@ const samplePets = [
     urgent: false,
     padrinos: 3, // padrinos de ejemplo (apadrinamiento mensual)
     image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80',
+    // Galería de la ficha (ejemplo: Loki tiene 2 fotos; el resto usa solo "image")
+    images: [
+      'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=800&q=80'
+    ],
     description: 'Rescatado en barrio Alberdi. Es juguetón, sociable con otros perros y niños, muy compañero y con libreta sanitaria al día.',
     salud: {
       estado: 'Sano y vital',

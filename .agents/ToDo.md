@@ -13,20 +13,13 @@ Prioridad: **mobile first** y fidelidad a los bocetos de `imagen_figma/`.
 - [ ] Mapa de `alerta.html`: por ahora queda el mapa de muestra. Decidir más adelante si se reemplaza por uno real (Leaflet + OpenStreetMap, sin API key) o si se mantiene como maqueta.
 
 ### Revisión general mobile first (2026-11-06)
-- [ ] La ficha de mascota en mobile es un modal con márgenes; la de alertas ocupa toda la pantalla. Unificar (pantalla completa en mobile).
-- [ ] Botones sin acción: "Consultar por WhatsApp" (tienda), "Google" y "Facebook" (login y registro), "Recordarme" (login).
 - [ ] `<img src="">` vacíos en las fichas (adopciones y alertas) generan un pedido extra al servidor; sacar el `src` hasta que se cargue la foto.
-- [ ] Formularios: los botones de envío no se ven deshabilitados cuando faltan datos (estado "Disabled" de la convención de 5 estados).
 
 ### Falta respecto a Figma
 - [ ] Formulario de adopción: Figma separa **Nombre** y **Apellido** en dos campos; hoy es uno solo ("Nombre Completo"). Opcional.
 
 ### Falta respecto al diagrama de flujo
-- [ ] Ficha de mascota: comentarios (solo usuarios) y galería de varias fotos.
-- [ ] Tienda: detalle de producto, botón "Agregar al carrito", carrito y elegir método de pago (simulado).
-- [ ] Donaciones: hero con fotos, cómo se usan las donaciones y preguntas frecuentes.
-- [ ] Adopción Responsable: filtro de contenido y botón para compartir en redes.
-- [ ] Sección de Voluntariado (nota del diagrama: "Ver de agregar sección de voluntariados").
+- [ ] **Para la fase de desarrollo (con backend), no en este maquetado:** mejorar la información de Adopción Responsable — hero con foto, filtro de contenido por temas (Perros · Gatos · Cachorros · Adultos mayores), checklist interactivo "¿Estás listo para adoptar?" y costos estimados por mes.
 
 ### Sistema de alertas (separado de adopciones)
 Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo publica para que otros lo reconozcan (si es su mascota perdida) o puedan ayudarlo (alimento, atención, tránsito). No publica en el catálogo de adopción.
@@ -35,10 +28,11 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 
 ### Documentación
 - [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html` y `apadrinar.html` (también en `docs/contexto/arquitectura.md`).
+- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html`, `apadrinar.html` y `mascota.html` (y el nuevo `js/mascota.js`) (también en `docs/contexto/arquitectura.md`).
 - [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
 - [ ] ADR-020 dice que el registro usa los textos en inglés de Figma ("Verify", "Send Again"); ahora está en español. Registrar el cambio en un ADR nuevo.
+- [ ] ADR nuevo: la ficha de mascota pasa de modal a página propia (`mascota.html#id`), fiel a Figma; el cuestionario de adopción se muda a esa página. Actualiza ADR-019 (que describía `#modal-detalle-mascota`).
 - [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. Definir cuál queda.
 
 ### Entrega / presentación
@@ -73,4 +67,13 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Apadrinamiento (diagrama de flujo) en `apadrinar.html`: "Apadriná ahora" → monto mensual ($ 2.000 / 5.000 / 10.000 u otro, mínimo $ 500) → fondo general o un rescatado → método de pago (Mercado Pago, transferencia o tarjeta, simulado y sin cobro) → confirmación + notificación. Pide cuenta. Se entra desde Donaciones ("💛 Apadriná ahora") o desde la ficha de una mascota, que llega con ese animal ya elegido.
 - [x] Ficha de mascota: muestra cuántos padrinos tiene (los de ejemplo de `js/data.js` + los del usuario, con `getPadrinosCount()`).
 - [x] Decidido: el catálogo mantiene las pestañas chicas Todos / Perros / Gatos (más espacio para las tarjetas en mobile y conserva "Todos"), con el texto de Figma "¿Qué preferís adoptar?" encima.
+- [x] Decidido (este maquetado): quedan como están los botones sin acción ("Consultar por WhatsApp" de la tienda, "Google"/"Facebook" del registro y "Recordarme" del login).
+- [x] **Decisión de alcance — Tienda sin carrito.** El diagrama original pedía carrito y pago. Se descarta porque los productos los publican distintos refugios y entidades, cada uno con su propia forma de venta: la plataforma no vende, sino que conecta al comprador con quien publica el producto ("Consultar por WhatsApp"). *(Motivo para el documento de investigación.)*
+- [x] **Decisión de alcance — Sin sección de Voluntariado.** El diagrama la dejaba como idea. Se descarta porque la organización de los voluntarios de cada refugio está fuera del alcance de la plataforma. *(Motivo para el documento de investigación.)*
+- [x] **Decisión de alcance — Sin comentarios en la ficha de mascota.** El diagrama los incluía; se descartan para esta versión (los comentarios quedan en Alertas y Noticias).
+- [x] Donaciones: hero con foto y frase que invita a adoptar ("Adoptar cambia dos vidas…") + 3 tarjetas con foto y frase que se deslizan en mobile, y 6 preguntas frecuentes desplegables.
+- [x] Adopción Responsable: sección "Compartí esta guía" con WhatsApp, Facebook, X, "Copiar enlace" y el menú nativo de compartir en celulares.
+- [x] Loki tiene 2 fotos en `js/data.js` (`images`), listas para el carrusel de la ficha.
+- [x] Ficha de mascota en página completa (`mascota.html#id` + `js/mascota.js`), fiel a Figma: barra superior (< · nombre · ♡), **carrusel de fotos** que se desliza con el dedo (puntitos de 44px, contador "1 / 2" y flechas en desktop), **degradado fijo** con badges y resumen de 2 líneas (opción A: siempre legible, sin tapar la cara), Sistema de Badges, padrinos, **info desplegable** cerrada (Descripción / Estado de salud / Notas), "¡Adoptame!", "Donaciones y Apadrinamiento" y "Compartir". El cuestionario de adopción vive en esta página.
+- [x] Decidido (UX): el texto sobre la foto va con degradado fijo y no "transparente que se oscurece al tocar", porque en mobile no hay hover, el texto quedaba escondido, no cumplía contraste WCAG AA y chocaba con el gesto de deslizar.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.

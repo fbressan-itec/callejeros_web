@@ -79,6 +79,43 @@ function getPadrinosCount(pet) {
   return (pet.padrinos || 0) + mine;
 }
 
+function getCurrentUser() {
+  return JSON.parse(localStorage.getItem('callejeros_user') || 'null');
+}
+
+// Favoritos (catálogo y ficha de mascota)
+function getFavorites() {
+  return JSON.parse(localStorage.getItem('callejeros_favorites') || '[]');
+}
+
+function toggleFavorite(petId) {
+  let favs = getFavorites();
+  const isFav = favs.includes(petId);
+  favs = isFav ? favs.filter(id => id !== petId) : [...favs, petId];
+  localStorage.setItem('callejeros_favorites', JSON.stringify(favs));
+  return !isFav;
+}
+
+// Modales compartidos entre adopciones.html y mascota.html (si la página los tiene)
+function openAuthRequiredModal({ text, redirect }) {
+  const textEl = document.getElementById('auth-required-text');
+  if (textEl) textEl.textContent = text;
+  const target = encodeURIComponent(redirect || 'adopciones.html');
+  document.getElementById('auth-required-login')?.setAttribute('href', `login.html?redirect=${target}`);
+  document.getElementById('auth-required-register')?.setAttribute('href', `registro.html?redirect=${target}`);
+  document.getElementById('modal-auth-required')?.classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function openSuccessModal(title, text) {
+  const titleEl = document.getElementById('modal-exito-titulo');
+  const textEl = document.getElementById('modal-exito-texto');
+  if (titleEl) titleEl.textContent = title;
+  if (textEl) textEl.textContent = text;
+  document.getElementById('modal-exito-envio')?.classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
 // Programa un evento que main.js resuelve cuando pasa el tiempo (aunque se cambie de página)
 function scheduleDemoEvent(evt) {
   const list = getStoredList('callejeros_pendientes');
@@ -302,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const customPets = getStoredList('callejeros_custom_pets');
       customPets.unshift(evt.pet);
       saveStoredList('callejeros_custom_pets', customPets);
-      pushNotification({ title: `¡${evt.pet.name} ya está publicado!`, text: 'Un voluntario aprobó tu publicación y ya aparece en el catálogo de adopción.', tag: 'Publicación', link: 'adopciones.html' });
+      pushNotification({ title: `¡${evt.pet.name} ya está publicado!`, text: 'Un voluntario aprobó tu publicación y ya aparece en el catálogo de adopción.', tag: 'Publicación', link: `mascota.html#${evt.pet.id}` });
     }
   }
 
@@ -319,6 +356,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   processDemoEvents();
   setInterval(processDemoEvents, 2000);
+
+  // Botones de los modales compartidos (popup de sesión y modal de éxito)
+  document.getElementById('btn-close-auth-required')?.addEventListener('click', () => {
+    document.getElementById('modal-auth-required')?.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  });
+  document.getElementById('btn-modal-ir-inicio')?.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
 
   // -----------------------------------------------------------------------
   // 3. MENÚ HAMBURGUESA Y ESTADO DE SESIÓN (Logueado vs No Registrado)

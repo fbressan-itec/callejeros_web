@@ -454,7 +454,9 @@
         document.getElementById('sponsor-success-text').textContent = target
           ? `Ahora sos padrino/madrina de ${target.name}. Tu aporte de ${formatMoney(amount)} por mes cubre su alimento y cuidados mientras espera una familia.`
           : `Tu aporte de ${formatMoney(amount)} por mes va al fondo general y ayuda a los rescatados que más lo necesitan.`;
-        document.getElementById('sponsor-success-link').textContent = target ? `Ver a ${target.name} en el catálogo` : 'Ver el catálogo';
+        const successLink = document.getElementById('sponsor-success-link');
+        successLink.textContent = target ? `Ver la ficha de ${target.name}` : 'Ver el catálogo';
+        successLink.href = target ? `mascota.html#${encodeURIComponent(target.id)}` : 'adopciones.html';
         document.getElementById('sponsor-success').classList.remove('hidden');
         window.scrollTo(0, 0);
       });

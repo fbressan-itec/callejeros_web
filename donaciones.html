@@ -43,6 +43,10 @@
       }
     }
   </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-rose-500 selection:text-white">
 
@@ -176,17 +180,50 @@
       </a>
     </div>
     
-    <div class="text-center max-w-2xl mx-auto space-y-2">
-      <span class="text-xs uppercase font-extrabold tracking-wider text-rose-600">Solidaridad en Río Cuarto</span>
-      <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white">
-        Quiero Colaborar
-      </h1>
-      <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-        Cada peso donado y cada bolsa de alimento sostiene a los más de 30 animales que se encuentran actualmente en recuperación y tránsito.
-      </p>
-    </div>
+    <!-- =================================================================== -->
+    <!-- HERO CON FOTO Y FRASE (invita a adoptar y a colaborar)              -->
+    <!-- =================================================================== -->
+    <section class="relative rounded-3xl overflow-hidden bg-slate-900 shadow-xl min-h-[420px] sm:min-h-[380px] flex items-end" aria-labelledby="donaciones-hero-title">
+      <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1600&q=80" alt="Dos perros rescatados corriendo felices" class="absolute inset-0 w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/10" aria-hidden="true"></div>
+      <div class="relative z-10 p-6 sm:p-10 space-y-3 max-w-2xl">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-600 text-white">Solidaridad en Río Cuarto</span>
+        <h1 id="donaciones-hero-title" class="font-display font-extrabold text-3xl sm:text-5xl text-white leading-tight">
+          Adoptar cambia dos vidas: la suya y la tuya.
+        </h1>
+        <p class="text-sm sm:text-base text-slate-200 leading-relaxed">
+          Y si hoy no podés adoptar, también podés ayudar: cada peso y cada bolsa de alimento sostiene a los más de 30 animales en recuperación y tránsito.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-2 pt-1">
+          <a href="adopciones.html" class="flex items-center justify-center min-h-[44px] px-5 rounded-xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-lg transition-all">🐾 Conocé a los rescatados</a>
+          <a href="#formas-de-ayudar" class="flex items-center justify-center min-h-[44px] px-5 rounded-xl font-bold text-sm text-white bg-white/20 hover:bg-white/30 backdrop-blur-md active:scale-95 transition-all">Quiero colaborar ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tarjetas con foto y frase: se deslizan con el dedo en mobile, grilla en pantallas grandes -->
+    <section aria-label="Por qué ayudar" class="-mx-4 sm:mx-0">
+      <div class="flex sm:grid sm:grid-cols-3 gap-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory px-4 sm:px-0 pb-2 no-scrollbar">
+        <a href="apadrinar.html" class="snap-start flex-shrink-0 w-[78%] sm:w-auto relative rounded-3xl overflow-hidden min-h-[220px] flex items-end shadow-soft group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+          <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80" alt="Gato rescatado descansando" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent" aria-hidden="true"></div>
+          <p class="relative z-10 p-5 font-display font-bold text-lg text-white leading-snug">Con $ 5.000 por mes, un rescatado come todo el mes. <span class="block mt-1 text-sm font-semibold text-orange-300">Apadriná →</span></p>
+        </a>
+        <a href="noticia.html#castracion-alberdi" class="snap-start flex-shrink-0 w-[78%] sm:w-auto relative rounded-3xl overflow-hidden min-h-[220px] flex items-end shadow-soft group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+          <img src="https://images.unsplash.com/photo-1591160690555-5debfba289f0?auto=format&fit=crop&w=800&q=80" alt="Cachorra mestiza rescatada" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent" aria-hidden="true"></div>
+          <p class="relative z-10 p-5 font-display font-bold text-lg text-white leading-snug">Cada castración evita decenas de camadas en la calle. <span class="block mt-1 text-sm font-semibold text-orange-300">Ver jornadas →</span></p>
+        </a>
+        <a href="adopciones.html" class="snap-start flex-shrink-0 w-[78%] sm:w-auto relative rounded-3xl overflow-hidden min-h-[220px] flex items-end shadow-soft group focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+          <img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=800&q=80" alt="Cachorro esperando una familia" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent" aria-hidden="true"></div>
+          <p class="relative z-10 p-5 font-display font-bold text-lg text-white leading-snug">Ellos no eligen dónde nacer. Vos podés elegir darles un hogar. <span class="block mt-1 text-sm font-semibold text-orange-300">Adoptá →</span></p>
+        </a>
+      </div>
+    </section>
 
     <!-- Grilla Responsiva de Colaboración -->
+    <div id="formas-de-ayudar" class="scroll-mt-20"></div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
       <!-- Bloque 1: Donaciones Monetarias -->
       <section class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft space-y-4">
@@ -268,6 +305,66 @@
         </div>
       </section>
     </div>
+
+    <!-- =================================================================== -->
+    <!-- PREGUNTAS FRECUENTES (desplegables, diagrama de flujo)              -->
+    <!-- =================================================================== -->
+    <section class="max-w-3xl mx-auto space-y-4" aria-labelledby="faq-title">
+      <div class="text-center space-y-1">
+        <span class="text-xs uppercase font-extrabold tracking-wider text-rose-600">Dudas comunes</span>
+        <h2 id="faq-title" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white">Preguntas frecuentes</h2>
+      </div>
+
+      <div class="space-y-3">
+        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+          <summary class="flex items-center justify-between gap-3 min-h-[56px] px-5 py-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+            ¿Cómo sé que mi donación llega a los animales?
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Cada campaña explica en qué se usa lo recaudado y publicamos en Noticias los gastos de cirugías, alimento y medicación. Si apadrinás, recibís novedades de tu ahijado.</p>
+        </details>
+
+        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+          <summary class="flex items-center justify-between gap-3 min-h-[56px] px-5 py-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+            ¿Puedo donar alimento, mantas o medicamentos?
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">¡Sí! Podés llevarlos a los puntos de recepción de esta página. Lo que más se necesita es alimento balanceado, mantas, piedritas sanitarias y pipetas antipulgas. Los medicamentos tienen que estar sin abrir y sin vencer.</p>
+        </details>
+
+        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+          <summary class="flex items-center justify-between gap-3 min-h-[56px] px-5 py-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+            ¿Qué es apadrinar y cuánto cuesta?
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Es un aporte mensual para cubrir el alimento y los cuidados de un rescatado mientras espera su familia. Vos elegís el monto (desde $ 500) y si va a un animal puntual o al fondo general. <a href="apadrinar.html" class="font-bold text-orange-600 dark:text-orange-400 hover:underline">Apadriná ahora</a>.</p>
+        </details>
+
+        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+          <summary class="flex items-center justify-between gap-3 min-h-[56px] px-5 py-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+            ¿Puedo dejar de apadrinar cuando quiera?
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Sí, no hay permanencia mínima. Podés cambiar el monto o darte de baja en cualquier momento escribiéndonos.</p>
+        </details>
+
+        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+          <summary class="flex items-center justify-between gap-3 min-h-[56px] px-5 py-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+            ¿Puedo ayudar si no vivo en Río Cuarto?
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Claro. Las transferencias y el apadrinamiento se hacen desde cualquier lugar. Y compartir las publicaciones de adopción y de alertas también ayuda muchísimo.</p>
+        </details>
+
+        <details class="group rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-soft">
+          <summary class="flex items-center justify-between gap-3 min-h-[56px] px-5 py-3 cursor-pointer list-none font-bold text-sm sm:text-base text-slate-900 dark:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-2xl">
+            ¿No puedo donar dinero, cómo más puedo ayudar?
+            <svg class="w-5 h-5 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="px-5 pb-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Podés ser hogar de tránsito, difundir a los rescatados en tus redes, reportar animales en la calle en <a href="alerta.html" class="font-bold text-orange-600 dark:text-orange-400 hover:underline">Alerta Callejeros</a> o comprar en la <a href="tienda.html" class="font-bold text-orange-600 dark:text-orange-400 hover:underline">Tienda Solidaria</a>.</p>
+        </details>
+      </div>
+    </section>
 
   </main>
 
