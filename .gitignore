@@ -19,3 +19,6 @@ yarn-error.log*
 node_modules/
 dist/
 build/
+
+# Archivos temporales de Word/Office (se crean al abrir un documento)
+~$*

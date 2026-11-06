@@ -36,6 +36,8 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. Definir cuál queda.
 
 ### Entrega / presentación
+- [ ] Completar la bitácora de diseño en Google Docs ("Callejeros Río Cuarto — Bitácora de diseño: camino y decisiones de UI/UX", https://docs.google.com/document/d/1e58WfBZ8FOg2GzsJbNegcXcHNGWRbLk1TxNpnEnkr14/edit): revisar las notas ✎, sumar los informes y actividades del grupo y anotar cada cambio significativo de UX/UI. Reemplaza a `bitacora de progreso.docx`.
+- [ ] Redactar los "conocimientos implementados" (punto 5 de la Parte 1 de la consigna) en el Documento de Investigación, referenciando la bitácora.
 - [ ] Confirmar con el profe que una web de varias páginas HTML cuenta como "Web SPA" (justificación: ADR-017).
 - [ ] Tailwind y las fotos se cargan desde internet: prever conexión el día de la presentación (o una versión offline).
 
