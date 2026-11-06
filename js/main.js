@@ -462,13 +462,19 @@ document.addEventListener('DOMContentLoaded', () => {
       // Usuario Logueado (UserRegis según Figma).
       // Debajo del nombre va el rol de la cuenta, igual que la badge de mi-cuenta.html.
       // En el back end: "Staff Callejeros" o "Refugio verificado" solo si el admin asignó
-      // ese rol; las cuentas comunes no muestran nada. Demo: se muestra Staff como ejemplo.
+      // ese rol (user.role); las cuentas comunes no muestran nada.
+      // Demo: el rol se cambia con "Rol de prueba" en mi-cuenta.html.
+      const roleLabel = currentUser.role === 'staff'
+        ? '<span class="text-xs text-violet-700 dark:text-violet-300 font-bold">🛡️ Staff Callejeros</span>'
+        : currentUser.role === 'refugio'
+          ? '<span class="text-xs text-blue-700 dark:text-blue-300 font-bold">✓ Refugio verificado</span>'
+          : '';
       userStatusContainer.innerHTML = `
         <div class="flex items-center justify-between">
           <div>
             <span class="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold block">Cuenta activa</span>
             <p class="font-display font-bold text-lg text-slate-900 dark:text-white">¡Hola, ${escapeHtml(currentUser.name)}!</p>
-            <span class="text-xs text-violet-700 dark:text-violet-300 font-bold">🛡️ Staff Callejeros</span>
+            ${roleLabel}
           </div>
           <div class="w-12 h-12 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
             ${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}
@@ -536,6 +542,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   renderUserStatusInMenu();
+  // Si otra parte de la página cambia la sesión o el rol (ej. "Rol de prueba" en Mi Cuenta)
+  window.addEventListener('callejeros:sesion', renderUserStatusInMenu);
 
   // -----------------------------------------------------------------------
   // 4. FAB: ALTA TRANSPARENCIA CUANDO ESTÁ INACTIVO
