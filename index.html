@@ -229,7 +229,7 @@
   <main class="flex-grow">
     
     <!-- 1. HERO CARRUSEL DE IMÁGENES -->
-    <section class="relative w-full bg-slate-950 overflow-hidden" aria-label="Novedades destacadas">
+    <section id="hero-carousel" class="relative w-full bg-slate-950 overflow-hidden touch-pan-y" aria-label="Novedades destacadas">
       <div id="carousel-container" class="relative w-full h-[440px] sm:h-[500px] md:h-[560px]">
         
         <!-- Slide 1: Adopción Responsable -->
@@ -318,19 +318,25 @@
 
       </div>
 
-      <!-- Controles del Carrusel -->
-      <button type="button" id="carousel-prev" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 active:scale-90 text-white backdrop-blur-sm transition-all focus:outline-none focus:ring-2 focus:ring-orange-500" aria-label="Slide anterior">
+      <!-- Controles del Carrusel: flechas solo desde tablet (en mobile tapan el texto; se desliza con el dedo) -->
+      <button type="button" id="carousel-prev" class="hidden sm:inline-flex absolute left-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 active:scale-90 text-white backdrop-blur-sm transition-all focus:outline-none focus:ring-2 focus:ring-orange-500" aria-label="Slide anterior">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       </button>
-      <button type="button" id="carousel-next" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 active:scale-90 text-white backdrop-blur-sm transition-all focus:outline-none focus:ring-2 focus:ring-orange-500" aria-label="Slide siguiente">
+      <button type="button" id="carousel-next" class="hidden sm:inline-flex absolute right-3 top-1/2 -translate-y-1/2 z-20 p-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 active:scale-90 text-white backdrop-blur-sm transition-all focus:outline-none focus:ring-2 focus:ring-orange-500" aria-label="Slide siguiente">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
 
-      <!-- Indicadores de puntos -->
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        <button type="button" class="carousel-dot w-8 h-2.5 rounded-full bg-orange-500 transition-all" aria-label="Ir al slide 1" aria-selected="true"></button>
-        <button type="button" class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all" aria-label="Ir al slide 2" aria-selected="false"></button>
-        <button type="button" class="carousel-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all" aria-label="Ir al slide 3" aria-selected="false"></button>
+      <!-- Indicadores de puntos: botón de 44px (táctil) con la barrita visible adentro -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex items-center">
+        <button type="button" class="carousel-dot group min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" aria-label="Ir al slide 1" aria-selected="true">
+          <span class="carousel-dot-bar block w-8 h-2.5 rounded-full bg-orange-500 transition-all"></span>
+        </button>
+        <button type="button" class="carousel-dot group min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" aria-label="Ir al slide 2" aria-selected="false">
+          <span class="carousel-dot-bar block w-2.5 h-2.5 rounded-full bg-white/40 group-hover:bg-white/70 transition-all"></span>
+        </button>
+        <button type="button" class="carousel-dot group min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" aria-label="Ir al slide 3" aria-selected="false">
+          <span class="carousel-dot-bar block w-2.5 h-2.5 rounded-full bg-white/40 group-hover:bg-white/70 transition-all"></span>
+        </button>
       </div>
     </section>
 
@@ -606,13 +612,15 @@
           }
         });
         dots.forEach((dot, i) => {
+          // El botón mide 44px (táctil); lo que cambia es la barrita de adentro
+          const bar = dot.querySelector('.carousel-dot-bar');
           if (i === index) {
-            dot.classList.remove('w-2.5', 'bg-white/40');
-            dot.classList.add('w-8', 'bg-orange-500');
+            bar?.classList.remove('w-2.5', 'bg-white/40', 'group-hover:bg-white/70');
+            bar?.classList.add('w-8', 'bg-orange-500');
             dot.setAttribute('aria-selected', 'true');
           } else {
-            dot.classList.remove('w-8', 'bg-orange-500');
-            dot.classList.add('w-2.5', 'bg-white/40');
+            bar?.classList.remove('w-8', 'bg-orange-500');
+            bar?.classList.add('w-2.5', 'bg-white/40', 'group-hover:bg-white/70');
             dot.setAttribute('aria-selected', 'false');
           }
         });
@@ -637,6 +645,23 @@
         slideInterval = setInterval(nextSlide, 6000);
       }
       if (slides.length > 0) resetTimer();
+
+      // Deslizar con el dedo (mobile): izquierda = siguiente, derecha = anterior.
+      // Solo cuenta si el gesto es más horizontal que vertical, para no interferir con el scroll.
+      const hero = document.getElementById('hero-carousel');
+      let touchStartX = 0;
+      let touchStartY = 0;
+      hero?.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+      }, { passive: true });
+      hero?.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+        if (dx < 0) nextSlide(); else prevSlide();
+        resetTimer();
+      }, { passive: true });
     });
   </script>
 </body>
