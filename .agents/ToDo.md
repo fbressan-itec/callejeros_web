@@ -41,7 +41,7 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 
 ### Documentación
 - [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html`, `apadrinar.html`, `mascota.html` y `mi-cuenta.html` (y el nuevo `js/mascota.js`) (también en `docs/contexto/arquitectura.md`).
+- [ ] `docs/contexto/arquitectura.md`: corregir la lista de archivos de `js/` y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html`, `apadrinar.html`, `mascota.html` y `mi-cuenta.html` (y `js/mascota.js`). El README ya está actualizado.
 - [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
 - [ ] ADR-020 dice que el registro usa los textos en inglés de Figma ("Verify", "Send Again"); ahora está en español. Registrar el cambio en un ADR nuevo.
@@ -102,3 +102,5 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Edad en 3 grupos, iguales en badges y filtros: **Cachorro** (menos de 1 año), **Adulto** (1 a 7) y **Senior** (más de 7) (`getAgeGroup` en `js/main.js`). Thor pasa a 9 años para que haya un Senior de ejemplo.
 - [x] Filtros nuevos: "Sociable con niños" y "Sociable con otros animales" (muestran solo los "Sí").
 - [x] Formulario de publicar: edad con número más "Años / Meses" (antes "5 Meses" quedaba como 5 años); selectores "¿Sociable con niños?" y "¿Con otros animales?" que arrancan en "Sin evaluar"; casilla de salud que habilita un campo obligatorio de 150 caracteres (al desmarcarla se vacía); "Salvaje / Tímido" pasa a "Salvaje". Las badges se calculan solas y no hay vista previa, para que no se acomoden las respuestas para "embellecer" la publicación.
+- [x] Bitácora de Google Docs: sumada la etapa "Mi Cuenta y sistema de insignias" (pestaña 1), las decisiones de insignias de la ficha, Mi Cuenta, insignias de rol y favoritos (pestaña 2) y los pendientes nuevos (pestaña 5). Queda la nota ✎ para sumar capturas de otras webs de adopción.
+- [x] README actualizado: descripción, sección "Sistema de insignias: nuestro aporte", funcionalidades, datos de prueba, stack real (sin Lucide), estructura de archivos y páginas actual, URL de clonado y enlace a la bitácora.
