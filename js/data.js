@@ -140,6 +140,29 @@ const initialNotifications = [
   { id: 5, title: 'Colecta de Mantas y Alimento', text: 'Recibimos donaciones para los refugios este fin de semana.', time: 'Hace 2 días', unread: false, tag: 'Colecta' }
 ];
 
+// Comentarios de ejemplo (simulados) para la ficha de cada alerta.
+// Son personas ficticias: la sección de comentarios es solo una maqueta.
+const sampleAlertComments = {
+  'alt-1': [
+    { author: 'Carla M.', time: 'Hace 10 min', text: 'Lo vi hace un rato cruzando por Sobremonte y Constitución, iba hacia el Concejo.' },
+    { author: 'Diego R.', time: 'Hace 6 min', text: 'Comparto en el grupo del barrio. ¿Tiene chapita con nombre?' },
+    { author: 'Sofía L.', time: 'Hace 2 min', text: 'Estoy cerca de la plaza, salgo a buscarlo con mi hijo. Les aviso cualquier cosa.' }
+  ],
+  'alt-2': [
+    { author: 'Marcelo P.', time: 'Hace 1 hora', text: 'Hola, a mi vecina se le perdió un gatito atigrado la semana pasada en Banda Norte. Le paso el contacto.' },
+    { author: 'Lucía G.', time: 'Hace 40 min', text: 'Si nadie lo reclama puedo darle tránsito por unos días, tengo transportadora.' }
+  ],
+  'alt-3': [
+    { author: 'Veterinaria Pasteur', time: 'Hace 3 horas', text: 'Estamos a dos cuadras. Si alguien puede acercarla, la revisamos sin costo.' },
+    { author: 'Javier T.', time: 'Hace 2 horas', text: 'Pasé con el auto y ya no estaba en la esquina, creo que se fue para el lado de la plaza.' },
+    { author: 'Ana B.', time: 'Hace 1 hora', text: 'La encontré en la plaza Alberdi. Le dejé comida y agua, me quedo con ella hasta que alguien pueda llevarla.' }
+  ],
+  'alt-4': [
+    { author: 'Rocío F.', time: 'Ayer', text: 'Pobrecito, hacía mucho frío anoche. ¿Alguien sabe si sigue por la costanera?' },
+    { author: 'Martín S.', time: 'Hace 5 horas', text: 'Hoy temprano estaba debajo del puente. Le llevé una manta.' }
+  ]
+};
+
 // Alertas comunitarias de animales en la vía pública (Río Cuarto)
 const initialAlerts = [
   {

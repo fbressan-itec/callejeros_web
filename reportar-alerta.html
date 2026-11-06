@@ -54,10 +54,6 @@
       </a>
 
       <div class="flex items-center gap-2 sm:gap-3">
-        <a href="alerta.html" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-          <span>Volver al Mapa</span>
-        </a>
 
         <button type="button" id="theme-toggle" class="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="Alternar tema">
           <svg class="w-6 h-6 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
@@ -69,6 +65,13 @@
 
   <!-- CONTENIDO: FORMULARIO DE ALERTA RÁPIDA -->
   <main class="flex-grow max-w-3xl xl:max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12 w-full space-y-6">
+    <!-- Botón Volver (estilo Figma "<") -->
+    <div class="-mb-2">
+      <a href="alerta.html" data-back class="inline-flex items-center gap-1.5 min-w-[44px] min-h-[44px] px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-all" aria-label="Volver a la pantalla anterior">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        <span class="hidden sm:inline text-sm font-semibold">Volver</span>
+      </a>
+    </div>
     
     <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
       <div class="flex items-center gap-2">
@@ -190,24 +193,6 @@
         <textarea id="alert-desc" rows="3" required placeholder="Detallá tamaño, si renguea, si está asustado, collar o características que faciliten su identificación rápida..." class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-850 text-sm focus:ring-2 focus:ring-red-500"></textarea>
       </div>
 
-      <!-- BADGE SELECCIONABLE: CASO URGENTE -->
-      <div class="p-4 rounded-2xl border-2 border-dashed border-rose-300 dark:border-rose-800 bg-rose-50/70 dark:bg-rose-950/20">
-        <label class="flex items-start sm:items-center justify-between gap-3 cursor-pointer">
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span class="px-2.5 py-1 rounded-md text-xs font-extrabold bg-rose-600 text-white shadow-sm flex items-center gap-1">
-                🚨 Caso Urgente
-              </span>
-              <span class="text-xs font-bold text-slate-800 dark:text-slate-100">Etiquetar como Prioridad Máxima</span>
-            </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400">
-              Marcá esta opción si el animal requiere atención médica inmediata, está atrapado o su vida corre riesgo inminente.
-            </p>
-          </div>
-          <input type="checkbox" id="alert-is-urgent" class="w-5 h-5 mt-1 sm:mt-0 text-rose-600 rounded border-slate-300 focus:ring-rose-500">
-        </label>
-      </div>
-
       <!-- Teléfono de Contacto -->
       <div>
         <label for="alert-contact" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
@@ -302,18 +287,11 @@
           return;
         }
 
-        const isUrgent = document.getElementById('alert-is-urgent')?.checked || false;
-        let situation = document.getElementById('alert-situation').value;
-        if (isUrgent && situation !== 'emergencia') {
-          // Si marcó Caso Urgente, elevar prioridad
-          situation = 'emergencia';
-        }
-
+        // En Alerta Callejeros todas las alertas son urgentes: no hay prioridad extra
         const newAlert = {
           id: 'alt-' + Date.now(),
           title: document.getElementById('alert-title').value.trim(),
-          situation: situation,
-          urgent: isUrgent,
+          situation: document.getElementById('alert-situation').value,
           specie: document.getElementById('alert-specie').value,
           location: document.getElementById('alert-location').value.trim(),
           description: document.getElementById('alert-desc').value.trim(),

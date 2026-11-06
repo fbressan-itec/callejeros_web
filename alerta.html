@@ -130,6 +130,13 @@
   <!-- CONTENIDO: ALERTA CALLEJEROS                                              -->
   <!-- ========================================================================= -->
   <main class="flex-grow max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 w-full space-y-8">
+    <!-- Botón Volver (estilo Figma "<") -->
+    <div class="-mb-4">
+      <a href="index.html" data-back class="inline-flex items-center gap-1.5 min-w-[44px] min-h-[44px] px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900 transition-all" aria-label="Volver a la pantalla anterior">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        <span class="hidden sm:inline text-sm font-semibold">Volver</span>
+      </a>
+    </div>
     
     <!-- Encabezado con Botón Visible de Acceso Rápido -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
@@ -236,6 +243,81 @@
 
   </main>
 
+  <!-- ========================================================================= -->
+  <!-- FICHA DE ALERTA CON COMENTARIOS (pantalla completa en mobile)             -->
+  <!-- ========================================================================= -->
+  <div id="modal-detalle-alerta" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-stretch sm:items-center justify-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="alerta-detalle-titulo">
+    <div id="alerta-detalle-panel" class="bg-white dark:bg-slate-900 w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-lg sm:rounded-3xl overflow-y-auto overflow-x-hidden shadow-2xl border-slate-200 dark:border-slate-800 sm:border">
+
+      <!-- Barra superior: Volver + título -->
+      <div class="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <button type="button" id="btn-cerrar-alerta" class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 transition-all" aria-label="Volver al listado de alertas">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <h2 id="alerta-detalle-titulo" class="flex-1 min-w-0 font-display font-bold text-base text-slate-900 dark:text-white truncate">Alerta</h2>
+      </div>
+
+      <!-- Foto -->
+      <div class="relative w-full h-56 sm:h-64 bg-slate-900">
+        <img id="alerta-detalle-img" src="" alt="" class="w-full h-full object-cover">
+        <span id="alerta-detalle-badge" class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md bg-red-600"></span>
+        <span id="alerta-detalle-tiempo" class="absolute top-3 right-3 px-2 py-0.5 rounded-md text-[11px] font-bold text-white bg-slate-950/75 backdrop-blur-sm shadow-md"></span>
+      </div>
+
+      <div class="p-5 pb-10 space-y-5">
+        <!-- Datos de la alerta -->
+        <div class="space-y-2">
+          <h3 id="alerta-detalle-nombre" class="font-display font-bold text-lg text-slate-900 dark:text-white"></h3>
+          <div class="flex items-start gap-1.5 text-sm font-semibold text-red-600 dark:text-red-400">
+            <span aria-hidden="true">📍</span>
+            <span id="alerta-detalle-ubicacion"></span>
+          </div>
+          <p id="alerta-detalle-desc" class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Contacto -->
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-3">
+          <div class="text-xs text-slate-500 dark:text-slate-400">
+            Contacto de quien publicó: <strong id="alerta-detalle-contacto" class="text-slate-900 dark:text-white"></strong>
+          </div>
+          <div class="flex gap-2">
+            <a id="alerta-detalle-llamar" href="#" class="flex-1 min-h-[44px] py-2.5 px-3 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 shadow-sm transition-all flex items-center justify-center gap-1.5">
+              📞 Llamar
+            </a>
+            <button type="button" id="alerta-detalle-copiar" class="min-h-[44px] py-2.5 px-4 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600 active:scale-95 transition-all">
+              Copiar
+            </button>
+          </div>
+        </div>
+
+        <!-- Comentarios (simulados) -->
+        <section class="space-y-3 pt-1" aria-labelledby="alerta-comentarios-titulo">
+          <h3 id="alerta-comentarios-titulo" class="font-display font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+            💬 Comentarios
+            <span id="alerta-comentarios-count" class="px-2 py-0.5 rounded-full text-xs font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">0</span>
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            ¿Lo viste, es tu mascota o podés ayudar con alimento, atención o tránsito? Avisale a la comunidad.
+          </p>
+
+          <ul id="alerta-comentarios-lista" class="space-y-3"></ul>
+
+          <!-- Campo para comentar: solo maquetado -->
+          <form id="form-comentario-alerta" class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+            <label for="alerta-comentario-texto" class="sr-only">Escribí un comentario</label>
+            <div class="flex items-end gap-2">
+              <textarea id="alerta-comentario-texto" rows="2" placeholder="Escribí un comentario..." class="flex-1 px-3.5 py-2.5 rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-base text-slate-900 dark:text-white resize-none focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+              <button type="submit" class="min-w-[44px] min-h-[44px] px-4 rounded-2xl font-bold text-sm text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
+                Enviar
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Vista previa: los comentarios se habilitan próximamente.</p>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+
   <!-- FAB ALERTA RÁPIDA -->
   <a href="reportar-alerta.html" id="fab-alerta" class="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-red-600/90 hover:bg-red-600 active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xl backdrop-blur-md border border-orange-500/40 transition-all duration-300 opacity-25 hover:opacity-100" aria-label="Publicar Alerta con Foto">
     <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -285,27 +367,19 @@
         }
 
         alertsGrid.innerHTML = filtered.map(a => {
-          let badgeClass = 'bg-red-600';
-          let badgeText = 'Perdido';
-          if (a.situation === 'encontrado') {
-            badgeClass = 'bg-amber-500';
-            badgeText = 'Encontrado';
-          } else if (a.situation === 'emergencia' || a.urgent) {
-            badgeClass = 'bg-rose-700 animate-pulse';
-            badgeText = '🚨 Caso Urgente';
-          }
-
+          const badge = situationBadge(a.situation);
           const contact = escapeHtml(a.contact);
           const telHref = String(a.contact || '').replace(/[^0-9+]/g, '');
+          const commentCount = getComments(a.id).length;
 
           return `
-            <article id="alert-${escapeHtml(a.id)}" class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-soft dark:shadow-soft-dark hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-              
+            <article id="alert-${escapeHtml(a.id)}" data-alert-id="${escapeHtml(a.id)}" class="alert-card bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700/80 shadow-soft dark:shadow-soft-dark hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between cursor-pointer">
+
               <!-- Foto de la Mascota y Badges de Tiempo -->
               <div class="relative w-full h-48 sm:h-52 bg-slate-900 overflow-hidden">
                 <img src="${escapeHtml(a.image)}" alt="${escapeHtml(a.title)}" class="w-full h-full object-cover">
-                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${badgeClass}">
-                  ${badgeText}
+                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${badge.cls}">
+                  ${badge.text}
                 </span>
                 <span class="absolute top-3 right-3 px-2 py-0.5 rounded-md text-[11px] font-bold text-white bg-slate-950/75 backdrop-blur-sm shadow-md">
                   ⏱️ ${escapeHtml(a.timeAgo || 'Reciente')}
@@ -335,6 +409,11 @@
                     Copiar
                   </button>
                 </div>
+
+                <!-- Acceso a la ficha con comentarios -->
+                <button type="button" class="btn-open-alert w-full min-h-[44px] py-2 px-3 rounded-xl font-bold text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 hover:bg-red-100 dark:hover:bg-red-900/40 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+                  <span>💬 Ver detalle y comentarios (${commentCount})</span>
+                </button>
               </div>
 
             </article>
@@ -342,13 +421,109 @@
         }).join('');
 
         alertsGrid.querySelectorAll('.btn-copy-contact').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const phone = btn.getAttribute('data-contact');
-            navigator.clipboard?.writeText(phone).catch(() => {});
-            alert(`Teléfono copiado: ${phone}`);
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            copyContact(btn.getAttribute('data-contact'));
+          });
+        });
+
+        // Tocar la tarjeta (o su botón) abre la ficha; llamar y copiar mantienen su acción
+        alertsGrid.querySelectorAll('.alert-card').forEach(card => {
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('a[href^="tel:"], .btn-copy-contact')) return;
+            const alertData = alerts.find(item => item.id === card.getAttribute('data-alert-id'));
+            if (alertData) openAlertDetail(alertData);
           });
         });
       }
+
+      // ===================================================================
+      // HELPERS
+      // ===================================================================
+      // En Alerta Callejeros todas las alertas son urgentes: el badge solo indica la situación
+      function situationBadge(situation) {
+        if (situation === 'encontrado') return { cls: 'bg-amber-500', text: 'Encontrado' };
+        if (situation === 'emergencia') return { cls: 'bg-rose-700', text: '🚨 Emergencia' };
+        return { cls: 'bg-red-600', text: 'Perdido' };
+      }
+
+      // Comentarios simulados (personas ficticias definidas en js/data.js)
+      function getComments(alertId) {
+        return (typeof sampleAlertComments !== 'undefined' && sampleAlertComments[alertId]) || [];
+      }
+
+      function copyContact(phone) {
+        navigator.clipboard?.writeText(phone).catch(() => {});
+        alert(`Teléfono copiado: ${phone}`);
+      }
+
+      // ===================================================================
+      // FICHA DE ALERTA CON COMENTARIOS (pantalla completa en mobile)
+      // ===================================================================
+      const modalAlerta = document.getElementById('modal-detalle-alerta');
+      const modalPanel = document.getElementById('alerta-detalle-panel');
+      let selectedAlert = null;
+
+      function openAlertDetail(a) {
+        selectedAlert = a;
+        const badge = situationBadge(a.situation);
+        const telHref = String(a.contact || '').replace(/[^0-9+]/g, '');
+        const comments = getComments(a.id);
+
+        document.getElementById('alerta-detalle-titulo').textContent = a.title;
+        const img = document.getElementById('alerta-detalle-img');
+        img.src = a.image;
+        img.alt = a.title;
+        const badgeEl = document.getElementById('alerta-detalle-badge');
+        badgeEl.className = `absolute top-3 left-3 px-2.5 py-1 rounded-md text-xs font-bold text-white shadow-md ${badge.cls}`;
+        badgeEl.textContent = badge.text;
+        document.getElementById('alerta-detalle-tiempo').textContent = `⏱️ ${a.timeAgo || 'Reciente'}`;
+        document.getElementById('alerta-detalle-nombre').textContent = a.title;
+        document.getElementById('alerta-detalle-ubicacion').textContent = a.location;
+        document.getElementById('alerta-detalle-desc').textContent = a.description;
+        document.getElementById('alerta-detalle-llamar').href = `tel:${telHref}`;
+        document.getElementById('alerta-detalle-contacto').textContent = a.contact;
+        document.getElementById('alerta-comentarios-count').textContent = comments.length;
+
+        const list = document.getElementById('alerta-comentarios-lista');
+        list.innerHTML = comments.length === 0
+          ? `<p class="text-sm text-slate-500 dark:text-slate-400 py-2">Todavía no hay comentarios en esta alerta.</p>`
+          : comments.map(c => `
+              <li class="flex gap-3">
+                <div class="w-9 h-9 flex-shrink-0 rounded-full bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 flex items-center justify-center font-bold text-sm">
+                  ${escapeHtml(String(c.author).charAt(0).toUpperCase())}
+                </div>
+                <div class="flex-1 min-w-0 rounded-2xl rounded-tl-sm bg-slate-100 dark:bg-slate-800 px-3.5 py-2.5">
+                  <div class="flex items-baseline justify-between gap-2">
+                    <span class="font-bold text-sm text-slate-900 dark:text-white truncate">${escapeHtml(c.author)}</span>
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 whitespace-nowrap">${escapeHtml(c.time)}</span>
+                  </div>
+                  <p class="text-sm text-slate-700 dark:text-slate-200 mt-0.5 leading-relaxed">${escapeHtml(c.text)}</p>
+                </div>
+              </li>
+            `).join('');
+
+        modalAlerta?.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        modalPanel?.scrollTo(0, 0);
+      }
+
+      function closeAlertDetail() {
+        modalAlerta?.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+        selectedAlert = null;
+      }
+
+      document.getElementById('btn-cerrar-alerta')?.addEventListener('click', closeAlertDetail);
+      // En desktop, tocar fuera del panel también cierra
+      modalAlerta?.addEventListener('click', (e) => {
+        if (e.target === modalAlerta) closeAlertDetail();
+      });
+      document.getElementById('alerta-detalle-copiar')?.addEventListener('click', () => {
+        if (selectedAlert) copyContact(selectedAlert.contact);
+      });
+      // Campo de comentario solo maquetado: no envía nada
+      document.getElementById('form-comentario-alerta')?.addEventListener('submit', (e) => e.preventDefault());
 
       // Tabs de situación
       document.querySelectorAll('.filter-alert-tab').forEach(btn => {

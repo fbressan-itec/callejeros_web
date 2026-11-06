@@ -352,6 +352,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2500);
   }
 
+  // -----------------------------------------------------------------------
+  // 5. BOTÓN VOLVER (estilo Figma "<")
+  // Vuelve a la pantalla anterior del sitio. Si se entró directo a la página,
+  // o se viene de login/registro, usa el href del enlace como destino fijo.
+  // -----------------------------------------------------------------------
+  document.querySelectorAll('[data-back]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      let ref = null;
+      try { ref = document.referrer ? new URL(document.referrer) : null; } catch { ref = null; }
+      const sameSite = ref && ref.origin === window.location.origin;
+      const isAuthPath = (path) => /(login|registro)(\.html)?$/.test(path);
+      // Después de iniciar sesión no tiene sentido "volver" al formulario de login
+      const fromAuth = ref && isAuthPath(ref.pathname) && !isAuthPath(window.location.pathname);
+      if (sameSite && !fromAuth && window.history.length > 1) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
+  });
+
   window.addEventListener('scroll', resetFab, { passive: true });
   window.addEventListener('touchstart', resetFab, { passive: true });
   resetFab();
