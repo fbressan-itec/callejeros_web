@@ -471,15 +471,21 @@ document.addEventListener('DOMContentLoaded', () => {
             ${escapeHtml(String(currentUser.name || '?').charAt(0).toUpperCase())}
           </div>
         </div>
-        <button type="button" id="btn-logout" class="mt-3 w-full min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
-          Cerrar Sesión
-        </button>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <a href="mi-cuenta.html" class="inline-flex items-center justify-center min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold text-white bg-orange-500 hover:bg-orange-600 active:scale-95 shadow-sm transition-all">
+            ⚙️ Mi cuenta
+          </a>
+          <button type="button" id="btn-logout" class="min-h-[44px] py-2 px-3 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors">
+            Cerrar Sesión
+          </button>
+        </div>
       `;
       if (authStateLabel) authStateLabel.textContent = `Logueado (${currentUser.name})`;
 
       document.getElementById('btn-logout')?.addEventListener('click', () => {
         localStorage.removeItem('callejeros_user');
         renderUserStatusInMenu();
+        window.dispatchEvent(new CustomEvent('callejeros:sesion'));
       });
     } else {
       // Usuario No Logueado (NoRegis según Figma): Invitación explícita a registrarse
@@ -521,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('callejeros_user', JSON.stringify({ name: 'Tomás', email: 'tomas@callejeros.org' }));
     }
     renderUserStatusInMenu();
+    window.dispatchEvent(new CustomEvent('callejeros:sesion'));
   });
 
   renderUserStatusInMenu();

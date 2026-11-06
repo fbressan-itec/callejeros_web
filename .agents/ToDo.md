@@ -26,9 +26,14 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [ ] Verificar con el equipo si alguien ya trabajó estos cambios (ya están hechos en la rama `fix/bugs-consistencia`).
 - [ ] Comentarios reales (que se guarden y los vean otros usuarios): hoy son simulados porque no hay backend. Queda para cuando exista uno.
 
+### Mi Cuenta
+- [ ] **Para la fase de desarrollo (con backend):** que `mi-cuenta.html` guarde de verdad los cambios (foto, datos, correo, teléfono con verificación por SMS, contraseña, preferencias) y que "Eliminar cuenta" borre la cuenta. Hoy es maquetado.
+- [ ] "Mis alertas" y "Mis solicitudes" llevan al mapa y a las notificaciones: falta una lista propia de cada usuario.
+- [ ] ADR nuevo: sección Mi Cuenta (página propia con desplegables, mismo estilo que la ficha de mascota).
+
 ### Documentación
 - [ ] Alinear `.agents/rules/antigravity_rules.md` y `.agents/memory/engram_memory.json` con el stack real (HTML + Tailwind CDN + JS vanilla + LocalStorage, sin build). Hoy piden Vite + TypeScript + IndexedDB + SPA.
-- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html`, `apadrinar.html` y `mascota.html` (y el nuevo `js/mascota.js`) (también en `docs/contexto/arquitectura.md`).
+- [ ] README: corregir la lista de archivos de `js/` (nombra `alerta.js`, `notificaciones.js`, `sliders.js` y `global.js`, que no existen), la URL de clonado y sumar las páginas nuevas `noticia.html`, `recuperar.html`, `solicitud.html`, `apadrinar.html`, `mascota.html` y `mi-cuenta.html` (y el nuevo `js/mascota.js`) (también en `docs/contexto/arquitectura.md`).
 - [ ] `docs/contexto/arquitectura.md` y el DoD dicen "Google Maps 100% funcional": actualizar según lo que se decida con el mapa.
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores.
 - [ ] ADR-020 dice que el registro usa los textos en inglés de Figma ("Verify", "Send Again"); ahora está en español. Registrar el cambio en un ADR nuevo.
@@ -81,3 +86,4 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [x] Descripción de la mascota: al publicar se limita a **400 caracteres** con contador (se pone naranja cerca del límite). En la ficha, el resumen sobre la foto se corta en 2 líneas y aparece **"Ver más"** solo si hace falta: abre el desplegable "Descripción" con el texto completo.
 - [x] Menú hamburguesa: "Reportar" pasa a ser **"🚨 Alerta Callejero!"** en rojo, en las 13 páginas con menú.
 - [x] Decidido: el catálogo de adopciones queda en 1 columna en mobile (se ve mejor), aunque Figma y el ADR-009 muestran 2.
+- [x] **Mi Cuenta** (`mi-cuenta.html`, maquetado no funcional, mobile first): tarjeta de perfil con foto (vista previa al elegirla), nombre, correo y estado del teléfono; "Mi actividad" (favoritos, solicitudes, apadrinamientos y alertas, con contadores del dispositivo); desplegables de Datos personales, Correo, Teléfono, Contraseña, Notificaciones y Privacidad; Cerrar sesión y "Eliminar cuenta" con confirmación. Los guardados muestran un aviso "Vista previa" y no cambian nada. Se entra desde el botón "⚙️ Mi cuenta" del menú (con sesión iniciada); sin sesión pide login y vuelve a la página.
