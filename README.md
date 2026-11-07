@@ -4,6 +4,8 @@ Plataforma web comunitaria para la adopción responsable, las alertas de animale
 
 Proyecto Final (EFI) de la materia **Interfaz de Usuario**, ITEC 2026. Es un **prototipo navegable**: todo funciona en el navegador, sin servidor, para poder mostrar los recorridos completos.
 
+🧱 **Etapa actual: maquetado.** Esta versión es la maqueta del frontend. En las próximas etapas vamos a desarrollar el backend como una API y el frontend como una aplicación que la consuma, cada uno en su propio repositorio.
+
 📓 **Bitácora de diseño:** el camino del proyecto y la justificación de cada decisión de UI/UX están en [Callejeros Río Cuarto — Bitácora de diseño](https://docs.google.com/document/d/1e58WfBZ8FOg2GzsJbNegcXcHNGWRbLk1TxNpnEnkr14/edit).
 
 ---
