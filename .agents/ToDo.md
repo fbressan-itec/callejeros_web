@@ -47,6 +47,10 @@ Objetivo: seguimiento de animales en la calle. Quien ve un animal desamparado lo
 - [ ] Hacer un diagrama de flujo nuevo y actualizado. El original (`imagen_diagrama_flujo/Callejeros_Ro_IV.png`, hecho en Coggle) quedó como referencia, pero no refleja los cambios posteriores. **Borradores hechos** en `imagen_diagrama_flujo/diagramas_sitio_actual_2026-11/`: un solo diagrama (`diagrama_flujo_actual`) y por recorridos (`diagrama_flujo_por_recorridos.md` + `recorridos/`). Falta elegir uno con el grupo.
 - [ ] Naranja principal: los docs dicen `#F97316`, la config de Tailwind usa `#ea580c`. A definir con el grupo.
 
+### Repositorios del proyecto (ADR-036)
+- [ ] Cuando existan los repos de la API y de la app, agregar en este README la sección "🗂️ Repositorios del proyecto" (tabla Parte · Repositorio · Estado) y la misma en los otros dos. Recomendaciones completas en ADR-036.
+- [ ] Completar el "About" de cada repo en GitHub (descripción, enlace, topic `callejeros-rio-cuarto`) y fijar los tres en el perfil.
+
 ### Entrega / presentación
 - [ ] Completar la bitácora de diseño en Google Docs ("Callejeros Río Cuarto — Bitácora de diseño: camino y decisiones de UI/UX", https://docs.google.com/document/d/1e58WfBZ8FOg2GzsJbNegcXcHNGWRbLk1TxNpnEnkr14/edit): revisar las notas ✎, sumar los informes y actividades del grupo y anotar cada cambio significativo de UX/UI. Reemplaza a `bitacora de progreso.docx`.
 - [ ] Redactar los "conocimientos implementados" (punto 5 de la Parte 1 de la consigna) en el Documento de Investigación, referenciando la bitácora.

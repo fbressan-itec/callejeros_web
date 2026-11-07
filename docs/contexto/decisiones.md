@@ -251,3 +251,18 @@ Tomadas durante la revisión con Claude Code. El detalle de UX/UI y el porqué d
   10. En `notificaciones.html`, "Marcar todas leídas" va debajo del título en el celular, en una línea y alineado a la derecha; desde tablet vuelve al costado. Al costado se partía en tres líneas y se veía como un recuadro grande.
 * **Pendiente de decisión del grupo**: el contraste de colores (junto con el naranja principal) y detalles del botón flotante. Detalle en `.agents/ToDo.md`.
 
+### [ADR-036] · [2026-11-06 23:23] — Proyecto en Tres Repositorios: Maquetado, API y App
+* **Contexto**: Este repositorio es solo el **maquetado** (prototipo navegable sin servidor). La fase de desarrollo va a tener backend y frontend reales. El repo oficial pasó a ser `fbressan-itec/callejeros_web` (el de `pablo-itec` quedó como remoto `companero`, sin uso).
+* **Decisión**: Tres repositorios separados, todos de `fbressan-itec`:
+  1. **Maquetado:** este repo (`callejeros_web`). Queda congelado como entrega de Interfaz de Usuario y sirve de referencia visual y de recorridos para la app.
+  2. **Backend:** una API, en su propio repo (nombre a definir; sugerido `callejeros_api`).
+  3. **Frontend:** una app que consume la API, en su propio repo (nombre a definir; sugerido `callejeros_app`).
+* **Cómo se enlazan (recomendaciones)**:
+  1. **Misma sección en los tres README, arriba de todo:** "🗂️ Repositorios del proyecto", con una tabla Parte · Repositorio · Estado (✅ terminado / 🚧 en desarrollo / ⏳ pendiente). Marcar el repo actual con "(este repositorio)".
+  2. **Nombres con el mismo prefijo** (`callejeros_…`) para que se vean juntos en el perfil.
+  3. **Cada README explica su relación con los otros:** maquetado = referencia de diseño y recorridos; API = qué datos expone y documentación de endpoints (por ejemplo Swagger); app = qué API consume y la variable de entorno con su URL (`API_URL`).
+  4. **"Cómo ejecutarlo" de la app indica el orden:** primero levantar la API (con enlace a su README), después la app.
+  5. **En GitHub:** descripción y enlace en el "About" de cada repo, el mismo *topic* en los tres (`callejeros-rio-cuarto`), fijarlos en el perfil y, si el grupo trabaja junto, evaluar una organización gratuita que los agrupe.
+  6. **Una sola fuente de verdad:** la bitácora de diseño y las decisiones generales viven en un solo lugar (Google Doc o este repo) y los otros repos las enlazan, sin copiarlas.
+* **Consecuencias**: Cuando existan los otros repos, agregar la sección del punto 1 en este README (pendiente en `.agents/ToDo.md`). Lo que en este registro y en el ToDo dice "para la fase de desarrollo (con backend)" se implementa en esos repos, no acá.
+
