@@ -153,7 +153,7 @@ callejeros_web/
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/pablo-itec/callejeros_web.git
+   git clone https://github.com/fbressan-itec/callejeros_web.git
    cd callejeros_web
    ```
 
@@ -169,6 +169,15 @@ callejeros_web/
      ```
 
 3. Abrir `http://localhost:8000` (o el puerto que corresponda). Para verlo como en el celular, usar el modo responsive del navegador a 375px.
+
+---
+
+## 👥 Participantes
+
+- Bressan Nadal, Franco Nicolás
+- Cabrera, Ulises
+- Abataneo, Pablo
+- Odetto, Leandro
 
 ---
 
